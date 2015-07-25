@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="accentColor">#E64A19</color>
+    <color name="PRESSED_STATE_COLOR">#DD2C00</color>
+    <color name="NORMAL_STATE_COLOR">#FF5722</color>
+    <color name="FOCUSED_STATE_COLOR">#FBE9E7</color>
+    <color name="colorBlanco">#FFFFFF</color>
+    <color name="colorVerde">#4CAF50</color>
+    <color name="colorRojo">#F44336</color>
+    <color name="colorNegro">#000000</color>
+    <color name="colorMorado">#673AB7</color>
+    <color name="colorSeleccionado">#E0E0E0</color>
+    <color name="colorGris">#424242</color>
+</resources>

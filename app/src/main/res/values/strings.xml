@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">CletApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Configuracion</string>
+    <string name="next">Next</string>
+    <string name="title_activity_sub">SubActivity</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string-array name="opciones">
+        <item>Home</item>
+        <item>Perfil</item>
+        <item>Desafios</item>
+        <item>Rutinas de entrenamiento</item>
+        <item>Historial</item>
+        <item>Glosario</item>
+    </string-array>
+    
+    <string-array name="tabs">
+        <item>Desafios</item>
+        <item>Rutinas</item>
+    </string-array>
+
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_navigation_drawer_view">NavigationDrawerView</string>
+    <string name="title_activity_perfil">Perfil</string>
+    <string name="title_activity_activity_perfil">Perfil</string>
+    <string name="title_activity_activity_desafio">Desafios</string>
+    <string name="title_activity_activity_rutina">Rutinas</string>
+    <string name="title_activity_activity_historial">Historial</string>
+    <string name="title_activity_activity_glosario">Glosario</string>
+</resources>

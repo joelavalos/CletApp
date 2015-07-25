@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ImageViewImagenDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_grade_black_48dp" />
+
+    <TextView
+        android:id="@+id/TextViewNombreDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewImagenDesafio"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/ImageViewImagenDesafio"
+        android:text="Nombre desafio"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewFechaTerminoDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/ImageViewImagenDesafio"
+        android:text="Terminado: 07/08/2015"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#9E9E9E" />
+
+    <TextView
+        android:id="@+id/TextViewExitoDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ImageViewImagenDesafio"
+        android:layout_below="@+id/TextViewFechaTerminoDesafio"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/ImageViewImagenDesafio"
+        android:gravity="bottom"
+        android:text="Fallido"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#F44336"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+</RelativeLayout>

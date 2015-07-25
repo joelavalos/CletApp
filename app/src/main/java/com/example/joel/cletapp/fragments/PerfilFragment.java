@@ -19,6 +19,9 @@ import com.example.joel.cletapp.DataBaseAdapter;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Joel on 21/07/2015.
  */
@@ -47,6 +50,7 @@ public class PerfilFragment extends Fragment {
         ListViewDatosPerfil.setAdapter(adapterPerfil);
 
         dataBaseAdapter = new DataBaseAdapter(getActivity().getApplicationContext());
+        getSinglePerson(root);
 
         Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentPerfil creado");
 
@@ -115,9 +119,54 @@ public class PerfilFragment extends Fragment {
     }
 
     public long addUser(String rut, String nombre, String apellido_pat, String fecha, String altura, String peso, String sexo) {
-        return dataBaseAdapter.insertData(rut, nombre, apellido_pat, fecha, altura, peso, sexo);
+        String[] valorAltura = altura.split(" ");
+        String[] valorPeso = peso.split(" ");
+        return dataBaseAdapter.insertData(rut, nombre, apellido_pat, fecha, valorAltura[0], valorPeso[0], sexo);
+    }
+
+    public void viewDetails(View view) {
+        String data = dataBaseAdapter.getAllData();
+        if (data.equals("")) {
+            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
+        } else {
+            String[] datosGuardados = data.split(" ");
+            for (int i = 0; i < valores.length; i++) {
+                valores[i] = datosGuardados[i];
+            }
+            valores[4] = valores[4] + " Kg";
+            valores[5] = valores[5] + " m";
+            datosGuardados = valores[6].split("\n");
+            valores[6] = datosGuardados[0];
+            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), data);
+        }
+    }
+
+    public void getSinglePerson(View view) {
+        List<String> data = new ArrayList<String>();
+        data = dataBaseAdapter.getData("0");
+
+        if (data.isEmpty()) {
+            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
+            addUser("0", "", "", "", "", "", "");
+            data = dataBaseAdapter.getData("0");
+
+            for (int i = 0; i < valores.length; i++) {
+                valores[i] = data.get(i);
+            }
+            valores[4] = valores[4] + " Kg";
+            valores[5] = valores[5] + " m";
+
+        } else {
+            for (int i = 0; i < valores.length; i++) {
+                valores[i] = data.get(i);
+            }
+            valores[4] = valores[4] + " Kg";
+            valores[5] = valores[5] + " m";
+            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Si hay datos");
+        }
     }
 }
+
 
 class AdapterPerfilRow {
 

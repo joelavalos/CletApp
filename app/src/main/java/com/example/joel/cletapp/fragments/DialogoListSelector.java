@@ -17,7 +17,7 @@ public class DialogoListSelector extends DialogFragment {
     private ListView ListViewDatosPerfil;
     private String[] campos;
     private String[] valores;
-    private String[] sexo = {"Hombre", "Mujer"};
+    private String[] sexo = {"Hombre", "Mujer", "Indefinido"};
     private int posicion;
     private int sexoSeleccion;
 
@@ -34,7 +34,9 @@ public class DialogoListSelector extends DialogFragment {
             sexoSeleccion = 0;
         } else if (valores[posicion].equals("Mujer")) {
             sexoSeleccion = 1;
-        } else {
+        } else if (valores[posicion].equals("Indefinido")) {
+            sexoSeleccion = 2;
+        }else {
             sexoSeleccion = -1;
         }
 

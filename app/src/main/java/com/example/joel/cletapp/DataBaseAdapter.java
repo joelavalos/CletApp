@@ -101,6 +101,23 @@ public class DataBaseAdapter {
         return stringBuffer;
     }
 
+    public int updateData(String RUT, String newNombre, String newApellido, String newFechaNacimiento, String newPeso, String newAltura, String newSexo){
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(Helper.COL_2, newNombre);
+        newValues.put(Helper.COL_3, newApellido);
+        newValues.put(Helper.COL_4, newFechaNacimiento);
+        newValues.put(Helper.COL_5, newPeso);
+        newValues.put(Helper.COL_6, newAltura);
+        newValues.put(Helper.COL_7, newSexo);
+
+        String[] whereArgs = {RUT};
+
+        int count = db.update(Helper.TABLA_CICLISTA, newValues, Helper.COL_1+" =?", whereArgs);
+        return count;
+    }
+
     static class Helper extends SQLiteOpenHelper {
 
         public static final int VERSION = 1;

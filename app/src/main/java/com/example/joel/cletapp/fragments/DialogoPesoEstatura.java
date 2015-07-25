@@ -24,6 +24,7 @@ public class DialogoPesoEstatura extends DialogFragment {
     private String[] valores;
     private int posicion;
     private String titulo;
+    private String unidad;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -45,10 +46,12 @@ public class DialogoPesoEstatura extends DialogFragment {
             titulo = "Ingrese su peso";
             EditTextValorCampo.setHint("Peso");
             TextViewUnidad.setText("Kg");
+            unidad = " Kg";
         } else {
             titulo = "Ingrese su estatura";
             EditTextValorCampo.setHint("Estatura");
             TextViewUnidad.setText("M");
+            unidad = " m";
         }
 
         builder.setTitle(titulo)
@@ -56,7 +59,9 @@ public class DialogoPesoEstatura extends DialogFragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
-                        valores[posicion] = EditTextValorCampo.getText().toString();
+                        if (!EditTextValorCampo.getText().toString().equals("")){
+                            valores[posicion] = EditTextValorCampo.getText().toString() + unidad;
+                        }
                         AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);
                         ListViewDatosPerfil.setAdapter(adapterPerfil);
                     }

@@ -51,7 +51,9 @@ public class DialogoInputText extends DialogFragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
-                        valores[posicion] = EditTextValorCampo.getText().toString();
+                        if (!EditTextValorCampo.getText().toString().equals("")){
+                            valores[posicion] = EditTextValorCampo.getText().toString();
+                        }
                         AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);
                         ListViewDatosPerfil.setAdapter(adapterPerfil);
                     }

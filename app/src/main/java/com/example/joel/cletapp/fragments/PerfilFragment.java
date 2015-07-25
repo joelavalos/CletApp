@@ -59,10 +59,11 @@ public class PerfilFragment extends Fragment {
             public void onClick(View v) {
                 AdapterPerfil adapterPerfilActualizado = (AdapterPerfil) ListViewDatosPerfil.getAdapter();
                 valoresActualizados = adapterPerfilActualizado.getValores();
-                Long id = addUser(valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5], valoresActualizados[6]);
+                int id = updateData("0", valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5], valoresActualizados[6]);
+                //Long id = addUser(valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5], valoresActualizados[6]);
 
                 if (id < 0) {
-                    Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Error al insertar " + id);
+                    Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Error al actualizar " + id);
                 } else {
                     Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Perfil actualizado");
                 }
@@ -118,10 +119,16 @@ public class PerfilFragment extends Fragment {
         return root;
     }
 
-    public long addUser(String rut, String nombre, String apellido_pat, String fecha, String altura, String peso, String sexo) {
+    public long addUser(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
-        return dataBaseAdapter.insertData(rut, nombre, apellido_pat, fecha, valorAltura[0], valorPeso[0], sexo);
+        return dataBaseAdapter.insertData(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
+    }
+
+    public int updateData(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
+        String[] valorAltura = altura.split(" ");
+        String[] valorPeso = peso.split(" ");
+        return dataBaseAdapter.updateData(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
     }
 
     public void viewDetails(View view) {
@@ -147,7 +154,7 @@ public class PerfilFragment extends Fragment {
 
         if (data.isEmpty()) {
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
-            addUser("0", "", "", "", "", "", "");
+            addUser("0", "", "", "", "0", "0", "Indefinido");
             data = dataBaseAdapter.getData("0");
 
             for (int i = 0; i < valores.length; i++) {

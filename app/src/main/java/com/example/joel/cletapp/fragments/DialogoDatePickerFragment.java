@@ -49,7 +49,7 @@ public class DialogoDatePickerFragment extends DialogFragment implements DatePic
         Calendar c = Calendar.getInstance();
         c.set(year, month, day);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = sdf.format(c.getTime());
 
         valores[posicion] = formattedDate;

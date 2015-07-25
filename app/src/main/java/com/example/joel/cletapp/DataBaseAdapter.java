@@ -21,7 +21,7 @@ public class DataBaseAdapter {
         helper = new Helper(context);
     }
 
-    public long insertarPerfil(String rut, String nombre, String apellido_pat, String fecha, String altura, String peso, String sexo) {
+    public long insertarPerfil(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura , String sexo) {
 
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -130,7 +130,14 @@ public class DataBaseAdapter {
         public static final String COL_5 = "PESO";
         public static final String COL_6 = "ALTURA";
         public static final String COL_7 = "SEXO";
-        public static final String CREATE_TABLE = "CREATE TABLE " + TABLA_CICLISTA + " (" + COL_1 + " VARCHAR(255) PRIMARY KEY not null, " + COL_2 + " VARCHAR(255) not null, " + COL_3 + " VARCHAR(255), " + COL_4 + " VARCHAR(255) not null, " + COL_5 + " VARCHAR(255) not null, " + COL_6 + " VARCHAR(255) not null, " + COL_7 + " VARCHAR(255) not null);";
+        public static final String CREATE_TABLE = "CREATE TABLE " + TABLA_CICLISTA + " ("
+                + COL_1 + " VARCHAR(11) PRIMARY KEY not null, "
+                + COL_2 + " VARCHAR(40) not null, "
+                + COL_3 + " VARCHAR(40), "
+                + COL_4 + " DATE not null, "
+                + COL_5 + " FLOAT not null, "
+                + COL_6 + " FLOAT not null, "
+                + COL_7 + " CHARACTER(1) not null);";
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLA_CICLISTA + ";";
         private Context context;
 

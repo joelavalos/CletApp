@@ -12,5 +12,6 @@
         android:hint="Nombre"
         android:padding="10dp"
         android:inputType="textCapSentences"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:imeOptions="actionDone"/>
 </RelativeLayout>

@@ -122,12 +122,18 @@ public class PerfilFragment extends Fragment {
     public long addUser(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
+
+        sexo = sexoToLetra(sexo);
+
         return dataBaseAdapter.insertarPerfil(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
     }
 
     public int updateData(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
+
+        sexo = sexoToLetra(sexo);
+
         return dataBaseAdapter.actualizarPerfil(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
     }
 
@@ -162,6 +168,7 @@ public class PerfilFragment extends Fragment {
             }
             valores[3] = valores[3] + " Kg";
             valores[4] = valores[4] + " m";
+            valores[5] = letraToSexo(valores[5]);
 
         } else {
             for (int i = 0; i < valores.length; i++) {
@@ -169,8 +176,47 @@ public class PerfilFragment extends Fragment {
             }
             valores[3] = valores[3] + " Kg";
             valores[4] = valores[4] + " m";
+            valores[5] = letraToSexo(valores[5]);
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Si hay datos");
         }
+    }
+
+    /**
+     *
+     * @param stringSexo recibe la variable sexo como string
+     * @return devuelve al vasriable sexo como caracter
+     */
+    public String sexoToLetra(String stringSexo) {
+        String letraSexo;
+
+        if (stringSexo.equals("Hombre")) {
+            letraSexo = "H";
+        } else if (stringSexo.equals("Mujer")) {
+            letraSexo = "M";
+        } else {
+            letraSexo = "I";
+        }
+
+        return letraSexo;
+    }
+
+    /**
+     *
+     * @param letraSexo recibe la variable sexo como caracter
+     * @return devuelve al variable sexo como string
+     */
+    public String letraToSexo(String letraSexo) {
+        String stringSexo;
+
+        if (letraSexo.equals("H")) {
+            stringSexo = "Hombre";
+        } else if (letraSexo.equals("M")) {
+            stringSexo = "Mujer";
+        } else {
+            stringSexo = "Indefinido";
+        }
+
+        return stringSexo;
     }
 }
 

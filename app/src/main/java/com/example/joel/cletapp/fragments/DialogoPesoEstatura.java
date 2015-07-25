@@ -42,7 +42,7 @@ public class DialogoPesoEstatura extends DialogFragment {
         final EditText EditTextValorCampo = (EditText) viewDialogo.findViewById(R.id.EditTextValorCampo);
         final TextView TextViewUnidad = (TextView) viewDialogo.findViewById(R.id.TextViewUnidad);
 
-        if (posicion == 4) {
+        if (posicion == 3) {
             titulo = "Ingrese su peso";
             EditTextValorCampo.setHint("Peso");
             TextViewUnidad.setText("Kg");
@@ -50,7 +50,7 @@ public class DialogoPesoEstatura extends DialogFragment {
         } else {
             titulo = "Ingrese su estatura";
             EditTextValorCampo.setHint("Estatura");
-            TextViewUnidad.setText("M");
+            TextViewUnidad.setText("m");
             unidad = " m";
         }
 

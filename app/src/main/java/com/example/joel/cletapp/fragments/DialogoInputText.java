@@ -38,7 +38,7 @@ public class DialogoInputText extends DialogFragment {
         View viewDialogo = inflater.inflate(R.layout.input_dialog, null);
         final EditText EditTextValorCampo = (EditText) viewDialogo.findViewById(R.id.EditTextValorCampo);
 
-        if (posicion == 2) {
+        if (posicion == 1) {
             titulo = "Ingrese apellido";
             EditTextValorCampo.setHint("Apellido");
         } else {

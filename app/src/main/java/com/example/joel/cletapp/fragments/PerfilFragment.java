@@ -30,8 +30,8 @@ public class PerfilFragment extends Fragment {
     private Button ButtonGuardarPerfil;
     private ListView ListViewDatosPerfil;
 
-    private String[] campos = {"Rut", "Nombre", "Apellido", "Fecha de nacimiento", "Peso", "Altura", "Sexo"};
-    private String[] valores = {"17.409.487-k", "Joel", "Avalos", "17/09/1990", "64 Kg", "1.95 m", "Hombre"};
+    private String[] campos = {"Nombre", "Apellido", "Fecha de nacimiento", "Peso", "Altura", "Sexo"};
+    private String[] valores = {"Joel", "Avalos", "17/09/1990", "64 Kg", "1.95 m", "Hombre"};
     private String[] valoresActualizados;
 
     DataBaseAdapter dataBaseAdapter;
@@ -59,7 +59,7 @@ public class PerfilFragment extends Fragment {
             public void onClick(View v) {
                 AdapterPerfil adapterPerfilActualizado = (AdapterPerfil) ListViewDatosPerfil.getAdapter();
                 valoresActualizados = adapterPerfilActualizado.getValores();
-                int id = updateData("0", valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5], valoresActualizados[6]);
+                int id = updateData("0", valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5]);
                 //Long id = addUser(valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5], valoresActualizados[6]);
 
                 if (id < 0) {
@@ -82,20 +82,25 @@ public class PerfilFragment extends Fragment {
                 DialogoPesoEstatura dialogoPesoEstatura = new DialogoPesoEstatura();
 
                 switch (position) {
+                    case 0:
+                        dialogo = new DialogoInputText();
+                        dialogo.setArguments(bundle);
+                        dialogo.show(getFragmentManager(), "datePicker");
+                        break;
                     case 1:
                         dialogo = new DialogoInputText();
                         dialogo.setArguments(bundle);
                         dialogo.show(getFragmentManager(), "datePicker");
                         break;
                     case 2:
-                        dialogo = new DialogoInputText();
-                        dialogo.setArguments(bundle);
-                        dialogo.show(getFragmentManager(), "datePicker");
-                        break;
-                    case 3:
                         DialogFragment picker = new DialogoDatePickerFragment();
                         picker.setArguments(bundle);
                         picker.show(getFragmentManager(), "datePicker");
+                        break;
+                    case 3:
+                        dialogoPesoEstatura = new DialogoPesoEstatura();
+                        dialogoPesoEstatura.setArguments(bundle);
+                        dialogoPesoEstatura.show(getFragmentManager(), "datePicker");
                         break;
                     case 4:
                         dialogoPesoEstatura = new DialogoPesoEstatura();
@@ -103,11 +108,6 @@ public class PerfilFragment extends Fragment {
                         dialogoPesoEstatura.show(getFragmentManager(), "datePicker");
                         break;
                     case 5:
-                        dialogoPesoEstatura = new DialogoPesoEstatura();
-                        dialogoPesoEstatura.setArguments(bundle);
-                        dialogoPesoEstatura.show(getFragmentManager(), "datePicker");
-                        break;
-                    case 6:
                         DialogoListSelector dialogo2 = new DialogoListSelector();
                         dialogo2.setArguments(bundle);
                         dialogo2.show(getFragmentManager(), "datePicker");
@@ -122,17 +122,17 @@ public class PerfilFragment extends Fragment {
     public long addUser(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
-        return dataBaseAdapter.insertData(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
+        return dataBaseAdapter.insertarPerfil(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
     }
 
     public int updateData(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
-        return dataBaseAdapter.updateData(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
+        return dataBaseAdapter.actualizarPerfil(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
     }
 
     public void viewDetails(View view) {
-        String data = dataBaseAdapter.getAllData();
+        String data = dataBaseAdapter.obtenerTodosPerfiles();
         if (data.equals("")) {
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
         } else {
@@ -150,30 +150,29 @@ public class PerfilFragment extends Fragment {
 
     public void getSinglePerson(View view) {
         List<String> data = new ArrayList<String>();
-        data = dataBaseAdapter.getData("0");
+        data = dataBaseAdapter.buscarPerfil("0");
 
         if (data.isEmpty()) {
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
             addUser("0", "", "", "", "0", "0", "Indefinido");
-            data = dataBaseAdapter.getData("0");
+            data = dataBaseAdapter.buscarPerfil("0");
 
             for (int i = 0; i < valores.length; i++) {
                 valores[i] = data.get(i);
             }
-            valores[4] = valores[4] + " Kg";
-            valores[5] = valores[5] + " m";
+            valores[3] = valores[3] + " Kg";
+            valores[4] = valores[4] + " m";
 
         } else {
             for (int i = 0; i < valores.length; i++) {
                 valores[i] = data.get(i);
             }
-            valores[4] = valores[4] + " Kg";
-            valores[5] = valores[5] + " m";
+            valores[3] = valores[3] + " Kg";
+            valores[4] = valores[4] + " m";
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Si hay datos");
         }
     }
 }
-
 
 class AdapterPerfilRow {
 

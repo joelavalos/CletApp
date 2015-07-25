@@ -21,7 +21,7 @@ public class DataBaseAdapter {
         helper = new Helper(context);
     }
 
-    public long insertData(String rut, String nombre, String apellido_pat, String fecha, String altura, String peso, String sexo) {
+    public long insertarPerfil(String rut, String nombre, String apellido_pat, String fecha, String altura, String peso, String sexo) {
 
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -37,7 +37,7 @@ public class DataBaseAdapter {
         return id;
     }
 
-    public String getAllData(){
+    public String obtenerTodosPerfiles(){
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] columns = {Helper.COL_1, Helper.COL_2, Helper.COL_3, Helper.COL_4, Helper.COL_5, Helper.COL_6, Helper.COL_7};
         Cursor cursor = db.query(Helper.TABLA_CICLISTA, columns, null, null, null, null, null);
@@ -66,7 +66,7 @@ public class DataBaseAdapter {
         return stringBuffer.toString();
     }
 
-    public List<String> getData(String RUT){
+    public List<String> buscarPerfil(String RUT){
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] columns = {Helper.COL_1, Helper.COL_2, Helper.COL_3, Helper.COL_4, Helper.COL_5, Helper.COL_6, Helper.COL_7};
         Cursor cursor = db.query(Helper.TABLA_CICLISTA, columns, Helper.COL_1+" ='"+RUT+"'", null, null, null, null);
@@ -89,7 +89,7 @@ public class DataBaseAdapter {
             String altura = cursor.getString(index_6);
             String sexo = cursor.getString(index_7);
 
-            stringBuffer.add(rut);
+            //stringBuffer.add(rut);
             stringBuffer.add(nombre);
             stringBuffer.add(apellido);
             stringBuffer.add(fecha_nacimiento);
@@ -101,7 +101,7 @@ public class DataBaseAdapter {
         return stringBuffer;
     }
 
-    public int updateData(String RUT, String newNombre, String newApellido, String newFechaNacimiento, String newPeso, String newAltura, String newSexo){
+    public int actualizarPerfil(String RUT, String newNombre, String newApellido, String newFechaNacimiento, String newPeso, String newAltura, String newSexo){
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues newValues = new ContentValues();
 

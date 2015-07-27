@@ -1,18 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FragmentDesafiosID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="16dp"
     tools:context="com.example.joel.cletapp.fragments.DesafioFragment">
 
-    <TextView
-        android:text="Fragmento de desafios"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/ButtonCrearDesafios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/separadorDesafios"
+        android:background="@drawable/boton_sliding"
+        android:text="Crear desafio"
+        android:textColor="@color/colorBlanco" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/ImageViewBotonCrearDesafios"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_alignBottom="@+id/ButtonCrearDesafios"
+        android:layout_alignLeft="@+id/ButtonCrearDesafios"
+        android:layout_alignRight="@+id/ButtonCrearDesafios"
+        android:background="@color/colorMorado"
+        android:elevation="2dp" />
+
+    <android.widget.Space
+        android:id="@+id/separadorDesafios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/ButtonMisDesafios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/separadorDesafios"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/boton_sliding"
+        android:text="Mis desafios"
+        android:textColor="@color/colorBlanco" />
+
+    <ImageView
+        android:id="@+id/ImageViewBotonMisDesafios"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_alignBottom="@+id/ButtonMisDesafios"
+        android:layout_alignLeft="@+id/ButtonMisDesafios"
+        android:layout_alignRight="@+id/ButtonMisDesafios"
+        android:background="@color/colorMorado"
+        android:elevation="2dp"
+        android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/contenedorDesafios"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ButtonCrearDesafios">
+
+    </RelativeLayout>
+</RelativeLayout>

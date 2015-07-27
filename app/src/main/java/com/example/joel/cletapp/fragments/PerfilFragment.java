@@ -15,8 +15,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.CRUDDatabase.CiclistaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Ciclista;
-import com.example.joel.cletapp.DataBaseAdapter;
+//import com.example.joel.cletapp.DataBaseAdapter;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
@@ -38,7 +39,8 @@ public class PerfilFragment extends Fragment {
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private Date parsed = null;
 
-    DataBaseAdapter dataBaseAdapter;
+    //DataBaseAdapter dataBaseAdapter;
+    CiclistaCRUD ciclistaCRUD;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public class PerfilFragment extends Fragment {
         AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);
         ListViewDatosPerfil.setAdapter(adapterPerfil);
 
-        dataBaseAdapter = new DataBaseAdapter(getActivity().getApplicationContext());
+        //dataBaseAdapter = new DataBaseAdapter(getActivity().getApplicationContext());
+        ciclistaCRUD = new CiclistaCRUD(getActivity().getApplicationContext());
 
         buscarCiclista(root);
 
@@ -135,7 +138,8 @@ public class PerfilFragment extends Fragment {
         }
 
         Ciclista ciclista = new Ciclista(rut, nombre, apellido_pat, new java.sql.Date(parsed.getTime()), Float.parseFloat(valorPeso[0]), Float.parseFloat(valorAltura[0]), sexoChar);
-        return dataBaseAdapter.insertarPerfil(ciclista);
+        //return dataBaseAdapter.insertarPerfil(ciclista);
+        return ciclistaCRUD.insertarPerfil(ciclista);
     }
 
     public int updateData(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
@@ -150,14 +154,16 @@ public class PerfilFragment extends Fragment {
         }
 
         Ciclista ciclista = new Ciclista(rut, nombre, apellido_pat, new java.sql.Date(parsed.getTime()), Float.parseFloat(valorPeso[0]), Float.parseFloat(valorAltura[0]), sexoChar);
-        return dataBaseAdapter.actualizarDatosCiclista(ciclista);
+        //return dataBaseAdapter.actualizarDatosCiclista(ciclista);
+        return ciclistaCRUD.actualizarDatosCiclista(ciclista);
     }
 
     public void buscarCiclista(View view) {
         Ciclista ciclista = new Ciclista();
 
         try {
-            ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
+            //ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
+            ciclista = ciclistaCRUD.buscarCiclistaPorRut("0");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -167,7 +173,8 @@ public class PerfilFragment extends Fragment {
             addCiclista("0", "", "", "01/01/1990", "0", "0", "Indefinido");
 
             try {
-                ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
+                //ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
+                ciclista = ciclistaCRUD.buscarCiclistaPorRut("0");
             } catch (ParseException e) {
                 e.printStackTrace();
             }

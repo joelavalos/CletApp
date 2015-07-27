@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/FragMentHistorialID"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FragMentHistorialID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.joel.cletapp.fragments.HistorialFragment">
 
     <Button
         android:id="@+id/ButtonHistorialDesafios"
-        android:text="Desafios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/separador"
-        android:textColor="@color/colorBlanco"
         android:background="@drawable/boton_sliding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:text="Desafios"
+        android:textColor="@color/colorBlanco" />
 
     <ImageView
         android:id="@+id/ImageViewBotonDesafios"
-        android:background="@color/colorMorado"
-        android:layout_alignRight="@+id/ButtonHistorialDesafios"
-        android:layout_alignLeft="@+id/ButtonHistorialDesafios"
-        android:layout_alignBottom="@+id/ButtonHistorialDesafios"
         android:layout_width="0dp"
         android:layout_height="5dp"
+        android:layout_alignBottom="@+id/ButtonHistorialDesafios"
+        android:layout_alignLeft="@+id/ButtonHistorialDesafios"
+        android:layout_alignRight="@+id/ButtonHistorialDesafios"
+        android:background="@color/colorMorado"
         android:elevation="2dp" />
 
     <android.widget.Space
         android:id="@+id/separador"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/ButtonHistorialRutinas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/separador"
         android:layout_alignParentRight="true"
-        android:text="Rutinas"
-        android:textColor="@color/colorBlanco"
         android:background="@drawable/boton_sliding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:text="Rutinas"
+        android:textColor="@color/colorBlanco" />
 
     <ImageView
         android:id="@+id/ImageViewBotonRutinas"
-        android:background="@color/colorMorado"
-        android:layout_alignRight="@+id/ButtonHistorialRutinas"
-        android:layout_alignLeft="@+id/ButtonHistorialRutinas"
-        android:layout_alignBottom="@+id/ButtonHistorialRutinas"
         android:layout_width="0dp"
         android:layout_height="5dp"
+        android:layout_alignBottom="@+id/ButtonHistorialRutinas"
+        android:layout_alignLeft="@+id/ButtonHistorialRutinas"
+        android:layout_alignRight="@+id/ButtonHistorialRutinas"
+        android:background="@color/colorMorado"
         android:elevation="2dp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <RelativeLayout
-        android:layout_below="@+id/ButtonHistorialDesafios"
         android:id="@+id/contenedorHistorial"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ButtonHistorialDesafios">
 
     </RelativeLayout>
 </RelativeLayout>

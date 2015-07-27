@@ -35,18 +35,12 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
 
-        Bundle bundle = new Bundle();
-        String myMessage = "Stackoverflow is cool!";
-        bundle.putString("message", myMessage);
-
-
         drawerFargment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFargment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
         int seleccion = 0;
         drawerFargment.listOpciones.performItemClick(drawerFargment.listOpciones.getAdapter().getView(seleccion, null, null), seleccion, drawerFargment.listOpciones.getAdapter().getItemId(seleccion));
         //drawerFargment.cargarFragmento2(getMainFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
-
     }
 
     public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.joel.cletapp.AdapterHistorial;
+import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
 /**
@@ -32,6 +33,8 @@ public class ListaDesafiosFragment extends Fragment {
 
         AdapterHistorial adapter = new AdapterHistorial(getActivity().getApplicationContext(), imagenes, nombres, fechas, exitos);
         ListViewDesafios.setAdapter(adapter);
+
+        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentListDesafios creado");
 
         return root;
     }

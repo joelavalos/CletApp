@@ -43,7 +43,7 @@ public class HistorialFragment extends Fragment {
         listaDesafiosFragment = null;
         listaRutinasFragment = null;
 
-        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Crearon al historial");
+        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentHistorial creado");
 
         cargarFragmento(getListaDesafiosFragment(), R.anim.activity_visible_salida_derecha, R.anim.activity_nuevo_entrada_izquierda);
 
@@ -52,8 +52,15 @@ public class HistorialFragment extends Fragment {
             public void onClick(View v) {
                 ImageViewBotonDesafios.setVisibility(View.VISIBLE);
                 ImageViewBotonRutinas.setVisibility(View.INVISIBLE);
-
                 cargarFragmento(getListaDesafiosFragment(), R.anim.activity_visible_salida_derecha, R.anim.activity_nuevo_entrada_izquierda);
+
+                ButtonHistorialRutinas.setClickable(false);
+                ButtonHistorialRutinas.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ButtonHistorialRutinas.setClickable(true);
+                    }
+                }, 300);
             }
         });
 
@@ -63,6 +70,14 @@ public class HistorialFragment extends Fragment {
                 ImageViewBotonDesafios.setVisibility(View.INVISIBLE);
                 ImageViewBotonRutinas.setVisibility(View.VISIBLE);
                 cargarFragmento(getListaRutinasFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
+
+                ButtonHistorialDesafios.setClickable(false);
+                ButtonHistorialDesafios.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ButtonHistorialDesafios.setClickable(true);
+                    }
+                }, 300);
             }
         });
 

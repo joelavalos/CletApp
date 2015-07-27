@@ -15,12 +15,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.ClasesDataBase.Ciclista;
 import com.example.joel.cletapp.DataBaseAdapter;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Joel on 21/07/2015.
@@ -31,8 +33,10 @@ public class PerfilFragment extends Fragment {
     private ListView ListViewDatosPerfil;
 
     private String[] campos = {"Nombre", "Apellido", "Fecha de nacimiento", "Peso", "Altura", "Sexo"};
-    private String[] valores = {"Joel", "Avalos", "17/09/1990", "64 Kg", "1.95 m", "Hombre"};
+    private String[] valores = {"", "", "01/01/1990", "0", "0", "Indefinido"};
     private String[] valoresActualizados;
+    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    private Date parsed = null;
 
     DataBaseAdapter dataBaseAdapter;
 
@@ -50,7 +54,8 @@ public class PerfilFragment extends Fragment {
         ListViewDatosPerfil.setAdapter(adapterPerfil);
 
         dataBaseAdapter = new DataBaseAdapter(getActivity().getApplicationContext());
-        getSinglePerson(root);
+
+        buscarCiclista(root);
 
         Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentPerfil creado");
 
@@ -60,7 +65,6 @@ public class PerfilFragment extends Fragment {
                 AdapterPerfil adapterPerfilActualizado = (AdapterPerfil) ListViewDatosPerfil.getAdapter();
                 valoresActualizados = adapterPerfilActualizado.getValores();
                 int id = updateData("0", valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5]);
-                //Long id = addUser(valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5], valoresActualizados[6]);
 
                 if (id < 0) {
                     Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Error al actualizar " + id);
@@ -85,12 +89,12 @@ public class PerfilFragment extends Fragment {
                     case 0:
                         dialogo = new DialogoInputText();
                         dialogo.setArguments(bundle);
-                        dialogo.show(getFragmentManager(), "datePicker");
+                        dialogo.show(getFragmentManager(), "nombreDialog");
                         break;
                     case 1:
                         dialogo = new DialogoInputText();
                         dialogo.setArguments(bundle);
-                        dialogo.show(getFragmentManager(), "datePicker");
+                        dialogo.show(getFragmentManager(), "apellidoDialog");
                         break;
                     case 2:
                         DialogFragment picker = new DialogoDatePickerFragment();
@@ -100,17 +104,17 @@ public class PerfilFragment extends Fragment {
                     case 3:
                         dialogoPesoEstatura = new DialogoPesoEstatura();
                         dialogoPesoEstatura.setArguments(bundle);
-                        dialogoPesoEstatura.show(getFragmentManager(), "datePicker");
+                        dialogoPesoEstatura.show(getFragmentManager(), "pesoDialog");
                         break;
                     case 4:
                         dialogoPesoEstatura = new DialogoPesoEstatura();
                         dialogoPesoEstatura.setArguments(bundle);
-                        dialogoPesoEstatura.show(getFragmentManager(), "datePicker");
+                        dialogoPesoEstatura.show(getFragmentManager(), "alturaDialog");
                         break;
                     case 5:
                         DialogoListSelector dialogo2 = new DialogoListSelector();
                         dialogo2.setArguments(bundle);
-                        dialogo2.show(getFragmentManager(), "datePicker");
+                        dialogo2.show(getFragmentManager(), "sexPicker");
                         break;
                 }
             }
@@ -119,98 +123,102 @@ public class PerfilFragment extends Fragment {
         return root;
     }
 
-    public long addUser(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
+    public long addCiclista(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
+        Character sexoChar = sexoToLetra(sexo);
 
-        sexo = sexoToLetra(sexo);
+        try {
+            parsed = format.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        return dataBaseAdapter.insertarPerfil(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
+        Ciclista ciclista = new Ciclista(rut, nombre, apellido_pat, new java.sql.Date(parsed.getTime()), Float.parseFloat(valorPeso[0]), Float.parseFloat(valorAltura[0]), sexoChar);
+        return dataBaseAdapter.insertarPerfil(ciclista);
     }
 
     public int updateData(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
+        Character sexoChar = sexoToLetra(sexo);
 
-        sexo = sexoToLetra(sexo);
-
-        return dataBaseAdapter.actualizarPerfil(rut, nombre, apellido_pat, fecha, valorPeso[0], valorAltura[0], sexo);
-    }
-
-    public void viewDetails(View view) {
-        String data = dataBaseAdapter.obtenerTodosPerfiles();
-        if (data.equals("")) {
-            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
-        } else {
-            String[] datosGuardados = data.split(" ");
-            for (int i = 0; i < valores.length; i++) {
-                valores[i] = datosGuardados[i];
-            }
-            valores[4] = valores[4] + " Kg";
-            valores[5] = valores[5] + " m";
-            datosGuardados = valores[6].split("\n");
-            valores[6] = datosGuardados[0];
-            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), data);
+        try {
+            parsed = format.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+
+        Ciclista ciclista = new Ciclista(rut, nombre, apellido_pat, new java.sql.Date(parsed.getTime()), Float.parseFloat(valorPeso[0]), Float.parseFloat(valorAltura[0]), sexoChar);
+        return dataBaseAdapter.actualizarDatosCiclista(ciclista);
     }
 
-    public void getSinglePerson(View view) {
-        List<String> data = new ArrayList<String>();
-        data = dataBaseAdapter.buscarPerfil("0");
+    public void buscarCiclista(View view) {
+        Ciclista ciclista = new Ciclista();
 
-        if (data.isEmpty()) {
+        try {
+            ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (ciclista.getCiclistRut().equals("null")) {
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
-            addUser("0", "", "", "", "0", "0", "Indefinido");
-            data = dataBaseAdapter.buscarPerfil("0");
+            addCiclista("0", "", "", "01/01/1990", "0", "0", "Indefinido");
 
-            for (int i = 0; i < valores.length; i++) {
-                valores[i] = data.get(i);
+            try {
+                ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            valores[3] = valores[3] + " Kg";
-            valores[4] = valores[4] + " m";
-            valores[5] = letraToSexo(valores[5]);
+
+            valores[0] = ciclista.getCiclistaNombre();
+            valores[1] = ciclista.getCiclistaApellido();
+            valores[2] = format.format(ciclista.getCiclistaFechaNacimiento());
+            valores[3] = ciclista.getCiclistaPeso() + " Kg";
+            valores[4] = ciclista.getCiclistaAltura() + " m";
+            valores[5] = letraToSexo(ciclista.getCiclistaSexo());
 
         } else {
-            for (int i = 0; i < valores.length; i++) {
-                valores[i] = data.get(i);
-            }
-            valores[3] = valores[3] + " Kg";
-            valores[4] = valores[4] + " m";
-            valores[5] = letraToSexo(valores[5]);
             Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Si hay datos");
+
+            valores[0] = ciclista.getCiclistaNombre();
+            valores[1] = ciclista.getCiclistaApellido();
+            valores[2] = format.format(ciclista.getCiclistaFechaNacimiento());
+            valores[3] = ciclista.getCiclistaPeso() + " Kg";
+            valores[4] = ciclista.getCiclistaAltura() + " m";
+            valores[5] = letraToSexo(ciclista.getCiclistaSexo());
         }
     }
 
     /**
-     *
      * @param stringSexo recibe la variable sexo como string
      * @return devuelve al vasriable sexo como caracter
      */
-    public String sexoToLetra(String stringSexo) {
-        String letraSexo;
+    public Character sexoToLetra(String stringSexo) {
+        Character letraSexo;
 
         if (stringSexo.equals("Hombre")) {
-            letraSexo = "H";
+            letraSexo = "H".charAt(0);
         } else if (stringSexo.equals("Mujer")) {
-            letraSexo = "M";
+            letraSexo = "M".charAt(0);
         } else {
-            letraSexo = "I";
+            letraSexo = "I".charAt(0);
         }
 
         return letraSexo;
     }
 
     /**
-     *
      * @param letraSexo recibe la variable sexo como caracter
      * @return devuelve al variable sexo como string
      */
-    public String letraToSexo(String letraSexo) {
+    public String letraToSexo(Character letraSexo) {
         String stringSexo;
 
-        if (letraSexo.equals("H")) {
+        if (String.valueOf(letraSexo).equals("H")) {
             stringSexo = "Hombre";
-        } else if (letraSexo.equals("M")) {
+        } else if (String.valueOf(letraSexo).equals("M")) {
             stringSexo = "Mujer";
         } else {
             stringSexo = "Indefinido";

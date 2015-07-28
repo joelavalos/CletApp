@@ -77,7 +77,7 @@ public class Desafio implements Serializable {
         this.estadoDesafio = estadoDesafio;
     }
 
-    public boolean isExitoDesafio() {
+    public boolean getExitoDesafio() {
         return exitoDesafio;
     }
 

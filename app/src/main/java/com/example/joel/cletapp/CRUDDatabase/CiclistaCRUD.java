@@ -80,7 +80,6 @@ public class CiclistaCRUD  {
         Ciclista ciclista = new Ciclista();
 
         while (cursor.moveToNext()) {
-            Log.v("pls", "Estoy pasando por aca");
             ciclista = cursorToCiclista(cursor);
         }
 

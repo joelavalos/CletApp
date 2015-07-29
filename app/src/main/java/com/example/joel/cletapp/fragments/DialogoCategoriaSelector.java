@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.example.joel.cletapp.R;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  */
 public class DialogoCategoriaSelector extends DialogFragment {
 
-    private ListView ListViewCrearDesafio;
+    private GridView GridViewDatosDesafio;
     private String[] campos;
     private String[] valores;
     private ArrayList<String> categorias = new ArrayList<>();
@@ -30,7 +31,7 @@ public class DialogoCategoriaSelector extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        ListViewCrearDesafio = (ListView) getActivity().findViewById(R.id.ListViewCrearDesafio);
+        GridViewDatosDesafio = (GridView) getActivity().findViewById(R.id.GridViewDatosDesafio);
 
         campos = getArguments().getStringArray("campos");
         valores = getArguments().getStringArray("valores");
@@ -55,7 +56,7 @@ public class DialogoCategoriaSelector extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                         AdapterCrearDesafio adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
-                        ListViewCrearDesafio.setAdapter(adapterCrearDesafio);
+                        GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
                     }
                 });
         // Create the AlertDialog object and return it

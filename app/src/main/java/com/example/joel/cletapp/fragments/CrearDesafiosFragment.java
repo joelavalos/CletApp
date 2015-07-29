@@ -3,6 +3,7 @@ package com.example.joel.cletapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,27 +29,30 @@ import java.util.List;
  */
 public class CrearDesafiosFragment extends Fragment {
 
-    private ListView ListViewCrearDesafio;
     ObjetivoCRUD objetivoCRUD;
 
-    private String[] campos = {"Nombre", "Descripcion", "Fecha de inicio", "Fecha de termino", "Categoria", "Valor"};
-    private String[] valores = {"", "", "", "", "", ""};
+    private String[] campos = {"Fecha de inicio", "Fecha final", "Categoria", "Valor"};
+    private String[] valores = {"01/01/1990", "02/01/1990", "", "0 m"};
     private ArrayList<String> categorias;
+
+
+    //testeando otra cosa
+    GridView GridViewDatosDesafio;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_desafio_crear, container, false);
-
         Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentCrearDesafios creado");
-        ListViewCrearDesafio = (ListView) root.findViewById(R.id.ListViewCrearDesafio);
+
+        GridViewDatosDesafio = (GridView) root.findViewById(R.id.GridViewDatosDesafio);
         objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
         AdapterCrearDesafio adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
-        ListViewCrearDesafio.setAdapter(adapterCrearDesafio);
+        GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
         categorias = new ArrayList<>();
 
         inicializarBaseDeDatos();
 
-        ListViewCrearDesafio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        GridViewDatosDesafio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
@@ -56,14 +62,34 @@ public class CrearDesafiosFragment extends Fragment {
                 bundle.putInt("posicion", position);
 
                 switch (position) {
-                    case 4:
+                    case 0:
+                        DialogFragment pickerInicio = new DialogoDatePickerDesafioFragment();
+                        pickerInicio.setArguments(bundle);
+                        pickerInicio.show(getFragmentManager(), "datePicker");
+                        break;
+
+                    case 1:
+                        DialogFragment pickerFinal = new DialogoDatePickerDesafioFragment();
+                        pickerFinal.setArguments(bundle);
+                        pickerFinal.show(getFragmentManager(), "datePicker2");
+                        break;
+
+                    case 2:
                         DialogoCategoriaSelector dialogo = new DialogoCategoriaSelector();
                         dialogo.setArguments(bundle);
                         dialogo.show(getFragmentManager(), "categoriaPicker");
                         break;
+
+                    case 3:
+                        DialogoValorObjetivo dialogoValorObjetivo;
+                        dialogoValorObjetivo = new DialogoValorObjetivo();
+                        dialogoValorObjetivo.setArguments(bundle);
+                        dialogoValorObjetivo.show(getFragmentManager(), "valorDialog");
+                        break;
                 }
             }
         });
+
         return root;
     }
 

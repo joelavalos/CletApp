@@ -15,12 +15,12 @@
     </ListView>
 
     <Button
+        android:layout_alignParentBottom="true"
         android:id="@+id/ButtonGuardarPerfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/ListViewDatosPerfil"
         android:layout_marginTop="8dp"
         android:background="@drawable/boton"
         android:text="Guardar"

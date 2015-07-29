@@ -5,17 +5,37 @@
     android:layout_height="match_parent"
     tools:context="com.example.joel.cletapp.fragments.CrearDesafiosFragment">
 
-    <ListView
-        android:id="@+id/ListViewCrearDesafio"
+    <EditText
+        android:id="@+id/EditTextNombreDesafio"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content"
+        android:hint="Nombre del desafio" />
+
+    <EditText
+        android:id="@+id/EditTextNotaDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EditTextNombreDesafio"
+        android:layout_marginBottom="8dp"
+        android:hint="Nota del desafio" />
+
+    <GridView
+        android:id="@+id/GridViewDatosDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/EditTextNotaDesafio"
+        android:verticalSpacing="8dp"
+        android:numColumns="2"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp" />
 
     <Button
         android:id="@+id/ButtonCrearDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ListViewCrearDesafio"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/boton"
         android:text="Crear desafio"
         android:textColor="@color/colorBlanco" />

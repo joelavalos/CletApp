@@ -51,7 +51,7 @@ public class DesafioObjetivoCRUD {
         mDbHelper.close();
     }
 
-    public long insertarDesafioObjetivo(DesafioObjetivo desafioObjetivo) {
+    public DesafioObjetivo insertarDesafioObjetivo(DesafioObjetivo desafioObjetivo) {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(Helper.DESAFIOOBJETIVO_DESAFIO_ID, desafioObjetivo.getDesafio().getDesafioId());
@@ -59,12 +59,41 @@ public class DesafioObjetivoCRUD {
         contentValues.put(Helper.DESAFIOOBJETIVO_VALOR, desafioObjetivo.getValor());
 
         long id = mDatabase.insert(mDbHelper.TABLA_DESAFIOOBJETIVO, null, contentValues);
-        return id;
+
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOOBJETIVO, mAllColumns, Helper.DESAFIOOBJETIVO_ID + " ='" + id + "'", null, null, null, null);
+
+        DesafioObjetivo newDesafioObjetivo = new DesafioObjetivo();
+
+        while (cursor.moveToNext()) {
+            try {
+                newDesafioObjetivo = cursorToDesafioObjetivo(cursor);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        cursor.close();
+
+        return newDesafioObjetivo;
     }
 
     public DesafioObjetivo buscarDesafioObjetivoPorIdDesafio(Desafio ID) throws ParseException {
         String[] columns = {Helper.DESAFIOOBJETIVO_ID, Helper.DESAFIOOBJETIVO_DESAFIO_ID, Helper.DESAFIOOBJETIVO_OBJETIVO_ID, Helper.DESAFIOOBJETIVO_VALOR};
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOOBJETIVO, columns, Helper.DESAFIOOBJETIVO_DESAFIO_ID + " ='" + ID.getDesafioId() + "'", null, null, null, null);
+
+        DesafioObjetivo desafioObjetivo = new DesafioObjetivo();
+
+        while (cursor.moveToNext()) {
+            desafioObjetivo = cursorToDesafioObjetivo(cursor);
+        }
+
+        cursor.close();
+
+        return desafioObjetivo;
+    }
+
+    public DesafioObjetivo buscarDesafioObjetivoPorId(long ID) throws ParseException {
+        String[] columns = {Helper.DESAFIOOBJETIVO_ID, Helper.DESAFIOOBJETIVO_DESAFIO_ID, Helper.DESAFIOOBJETIVO_OBJETIVO_ID, Helper.DESAFIOOBJETIVO_VALOR};
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOOBJETIVO, columns, Helper.DESAFIOOBJETIVO_ID + " ='" + ID + "'", null, null, null, null);
 
         DesafioObjetivo desafioObjetivo = new DesafioObjetivo();
 

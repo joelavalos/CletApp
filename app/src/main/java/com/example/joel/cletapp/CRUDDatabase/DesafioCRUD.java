@@ -58,7 +58,7 @@ public class DesafioCRUD {
         mDbHelper.close();
     }
 
-    public long insertarDesafio(Desafio desafio) {
+    public Desafio insertarDesafio(Desafio desafio) {
 
         ContentValues contentValues = new ContentValues();
         //contentValues.put(Helper.DESAFIO_ID, desafio.getDesafioId());
@@ -69,9 +69,22 @@ public class DesafioCRUD {
         contentValues.put(Helper.DESAFIO_ESTADO, String.valueOf(desafio.getEstadoDesafio()));
         contentValues.put(Helper.DESAFIO_EXITO, desafio.getExitoDesafio());
 
-
         long id = mDatabase.insert(mDbHelper.TABLA_DESAFIO, null, contentValues);
-        return id;
+
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ID + " ='" + id + "'", null, null, null, null);
+
+        Desafio newDesafio = new Desafio();
+
+        while (cursor.moveToNext()){
+
+            try {
+                newDesafio = cursorToDesafio(cursor);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return newDesafio;
     }
 
     public Desafio buscarDesafioPorId(long ID) throws ParseException {

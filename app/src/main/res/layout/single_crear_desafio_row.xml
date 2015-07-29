@@ -19,4 +19,14 @@
         android:text="Joel"
         android:textColor="@color/colorGris"
         android:textSize="16dp" />
+
+    <ImageView
+        android:id="@+id/ImageViewBotonCrearDesafios"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/TextViewValorCampo"
+        android:background="@color/colorGris2"
+        android:elevation="2dp" />
 </RelativeLayout>

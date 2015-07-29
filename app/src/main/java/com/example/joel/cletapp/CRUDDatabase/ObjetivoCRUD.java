@@ -74,6 +74,21 @@ public class ObjetivoCRUD {
         return objetivo;
     }
 
+    public Objetivo buscarObjetivoPorNombre(String Nombre) throws ParseException {
+        String[] columns = {Helper.OBJETIVO_ID, Helper.OBJETIVO_NOMBRE, Helper.OBJETIVO_DESCRIPCON};
+        Cursor cursor = mDatabase.query(Helper.TABLA_OBJETIVO, columns, Helper.OBJETIVO_NOMBRE + " ='" + Nombre + "'", null, null, null, null);
+
+        Objetivo objetivo = new Objetivo();
+
+        while (cursor.moveToNext()) {
+            objetivo = cursorToObjetivo(cursor);
+        }
+
+        cursor.close();
+
+        return objetivo;
+    }
+
     public int actualizarDatosDesafio(Objetivo objetivo) {
         ContentValues newValues = new ContentValues();
 

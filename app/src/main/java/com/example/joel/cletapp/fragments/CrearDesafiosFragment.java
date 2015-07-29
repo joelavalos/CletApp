@@ -11,33 +11,50 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
+import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
+import com.example.joel.cletapp.ClasesDataBase.Desafio;
+import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Joel on 27/07/2015.
  */
 public class CrearDesafiosFragment extends Fragment {
-
-    ObjetivoCRUD objetivoCRUD;
-
+    private Calendar c = Calendar.getInstance();
+    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private String[] campos = {"Fecha de inicio", "Fecha final", "Categoria", "Valor"};
-    private String[] valores = {"01/01/1990", "02/01/1990", "", "0 m"};
+    private String[] valores = {format.format(c.getTime()), format.format(c.getTime()), "", "0 m"};
+    private AdapterCrearDesafio adapterCrearDesafio;
     private ArrayList<String> categorias;
 
+    private ObjetivoCRUD objetivoCRUD;
+    private DesafioCRUD desafioCRUD;
+    private DesafioObjetivoCRUD desafioObjetivoCRUD;
 
-    //testeando otra cosa
-    GridView GridViewDatosDesafio;
+    private GridView GridViewDatosDesafio;
+    private Button ButtonCrearDesafio;
+    private EditText EditTextNombreDesafio;
+    private EditText EditTextNotaDesafio;
+
+
+    private Date parsedInicio = null;
+    private Date parsedFinal = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,12 +62,20 @@ public class CrearDesafiosFragment extends Fragment {
         Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentCrearDesafios creado");
 
         GridViewDatosDesafio = (GridView) root.findViewById(R.id.GridViewDatosDesafio);
+        ButtonCrearDesafio = (Button) root.findViewById(R.id.ButtonCrearDesafio);
+        EditTextNombreDesafio = (EditText) root.findViewById(R.id.EditTextNombreDesafio);
+        EditTextNotaDesafio = (EditText) root.findViewById(R.id.EditTextNotaDesafio);
+
         objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
-        AdapterCrearDesafio adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
+        desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
+        desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
+
+        adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
         categorias = new ArrayList<>();
 
         inicializarBaseDeDatos();
+        validarCreacion();
 
         GridViewDatosDesafio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,7 +115,91 @@ public class CrearDesafiosFragment extends Fragment {
             }
         });
 
+        ButtonCrearDesafio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!validarCreacion().equals("")) {
+                    Mensaje mensajeNoSePudoCrear = new Mensaje(getActivity().getApplicationContext(), validarCreacion());
+                } else {
+
+                    //Se busca el objetivo
+                    Objetivo objetivo = null;
+                    try {
+                        objetivo = objetivoCRUD.buscarObjetivoPorNombre(valores[2]);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        parsedInicio = format.parse(valores[0]);
+                        parsedFinal = format.parse(valores[1]);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    //Se crea el desafio
+                    Desafio desafio = new Desafio(0,
+                            EditTextNombreDesafio.getText().toString(),
+                            EditTextNotaDesafio.getText().toString(),
+                            new java.sql.Date(parsedInicio.getTime()),
+                            new java.sql.Date(parsedFinal.getTime()),
+                            'P',
+                            false);
+                    desafio = desafioCRUD.insertarDesafio(desafio);
+
+                    DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(valores[3].split(" ")[0]));
+                    desafioObjetivo = desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
+
+                    Log.v("asd", "Insertado desafio: " + desafio.getDesafioId() + " desafioObjetivo: " + desafioObjetivo.getDesObjId());
+                    Mensaje mensajeCreado = new Mensaje(getActivity().getApplicationContext(), "Desafio creado");
+
+                    reiniciarDatos();
+                }
+            }
+        });
+
         return root;
+    }
+
+    private void reiniciarDatos() {
+        EditTextNombreDesafio.setText("");
+        EditTextNotaDesafio.setText("");
+        valores[0] = format.format(c.getTime());
+        valores[1] = format.format(c.getTime());
+        valores[2] = "";
+        valores[3] = "0 m";
+        adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
+        GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
+    }
+
+    private String validarCreacion() {
+        String validar = "";
+
+        try {
+            parsedInicio = format.parse(valores[0]);
+            parsedFinal = format.parse(valores[1]);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date dateInicio = new java.sql.Date(parsedInicio.getTime());
+        Date dateFin = new java.sql.Date(parsedFinal.getTime());
+
+        if (dateInicio.getTime() >= dateFin.getTime()) {
+            validar = "La fecha final debe ser despues de: " + valores[0];
+        }
+
+        if (valores[3].equals("0 m")) {
+            validar = "Ingrese distancia";
+        }
+        if (valores[2].equals("")) {
+            validar = "Seleccione categoria";
+        }
+        if (EditTextNombreDesafio.getText().toString().equals("")) {
+            validar = "Ingrese nombre";
+        }
+
+        return validar;
     }
 
     private void inicializarBaseDeDatos() {
@@ -138,14 +247,6 @@ class AdapterCrearDesafio extends ArrayAdapter<String> {
     @Override
     public String getItem(int position) {
         return super.getItem(position);
-    }
-
-    public String[] getCampos() {
-        return campos;
-    }
-
-    public String[] getValores() {
-        return valores;
     }
 
     @Override

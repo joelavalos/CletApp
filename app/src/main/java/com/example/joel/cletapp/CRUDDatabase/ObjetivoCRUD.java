@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 import com.example.joel.cletapp.Helper;
 
@@ -62,6 +63,21 @@ public class ObjetivoCRUD {
         String[] columns = {Helper.OBJETIVO_ID, Helper.OBJETIVO_NOMBRE, Helper.OBJETIVO_DESCRIPCON};
         Cursor cursor = mDatabase.query(Helper.TABLA_OBJETIVO, columns, Helper.OBJETIVO_ID + " ='" + ID + "'", null, null, null, null);
         List<String> stringBuffer = new ArrayList<String>();
+
+        Objetivo objetivo = new Objetivo();
+
+        while (cursor.moveToNext()) {
+            objetivo = cursorToObjetivo(cursor);
+        }
+
+        cursor.close();
+
+        return objetivo;
+    }
+
+    public Objetivo buscarObjetivoPorIdDesafioObjetivo(DesafioObjetivo ID) throws ParseException {
+        String[] columns = {Helper.OBJETIVO_ID, Helper.OBJETIVO_NOMBRE, Helper.OBJETIVO_DESCRIPCON};
+        Cursor cursor = mDatabase.query(Helper.TABLA_OBJETIVO, columns, Helper.OBJETIVO_ID + " ='" + ID.getObjetivo().getObjetivoId() + "'", null, null, null, null);
 
         Objetivo objetivo = new Objetivo();
 

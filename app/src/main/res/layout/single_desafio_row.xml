@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ImageViewImagenDesafio2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_grade_black_48dp" />
+
+    <TextView
+        android:id="@+id/TextViewNombreDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewImagenDesafio2"
+        android:layout_marginRight="128dp"
+        android:layout_toRightOf="@+id/ImageViewImagenDesafio2"
+        android:text="Nombre desafio"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewCategoriaDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewNombreDesafio"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/TextViewNotaDesafio"
+        android:gravity="center_horizontal"
+        android:text="Categoria"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewValorDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextViewNotaDesafio"
+        android:layout_alignLeft="@+id/TextViewCategoriaDesafio"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextViewCategoriaDesafio"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="25 m"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewNotaDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ImageViewImagenDesafio2"
+        android:layout_alignRight="@+id/TextViewNombreDesafio"
+        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_toRightOf="@+id/ImageViewImagenDesafio2"
+        android:text="Este desafio fue creado para bajar de peso asdasdasdsad"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#9E9E9E" />
+
+    <TextView
+        android:id="@+id/TextViewFechaDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ImageViewImagenDesafio2"
+        android:layout_below="@+id/ImageViewImagenDesafio2"
+        android:layout_marginRight="16dp"
+        android:text="Desde: 11/11/2011 hasta: 12/11/2011"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#9E9E9E" />
+
+    <TextView
+        android:id="@+id/TextViewEstado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ImageViewImagenDesafio2"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextViewFechaDesafio"
+        android:layout_marginRight="16dp"
+        android:text="Pendiente"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorMorado" />
+</RelativeLayout>

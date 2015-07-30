@@ -32,4 +32,5 @@
     <string name="title_activity_activity_rutina">Rutinas</string>
     <string name="title_activity_activity_historial">Historial</string>
     <string name="title_activity_activity_glosario">Glosario</string>
+    <string name="title_activity_activity_desafios">Desafios</string>
 </resources>

@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.joel.cletapp.fragments.MisDesafiosFragment">
 
-    <ListView
-        android:id="@+id/ListViewMisDesafios"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+    <Button
+        android:id="@+id/ButtonDesafiosPendientes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/boton"
+        android:text="Desafios pendientes"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="4dp"/>
+
+    <Button
+        android:id="@+id/ButtonDesafiosTerminados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ButtonDesafiosPendientes"
+        android:background="@drawable/boton"
+        android:text="Desafios terminados"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="4dp"/>
+
+    <Button
+        android:id="@+id/ButtonDesafiosLogrados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ButtonDesafiosTerminados"
+        android:background="@drawable/boton"
+        android:text="Desafios logrados"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="4dp"/>
+
+    <Button
+        android:id="@+id/ButtonDesafiosFallados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ButtonDesafiosLogrados"
+        android:background="@drawable/boton"
+        android:text="Desafios no logrados"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="4dp"/>
 </RelativeLayout>

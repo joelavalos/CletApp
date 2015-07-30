@@ -59,23 +59,9 @@ public class CrearDesafiosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_desafio_crear, container, false);
-        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentCrearDesafios creado");
 
-        GridViewDatosDesafio = (GridView) root.findViewById(R.id.GridViewDatosDesafio);
-        ButtonCrearDesafio = (Button) root.findViewById(R.id.ButtonCrearDesafio);
-        EditTextNombreDesafio = (EditText) root.findViewById(R.id.EditTextNombreDesafio);
-        EditTextNotaDesafio = (EditText) root.findViewById(R.id.EditTextNotaDesafio);
-
-        objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
-        desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
-        desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
-
-        adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
-        GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
-        categorias = new ArrayList<>();
-
+        inicializarComponentes(root);
         inicializarBaseDeDatos();
-        validarCreacion();
 
         GridViewDatosDesafio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -106,8 +92,7 @@ public class CrearDesafiosFragment extends Fragment {
                         break;
 
                     case 3:
-                        DialogoValorObjetivo dialogoValorObjetivo;
-                        dialogoValorObjetivo = new DialogoValorObjetivo();
+                        DialogoValorObjetivo dialogoValorObjetivo = new DialogoValorObjetivo();
                         dialogoValorObjetivo.setArguments(bundle);
                         dialogoValorObjetivo.show(getFragmentManager(), "valorDialog");
                         break;
@@ -161,6 +146,37 @@ public class CrearDesafiosFragment extends Fragment {
         return root;
     }
 
+    private void inicializarComponentes(View root) {
+        GridViewDatosDesafio = (GridView) root.findViewById(R.id.GridViewDatosDesafio);
+        ButtonCrearDesafio = (Button) root.findViewById(R.id.ButtonCrearDesafio);
+        EditTextNombreDesafio = (EditText) root.findViewById(R.id.EditTextNombreDesafio);
+        EditTextNotaDesafio = (EditText) root.findViewById(R.id.EditTextNotaDesafio);
+        adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
+        GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
+    }
+
+    private void inicializarBaseDeDatos() {
+        objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
+        desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
+        desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
+
+        categorias = new ArrayList<>();
+        List<Objetivo> listObjetivo;
+        listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
+
+        if (listObjetivo.isEmpty()) {
+            Objetivo objetivo = new Objetivo(0, "Distancia", "Distancia recorrida");
+            long testeo = objetivoCRUD.insertarObjetivo(objetivo);
+            Log.v("vacio", "Objetivo insertado: " + testeo);
+        }
+
+        listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
+
+        for (int i = 0; i < listObjetivo.size(); i++) {
+            categorias.add(listObjetivo.get(i).getObjetivoNombre());
+        }
+    }
+
     private void reiniciarDatos() {
         EditTextNombreDesafio.setText("");
         EditTextNotaDesafio.setText("");
@@ -200,23 +216,6 @@ public class CrearDesafiosFragment extends Fragment {
         }
 
         return validar;
-    }
-
-    private void inicializarBaseDeDatos() {
-        List<Objetivo> listObjetivo;
-        listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
-
-        if (listObjetivo.isEmpty()) {
-            Objetivo objetivo = new Objetivo(0, "Distancia", "Distancia recorrida");
-            long testeo = objetivoCRUD.insertarObjetivo(objetivo);
-            Log.v("vacio", "Objetivo insertado: " + testeo);
-        }
-
-        listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
-
-        for (int i = 0; i < listObjetivo.size(); i++) {
-            categorias.add(listObjetivo.get(i).getObjetivoNombre());
-        }
     }
 }
 

@@ -119,6 +119,22 @@ public class DesafioCRUD {
         return count;
     }
 
+    public List<Desafio> buscarTodosLosDesafiosPendientes(){
+        List<Desafio> listDesafios = new ArrayList<Desafio>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " ='" + "P" + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Desafio desafio = cursorToDesafio(cursor);
+                listDesafios.add(desafio);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listDesafios;
+    }
+
     public Desafio cursorToDesafio(Cursor cursor) throws ParseException {
 
         Desafio desafio = new Desafio();

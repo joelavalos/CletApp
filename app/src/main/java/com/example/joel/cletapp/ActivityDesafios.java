@@ -1,9 +1,8 @@
 package com.example.joel.cletapp;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,6 +39,7 @@ public class ActivityDesafios extends ActionBarActivity {
     private List<Desafio> listDesafiosPendientes;
     private DesafioObjetivo desafioObjetivoBuscado;
     private Objetivo objetivoBuscado;
+    private String buscar;
 
     private ArrayList<Integer> imagenes = new ArrayList<>();
     private ArrayList<String> nombreDesafios = new ArrayList<>();
@@ -47,6 +48,7 @@ public class ActivityDesafios extends ActionBarActivity {
     private ArrayList<String> notaDesafios = new ArrayList<>();
     private ArrayList<String> fechaDesafios = new ArrayList<>();
     private ArrayList<String> estadoDesafios = new ArrayList<>();
+    private ArrayList<String> idDesafios = new ArrayList<>();
 
     private DesafioCRUD desafioCRUD;
     private ObjetivoCRUD objetivoCRUD;
@@ -57,10 +59,12 @@ public class ActivityDesafios extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desafios);
 
+        Bundle extras = getIntent().getExtras();
+        buscar = extras.getString("Estado");
+
         inicializarToolbar();
         inicializarBaseDeDatos();
         inicializarComponentes();
-
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +73,13 @@ public class ActivityDesafios extends ActionBarActivity {
             }
         });
 
-
+        ListViewDesafiosPendientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String idDesafio = (String) parent.getAdapter().getItem(position);
+                Log.v("testeando", idDesafio);
+            }
+        });
     }
 
     private void inicializarBaseDeDatos() {
@@ -77,17 +87,33 @@ public class ActivityDesafios extends ActionBarActivity {
         objetivoCRUD = new ObjetivoCRUD(this);
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(this);
 
-        listDesafiosPendientes = desafioCRUD.buscarTodosLosDesafiosPendientes();
+        if (buscar.equals("Pendiente")) {
+            listDesafiosPendientes = desafioCRUD.buscarTodosLosDesafiosPendientes();
+        } else if (buscar.equals("Terminado")) {
+            listDesafiosPendientes = desafioCRUD.buscarTodosLosDesafiosTerminados();
+        } else if (buscar.equals("TerminadoLogrado")) {
+            listDesafiosPendientes = desafioCRUD.buscarTodosLosDesafiosTerminadosLogrados();
+        } else {
+            listDesafiosPendientes = desafioCRUD.buscarTodosLosDesafiosTerminadosNoLogrados();
+        }
 
-        for (int i = 0; i < listDesafiosPendientes.size(); i++){
+        for (int i = 0; i < listDesafiosPendientes.size(); i++) {
+            idDesafios.add(String.valueOf(listDesafiosPendientes.get(i).getDesafioId()));
             imagenes.add(R.drawable.ic_grade_black_48dp);
             nombreDesafios.add(listDesafiosPendientes.get(i).getDesafioNombre());
             notaDesafios.add(listDesafiosPendientes.get(i).getDesafioDescripcion());
-
             fechaDesafios.add("Desde: " + format.format(listDesafiosPendientes.get(i).getInicioDesafio()) + " hasta: " + format.format(listDesafiosPendientes.get(i).getTerminoDesafio()));
-            //if(String.valueOf(listDesafiosPendientes.get(i).getExitoDesafio()).equals("P")){
+
+            Log.v("asd", listDesafiosPendientes.get(i).getExitoDesafio() + "");
+            if (listDesafiosPendientes.get(i).getEstadoDesafio() == 'P') {
                 estadoDesafios.add("Pendiente");
-            //}
+            } else {
+                if (listDesafiosPendientes.get(i).getExitoDesafio()) {
+                    estadoDesafios.add("Logrado");
+                } else {
+                    estadoDesafios.add("No logrado");
+                }
+            }
 
             try {
                 desafioObjetivoBuscado = desafioObjetivoCRUD.buscarDesafioObjetivoPorIdDesafio(listDesafiosPendientes.get(i));
@@ -104,13 +130,6 @@ public class ActivityDesafios extends ActionBarActivity {
             valorDesafios.add(String.valueOf(Math.round(desafioObjetivoBuscado.getValor())) + " m");
             categoriaDesafios.add(objetivoBuscado.getObjetivoNombre());
         }
-
-        Log.v("Cantidad", "Nombres: " + imagenes.size());
-        Log.v("Cantidad", "Nombres: " + nombreDesafios.size());
-        Log.v("Cantidad", "Nombres: " + valorDesafios.size());
-        Log.v("Cantidad", "Nombres: " + categoriaDesafios.size());
-        Log.v("Cantidad", "Nombres: " + fechaDesafios.size());
-        Log.v("Cantidad", "Nombres: " + nombreDesafios.size());
     }
 
     private void inicializarToolbar() {
@@ -123,7 +142,7 @@ public class ActivityDesafios extends ActionBarActivity {
 
     private void inicializarComponentes() {
         ListViewDesafiosPendientes = (ListView) findViewById(R.id.ListViewDesafiosPendientes);
-        adapterListaDesafios = new AdapterListaDesafios(this, imagenes, nombreDesafios, categoriaDesafios, valorDesafios, notaDesafios, fechaDesafios, estadoDesafios);
+        adapterListaDesafios = new AdapterListaDesafios(this, imagenes, nombreDesafios, categoriaDesafios, valorDesafios, notaDesafios, fechaDesafios, estadoDesafios, idDesafios);
         ListViewDesafiosPendientes.setAdapter(adapterListaDesafios);
     }
 
@@ -173,6 +192,7 @@ class AdapterDesafioRow {
 
 class AdapterListaDesafios extends ArrayAdapter<String> {
     Context context;
+    ArrayList<String> idDesafios;
     ArrayList<Integer> images = new ArrayList<>();
     ArrayList<String> nombreDesafio = new ArrayList<>();
     ArrayList<String> categoriaDesafio = new ArrayList<>();
@@ -181,7 +201,7 @@ class AdapterListaDesafios extends ArrayAdapter<String> {
     ArrayList<String> fechaDesafio = new ArrayList<>();
     ArrayList<String> estadoDesafio = new ArrayList<>();
 
-    public AdapterListaDesafios(Context c, ArrayList<Integer> ima, ArrayList<String> nombres, ArrayList<String> categorias, ArrayList<String> valores, ArrayList<String> notas, ArrayList<String> fechas, ArrayList<String> estados) {
+    public AdapterListaDesafios(Context c, ArrayList<Integer> ima, ArrayList<String> nombres, ArrayList<String> categorias, ArrayList<String> valores, ArrayList<String> notas, ArrayList<String> fechas, ArrayList<String> estados, ArrayList<String> IDs) {
         super(c, R.layout.single_desafio_row, R.id.TextViewNombreDesafio, nombres);
         this.context = c;
         images = ima;
@@ -191,6 +211,12 @@ class AdapterListaDesafios extends ArrayAdapter<String> {
         notaDesafio = notas;
         fechaDesafio = fechas;
         estadoDesafio = estados;
+        idDesafios = IDs;
+    }
+
+    @Override
+    public String getItem(int position) {
+        return idDesafios.get(position);
     }
 
     @Override
@@ -199,12 +225,12 @@ class AdapterListaDesafios extends ArrayAdapter<String> {
         View row = convertView;
         AdapterDesafioRow holder = null;
 
-        if(row == null){
+        if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.single_desafio_row, parent, false);
             holder = new AdapterDesafioRow(row);
             row.setTag(holder);
-        }else{
+        } else {
             holder = (AdapterDesafioRow) row.getTag();
         }
 
@@ -216,11 +242,11 @@ class AdapterListaDesafios extends ArrayAdapter<String> {
         holder.TextViewFechaDesafio.setText(fechaDesafio.get(position));
         holder.TextViewEstado.setText(estadoDesafio.get(position));
 
-        if (estadoDesafio.get(position).equals("Pendiente")){
+        if (estadoDesafio.get(position).equals("Pendiente")) {
             holder.TextViewEstado.setTextColor(context.getResources().getColor(R.color.colorMorado));
-        }else if (estadoDesafio.get(position).equals("Logrado")){
+        } else if (estadoDesafio.get(position).equals("Logrado")) {
             holder.TextViewEstado.setTextColor(context.getResources().getColor(R.color.colorVerde));
-        }else{
+        } else {
             holder.TextViewEstado.setTextColor(context.getResources().getColor(R.color.colorRojo));
         }
 

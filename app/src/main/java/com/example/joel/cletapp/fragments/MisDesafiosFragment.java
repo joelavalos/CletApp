@@ -26,7 +26,6 @@ public class MisDesafiosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_desafios_mis_desafios, container, false);
-        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentMisDesafios creado");
 
         inicializarComponentes(root);
 
@@ -34,6 +33,34 @@ public class MisDesafiosFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                newIntent.putExtra("Estado", "Pendiente");
+                startActivity(newIntent);
+            }
+        });
+
+        ButtonDesafiosTerminados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                newIntent.putExtra("Estado", "Terminado");
+                startActivity(newIntent);
+            }
+        });
+
+        ButtonDesafiosLogrados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                newIntent.putExtra("Estado", "TerminadoLogrado");
+                startActivity(newIntent);
+            }
+        });
+
+        ButtonDesafiosFallados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                newIntent.putExtra("Estado", "TerminadoNoLogrado");
                 startActivity(newIntent);
             }
         });

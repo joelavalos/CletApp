@@ -133,9 +133,8 @@ public class CrearDesafiosFragment extends Fragment {
                     desafio = desafioCRUD.insertarDesafio(desafio);
 
                     DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(valores[3].split(" ")[0]));
-                    desafioObjetivo = desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
+                    desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
 
-                    Log.v("asd", "Insertado desafio: " + desafio.getDesafioId() + " desafioObjetivo: " + desafioObjetivo.getDesObjId());
                     Mensaje mensajeCreado = new Mensaje(getActivity().getApplicationContext(), "Desafio creado");
 
                     reiniciarDatos();
@@ -164,13 +163,13 @@ public class CrearDesafiosFragment extends Fragment {
         List<Objetivo> listObjetivo;
         listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
 
-        if (listObjetivo.isEmpty()) {
+        /*if (listObjetivo.isEmpty()) {
             Objetivo objetivo = new Objetivo(0, "Distancia", "Distancia recorrida");
             long testeo = objetivoCRUD.insertarObjetivo(objetivo);
             Log.v("vacio", "Objetivo insertado: " + testeo);
-        }
+        }*/
 
-        listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
+        //listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
 
         for (int i = 0; i < listObjetivo.size(); i++) {
             categorias.add(listObjetivo.get(i).getObjetivoNombre());

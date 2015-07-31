@@ -135,6 +135,73 @@ public class DesafioCRUD {
         return listDesafios;
     }
 
+    public List<Desafio> buscarTodosLosDesafiosTerminados(){
+        List<Desafio> listDesafios = new ArrayList<Desafio>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " ='" + "T" + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Desafio desafio = cursorToDesafio(cursor);
+                listDesafios.add(desafio);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listDesafios;
+    }
+
+    public List<Desafio> buscarTodosLosDesafiosTerminadosLogrados(){
+        List<Desafio> listDesafios = new ArrayList<Desafio>();
+        String[] condiciones = {"T", "1"};
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " =? AND "+Helper.DESAFIO_EXITO+" =?", condiciones, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Desafio desafio = cursorToDesafio(cursor);
+                listDesafios.add(desafio);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listDesafios;
+    }
+
+    public List<Desafio> buscarTodosLosDesafiosTerminadosNoLogrados(){
+        List<Desafio> listDesafios = new ArrayList<Desafio>();
+        String[] condiciones = {"T", "0"};
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " =? AND "+Helper.DESAFIO_EXITO+" =?", condiciones, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Desafio desafio = cursorToDesafio(cursor);
+                listDesafios.add(desafio);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listDesafios;
+    }
+
+    public List<Desafio> buscarTodosLosDesafios(){
+        List<Desafio> listDesafios = new ArrayList<Desafio>();
+        String[] condiciones = {"T", "0"};
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Desafio desafio = cursorToDesafio(cursor);
+                listDesafios.add(desafio);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listDesafios;
+    }
+
     public Desafio cursorToDesafio(Cursor cursor) throws ParseException {
 
         Desafio desafio = new Desafio();
@@ -144,8 +211,13 @@ public class DesafioCRUD {
         desafio.setInicioDesafio(new java.sql.Date(format.parse(cursor.getString(3)).getTime()));
         desafio.setTerminoDesafio(new java.sql.Date(format.parse(cursor.getString(4)).getTime()));
         desafio.setEstadoDesafio(cursor.getString(5).charAt(0));
-        desafio.setExitoDesafio(Boolean.parseBoolean(String.valueOf(cursor.getString(6))));
-
+        if (cursor.getString(6).equals("1")){
+            desafio.setExitoDesafio(true);
+        }
+        else{
+            desafio.setExitoDesafio(false);
+        }
+        //desafio.setExitoDesafio(Boolean.parseBoolean(String.valueOf(cursor.getString(6))));
         return desafio;
     }
 }

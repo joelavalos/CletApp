@@ -43,8 +43,6 @@ public class HistorialFragment extends Fragment {
         listaDesafiosFragment = null;
         listaRutinasFragment = null;
 
-        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentHistorial creado");
-
         cargarFragmento(getListaDesafiosFragment(), R.anim.activity_visible_salida_derecha, R.anim.activity_nuevo_entrada_izquierda);
 
         ButtonHistorialDesafios.setOnClickListener(new View.OnClickListener() {

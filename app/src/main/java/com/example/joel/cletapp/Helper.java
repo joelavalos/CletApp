@@ -80,7 +80,7 @@ public class Helper extends SQLiteOpenHelper {
     public Helper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
         this.context = context;
-        Mensaje asd = new Mensaje(context, "Constructor called");
+        //Mensaje asd = new Mensaje(context, "Constructor called");
     }
 
     @Override
@@ -91,9 +91,9 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_DESAFIO);
             db.execSQL(CREATE_TABLE_OBJETIVO);
             db.execSQL(CREATE_TABLE_DESAFIOOBJETIVO);
-            Mensaje asd = new Mensaje(context, "OnCreate called");
+            //Mensaje asd = new Mensaje(context, "OnCreate called");
         } catch (SQLException e) {
-            Mensaje asd = new Mensaje(context, e + "");
+            //Mensaje asd = new Mensaje(context, e + "");
             Log.v("porque", e+"");
         }
     }
@@ -105,7 +105,7 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(DROP_TABLE_DESAFIO);
             db.execSQL(DROP_TABLE_OBJETIVO);
             db.execSQL(DROP_TABLE_DESAFIOOBJETIVO);
-            Mensaje asd = new Mensaje(context, "OnUpgrade called");
+            //Mensaje asd = new Mensaje(context, "OnUpgrade called");
             onCreate(db);
         } catch (SQLException e) {
             Mensaje asd = new Mensaje(context, e + "");

@@ -29,8 +29,6 @@ public class GlosarioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_glosario, container, false);
 
-        Mensaje nfg = new Mensaje(getActivity().getApplicationContext(), "Me crearon: Glosario");
-
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Glosario");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,6 @@ public class CrearDesafiosFragment extends Fragment {
     private Button ButtonCrearDesafio;
     private EditText EditTextNombreDesafio;
     private EditText EditTextNotaDesafio;
-
 
     private Date parsedInicio = null;
     private Date parsedFinal = null;
@@ -162,14 +160,6 @@ public class CrearDesafiosFragment extends Fragment {
         categorias = new ArrayList<>();
         List<Objetivo> listObjetivo;
         listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
-
-        /*if (listObjetivo.isEmpty()) {
-            Objetivo objetivo = new Objetivo(0, "Distancia", "Distancia recorrida");
-            long testeo = objetivoCRUD.insertarObjetivo(objetivo);
-            Log.v("vacio", "Objetivo insertado: " + testeo);
-        }*/
-
-        //listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
 
         for (int i = 0; i < listObjetivo.size(); i++) {
             categorias.add(listObjetivo.get(i).getObjetivoNombre());

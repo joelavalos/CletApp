@@ -59,7 +59,7 @@ public class DialogoPesoEstatura extends DialogFragment {
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
-                        if (!EditTextValorCampo.getText().toString().equals("")){
+                        if (!EditTextValorCampo.getText().toString().equals("")) {
                             valores[posicion] = EditTextValorCampo.getText().toString() + unidad;
                         }
                         AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);

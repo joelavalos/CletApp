@@ -4,11 +4,9 @@ package com.example.joel.cletapp.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import com.example.joel.cletapp.R;
 
@@ -23,10 +21,8 @@ public class DialogoCategoriaSelector extends DialogFragment {
     private String[] campos;
     private String[] valores;
     private ArrayList<String> categorias = new ArrayList<>();
-    //private String[] stockArr;
     private int posicion;
     private int categoriaSeleccion;
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

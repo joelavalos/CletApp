@@ -6,27 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
-import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
-import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
-import com.example.joel.cletapp.ClasesDataBase.Desafio;
-import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
-import com.example.joel.cletapp.ClasesDataBase.Objetivo;
-import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Joel on 21/07/2015.
@@ -37,16 +23,8 @@ public class DesafioFragment extends Fragment {
     private ImageView ImageViewBotonCrearDesafios;
     private ImageView ImageViewBotonMisDesafios;
 
-    CrearDesafiosFragment crearDesafiosFragment;
-    MisDesafiosFragment misDesafiosFragment;
-
-    DesafioCRUD desafioCRUD;
-    ObjetivoCRUD objetivoCRUD;
-    DesafioObjetivoCRUD desafioObjetivoCRUD;
-
-
-    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-    private Date parsed = null;
+    private CrearDesafiosFragment crearDesafiosFragment;
+    private MisDesafiosFragment misDesafiosFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,17 +33,8 @@ public class DesafioFragment extends Fragment {
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Desafios");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 
-
-        ButtonCrearDesafios = (Button) root.findViewById(R.id.ButtonCrearDesafios);
-        ButtonMisDesafios = (Button) root.findViewById(R.id.ButtonMisDesafios);
-        ImageViewBotonCrearDesafios = (ImageView) root.findViewById(R.id.ImageViewBotonCrearDesafios);
-        ImageViewBotonMisDesafios = (ImageView) root.findViewById(R.id.ImageViewBotonMisDesafios);
-        crearDesafiosFragment = null;
-        misDesafiosFragment = null;
-
-        desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
-        objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
-        desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
+        inicializarComponentes(root);
+        inicializarFragments();
 
         cargarFragmento(getCrearDesafiosFragment(), R.anim.activity_visible_salida_derecha, R.anim.activity_nuevo_entrada_izquierda);
 
@@ -104,6 +73,18 @@ public class DesafioFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void inicializarFragments() {
+        crearDesafiosFragment = null;
+        misDesafiosFragment = null;
+    }
+
+    private void inicializarComponentes(View root) {
+        ButtonCrearDesafios = (Button) root.findViewById(R.id.ButtonCrearDesafios);
+        ButtonMisDesafios = (Button) root.findViewById(R.id.ButtonMisDesafios);
+        ImageViewBotonCrearDesafios = (ImageView) root.findViewById(R.id.ImageViewBotonCrearDesafios);
+        ImageViewBotonMisDesafios = (ImageView) root.findViewById(R.id.ImageViewBotonMisDesafios);
     }
 
     public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {

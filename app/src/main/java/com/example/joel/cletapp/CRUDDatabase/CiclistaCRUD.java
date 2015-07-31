@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.example.joel.cletapp.ClasesDataBase.Ciclista;
 import com.example.joel.cletapp.Helper;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by Joel on 27/07/2015.
  */
-public class CiclistaCRUD  {
+public class CiclistaCRUD {
 
     public static final String TAG = "CiclistaCRUD";
 
@@ -27,12 +29,12 @@ public class CiclistaCRUD  {
     private Helper mDbHelper;
     private Context mContext;
 
-    private String[] mAllColumns = { Helper.COL_1,
+    private String[] mAllColumns = {Helper.COL_1,
             Helper.COL_2, Helper.COL_3,
             Helper.COL_4,
             Helper.COL_5,
             Helper.COL_6,
-            Helper.COL_7 };
+            Helper.COL_7};
 
     public CiclistaCRUD(Context context) {
         this.mContext = context;

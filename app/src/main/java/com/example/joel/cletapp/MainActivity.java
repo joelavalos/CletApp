@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -34,28 +33,29 @@ public class MainActivity extends ActionBarActivity {
     private DesafioCRUD desafioCRUD;
     private DesafioObjetivoCRUD desafioObjetivoCRUD;
     private ObjetivoCRUD objetivoCRUD;
+    private int seleccion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_appbar);
 
-        Mensaje asdasd = new Mensaje(this, "MainActivity creado");
-
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
 
-        drawerFargment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFargment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-
+        inicializarComponentes();
         poblarBaseDatos();
 
-
-        int seleccion = 0;
+        seleccion = 0;
         drawerFargment.listOpciones.performItemClick(drawerFargment.listOpciones.getAdapter().getView(seleccion, null, null), seleccion, drawerFargment.listOpciones.getAdapter().getItemId(seleccion));
         //drawerFargment.cargarFragmento2(getMainFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
+    }
+
+    private void inicializarComponentes() {
+        drawerFargment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFargment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
     }
 
     private void poblarBaseDatos() {
@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        if (listaDesafios.isEmpty()){
+        if (listaDesafios.isEmpty()) {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             Date parsedInicio = null;
             Date parsedFinal = null;

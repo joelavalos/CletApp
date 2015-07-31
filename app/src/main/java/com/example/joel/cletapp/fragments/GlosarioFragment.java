@@ -40,7 +40,7 @@ public class GlosarioFragment extends Fragment {
         LisViewGlosario.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected =((TextView)view.findViewById(R.id.TextViewEntradaGlosario)).getText().toString();
+                String selected = ((TextView) view.findViewById(R.id.TextViewEntradaGlosario)).getText().toString();
                 Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), selected);
 
                 Intent nuevoItent = new Intent(getActivity().getApplicationContext(), ActivityGlosario.class);

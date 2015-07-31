@@ -46,10 +46,9 @@ public class AdapterHistorial extends ArrayAdapter<String> {
         holder.TextViewFechaTerminoDesafio.setText(fechasTermino[position]);
         holder.TextViewExitoDesafio.setText(exitoDesafios[position]);
 
-        if(exitoDesafios[position].contains("Logrado")){
+        if (exitoDesafios[position].contains("Logrado")) {
             holder.TextViewExitoDesafio.setTextColor(context.getResources().getColor(R.color.colorVerde));
-        }
-        else {
+        } else {
             holder.TextViewExitoDesafio.setTextColor(context.getResources().getColor(R.color.colorRojo));
         }
 

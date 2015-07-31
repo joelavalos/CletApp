@@ -36,7 +36,7 @@ public class DialogoListSelector extends DialogFragment {
             sexoSeleccion = 1;
         } else if (valores[posicion].equals("Indefinido")) {
             sexoSeleccion = 2;
-        }else {
+        } else {
             sexoSeleccion = -1;
         }
 

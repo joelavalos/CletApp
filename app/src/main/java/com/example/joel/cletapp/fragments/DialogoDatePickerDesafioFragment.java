@@ -4,11 +4,9 @@ package com.example.joel.cletapp.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import com.example.joel.cletapp.R;
 
@@ -18,7 +16,7 @@ import java.util.Calendar;
 /**
  * Created by Joel on 29/07/2015.
  */
-public class DialogoDatePickerDesafioFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+public class DialogoDatePickerDesafioFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private GridView GridViewDatosDesafio;
     private String[] campos;
     private String[] valores;

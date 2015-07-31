@@ -7,9 +7,9 @@
         android:id="@+id/TextViewNombreCampo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre"
-        android:textColor="@color/colorNegro"
-        android:textSize="16dp"/>
+        android:text="Campo"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorGris2" />
 
     <TextView
         android:id="@+id/TextViewValorCampo"
@@ -17,16 +17,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextViewNombreCampo"
         android:text="Joel"
-        android:textColor="@color/colorGris"
-        android:textSize="16dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorNegro" />
 
     <ImageView
         android:id="@+id/ImageViewBotonCrearDesafios"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/TextViewValorCampo"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
-        android:layout_below="@+id/TextViewValorCampo"
         android:background="@color/colorGris2"
         android:elevation="2dp" />
 </RelativeLayout>

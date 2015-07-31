@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
         android:text="Desafios pendientes"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="4dp"/>
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/ButtonDesafiosTerminados"
@@ -23,10 +23,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/ButtonDesafiosPendientes"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
         android:text="Desafios terminados"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="4dp"/>
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/ButtonDesafiosLogrados"
@@ -35,10 +35,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/ButtonDesafiosTerminados"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
         android:text="Desafios logrados"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="4dp"/>
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/ButtonDesafiosFallados"
@@ -47,8 +47,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/ButtonDesafiosLogrados"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
         android:text="Desafios no logrados"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="4dp"/>
+        android:textColor="#FFFFFF" />
 </RelativeLayout>

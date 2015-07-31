@@ -11,8 +11,7 @@
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
         android:text="Ciclismo"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorNegro"
-        android:textSize="20dp" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorNegro" />
 
 </LinearLayout>

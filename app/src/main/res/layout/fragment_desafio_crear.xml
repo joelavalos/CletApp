@@ -9,8 +9,9 @@
         android:id="@+id/EditTextNombreDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:hint="Nombre del desafio"
-        android:layout_marginBottom="16dp"/>
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/EditTextNotaDesafio"
@@ -18,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/EditTextNombreDesafio"
         android:layout_marginBottom="24dp"
-        android:hint="Nota del desafio" />
+        android:hint="Nota del desafio"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <GridView
         android:id="@+id/GridViewDatosDesafio"
@@ -27,10 +29,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/EditTextNotaDesafio"
-        android:verticalSpacing="24dp"
         android:numColumns="2"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp" />
+        android:paddingRight="4dp"
+        android:verticalSpacing="24dp" />
 
     <Button
         android:id="@+id/ButtonCrearDesafio"

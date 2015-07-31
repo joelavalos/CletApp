@@ -17,13 +17,14 @@ import android.widget.TextView;
 
 import com.example.joel.cletapp.CRUDDatabase.CiclistaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Ciclista;
-//import com.example.joel.cletapp.DataBaseAdapter;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+//import com.example.joel.cletapp.DataBaseAdapter;
 
 /**
  * Created by Joel on 21/07/2015.
@@ -39,8 +40,7 @@ public class PerfilFragment extends Fragment {
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private Date parsed = null;
 
-    //DataBaseAdapter dataBaseAdapter;
-    CiclistaCRUD ciclistaCRUD;
+    private CiclistaCRUD ciclistaCRUD;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,18 +49,8 @@ public class PerfilFragment extends Fragment {
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Perfil");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 
-        ButtonGuardarPerfil = (Button) root.findViewById(R.id.ButtonGuardarPerfil);
-        ListViewDatosPerfil = (ListView) root.findViewById(R.id.ListViewDatosPerfil);
-
-        AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);
-        ListViewDatosPerfil.setAdapter(adapterPerfil);
-
-        //dataBaseAdapter = new DataBaseAdapter(getActivity().getApplicationContext());
-        ciclistaCRUD = new CiclistaCRUD(getActivity().getApplicationContext());
-
-        buscarCiclista(root);
-
-        Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "FragmentPerfil creado");
+        inicializarComponentes(root);
+        inicializarBaseDeDatos(root);
 
         ButtonGuardarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +70,6 @@ public class PerfilFragment extends Fragment {
         ListViewDatosPerfil.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Bundle bundle = new Bundle();
                 bundle.putStringArray("campos", campos);
                 bundle.putStringArray("valores", valores);
@@ -126,6 +115,14 @@ public class PerfilFragment extends Fragment {
         return root;
     }
 
+    private void inicializarComponentes(View root) {
+        ButtonGuardarPerfil = (Button) root.findViewById(R.id.ButtonGuardarPerfil);
+        ListViewDatosPerfil = (ListView) root.findViewById(R.id.ListViewDatosPerfil);
+
+        AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);
+        ListViewDatosPerfil.setAdapter(adapterPerfil);
+    }
+
     public long addCiclista(String rut, String nombre, String apellido_pat, String fecha, String peso, String altura, String sexo) {
         String[] valorAltura = altura.split(" ");
         String[] valorPeso = peso.split(" ");
@@ -158,11 +155,11 @@ public class PerfilFragment extends Fragment {
         return ciclistaCRUD.actualizarDatosCiclista(ciclista);
     }
 
-    public void buscarCiclista(View view) {
+    public void inicializarBaseDeDatos(View view) {
+        ciclistaCRUD = new CiclistaCRUD(getActivity().getApplicationContext());
         Ciclista ciclista = new Ciclista();
 
         try {
-            //ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
             ciclista = ciclistaCRUD.buscarCiclistaPorRut("0");
         } catch (ParseException e) {
             e.printStackTrace();
@@ -173,7 +170,6 @@ public class PerfilFragment extends Fragment {
             addCiclista("0", "", "", "01/01/1990", "0", "0", "Indefinido");
 
             try {
-                //ciclista = dataBaseAdapter.buscarCiclistaPorRut("0");
                 ciclista = ciclistaCRUD.buscarCiclistaPorRut("0");
             } catch (ParseException e) {
                 e.printStackTrace();

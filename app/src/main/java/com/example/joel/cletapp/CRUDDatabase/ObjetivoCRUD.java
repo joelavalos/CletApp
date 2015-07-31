@@ -117,7 +117,7 @@ public class ObjetivoCRUD {
         return count;
     }
 
-    public List<Objetivo> buscarTodosLosObjetivos(){
+    public List<Objetivo> buscarTodosLosObjetivos() {
         List<Objetivo> listObjetivos = new ArrayList<Objetivo>();
 
         Cursor cursor = mDatabase.query(Helper.TABLA_OBJETIVO, mAllColumns, null, null, null, null, null);

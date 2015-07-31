@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_grade_black_48dp" />
 
     <TextView
@@ -21,6 +23,7 @@
         android:layout_toRightOf="@+id/ImageViewImagenDesafio2"
         android:text="Nombre desafio"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:singleLine="true"
         android:textColor="#000000" />
 
     <TextView

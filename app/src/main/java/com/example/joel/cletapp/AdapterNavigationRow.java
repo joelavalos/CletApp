@@ -12,7 +12,7 @@ public class AdapterNavigationRow {
     TextView myTextOption;
     ImageView myImageOption;
 
-    AdapterNavigationRow(View v){
+    AdapterNavigationRow(View v) {
         myImageOption = (ImageView) v.findViewById(R.id.ImageViewImagenOpcion);
         myTextOption = (TextView) v.findViewById(R.id.TextViewTextoOpcion);
     }

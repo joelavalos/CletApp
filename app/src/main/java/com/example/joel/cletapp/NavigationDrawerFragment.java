@@ -3,7 +3,6 @@ package com.example.joel.cletapp;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
@@ -78,23 +77,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
-        listOpciones = (ListView) root.findViewById(R.id.ListViewOpcion);
-        Resources res = getResources();
-        opciones = res.getStringArray(R.array.opciones);
-
-        glosarioFragment = null;
-        rutinaFragment = null;
-        historialFragment = null;
-        mainFragment = null;
-        desafioFragment = null;
-        perfilFragment = null;
-
-        adapter = new AdapterOpcion(getActivity().getApplicationContext(), opciones, imagenes);
-        listOpciones.setAdapter(adapter);
-
-        v = new View(this.getActivity());
-        v2 = new View(this.getActivity());
-
+        inicializarComponentes(root);
         Mensaje asdzxcasd = new Mensaje(getActivity().getApplicationContext(), "NavigationDrawer creado");
 
         listOpciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -157,6 +140,25 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void inicializarComponentes(View root) {
+        listOpciones = (ListView) root.findViewById(R.id.ListViewOpcion);
+        Resources res = getResources();
+        opciones = res.getStringArray(R.array.opciones);
+
+        glosarioFragment = null;
+        rutinaFragment = null;
+        historialFragment = null;
+        mainFragment = null;
+        desafioFragment = null;
+        perfilFragment = null;
+
+        adapter = new AdapterOpcion(getActivity().getApplicationContext(), opciones, imagenes);
+        listOpciones.setAdapter(adapter);
+
+        v = new View(this.getActivity());
+        v2 = new View(this.getActivity());
     }
 
     public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {

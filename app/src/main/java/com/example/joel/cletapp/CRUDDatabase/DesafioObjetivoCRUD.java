@@ -106,7 +106,7 @@ public class DesafioObjetivoCRUD {
         return desafioObjetivo;
     }
 
-    public List<DesafioObjetivo> buscarTodosLosDesafioObjetivos(){
+    public List<DesafioObjetivo> buscarTodosLosDesafioObjetivos() {
         List<DesafioObjetivo> listDesafioObjetivos = new ArrayList<DesafioObjetivo>();
 
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOOBJETIVO, mAllColumns, null, null, null, null, null);

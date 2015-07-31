@@ -94,7 +94,7 @@ public class Helper extends SQLiteOpenHelper {
             //Mensaje asd = new Mensaje(context, "OnCreate called");
         } catch (SQLException e) {
             //Mensaje asd = new Mensaje(context, e + "");
-            Log.v("porque", e+"");
+            Log.v("porque", e + "");
         }
     }
 

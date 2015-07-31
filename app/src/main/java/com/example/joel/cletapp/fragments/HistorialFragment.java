@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
 /**
@@ -35,13 +34,7 @@ public class HistorialFragment extends Fragment {
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Historial");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 
-        ButtonHistorialDesafios = (Button) root.findViewById(R.id.ButtonHistorialDesafios);
-        ButtonHistorialRutinas = (Button) root.findViewById(R.id.ButtonHistorialRutinas);
-        ImageViewBotonDesafios = (ImageView) root.findViewById(R.id.ImageViewBotonDesafios);
-        ImageViewBotonRutinas = (ImageView) root.findViewById(R.id.ImageViewBotonRutinas);
-
-        listaDesafiosFragment = null;
-        listaRutinasFragment = null;
+        inicializarComponentes(root);
 
         cargarFragmento(getListaDesafiosFragment(), R.anim.activity_visible_salida_derecha, R.anim.activity_nuevo_entrada_izquierda);
 
@@ -80,6 +73,16 @@ public class HistorialFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void inicializarComponentes(View root) {
+        ButtonHistorialDesafios = (Button) root.findViewById(R.id.ButtonHistorialDesafios);
+        ButtonHistorialRutinas = (Button) root.findViewById(R.id.ButtonHistorialRutinas);
+        ImageViewBotonDesafios = (ImageView) root.findViewById(R.id.ImageViewBotonDesafios);
+        ImageViewBotonRutinas = (ImageView) root.findViewById(R.id.ImageViewBotonRutinas);
+
+        listaDesafiosFragment = null;
+        listaRutinasFragment = null;
     }
 
     public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {

@@ -75,6 +75,56 @@ public class Helper extends SQLiteOpenHelper {
             + DESAFIOOBJETIVO_VALOR + " INTEGER NOT NULL);";
     public static final String DROP_TABLE_DESAFIOOBJETIVO = "DROP TABLE IF EXISTS " + TABLA_DESAFIOOBJETIVO + ";";
 
+    //Tabla diasRutina (Relacion many to many)
+    public static final String TABLA_DIASRUTINA = "tabla_diasrutina";
+    public static final String DIASRUTINA_ID = "ID";
+    public static final String DIASRUTINA_RUTINA_ID = "RUTINA_ID";
+    public static final String DIASRUTINA_DIA_ID = "DIA_ID";
+    public static final String DIASRUTINA_FECHA = "FECHA";
+    public static final String CREATE_TABLE_DIASRUTINA = "CREATE TABLE " + TABLA_DIASRUTINA + " ("
+            + DIASRUTINA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + DIASRUTINA_RUTINA_ID + " INTEGER NOT NULL, "
+            + DIASRUTINA_DIA_ID + " VARCHAR(255) NOT NULL, "
+            + DIASRUTINA_FECHA + " DATE NOT NULL);";
+    public static final String DROP_TABLE_DIASRUTINA = "DROP TABLE IF EXISTS " + TABLA_DIASRUTINA + ";";
+
+    //Tabla Resumen
+    public static final String TABLA_RESUMEN = "tabla_resumen";
+    public static final String RESUMEN_ID = "ID";
+    public static final String RESUMEN_ANALISIS = "ANALISIS";
+    public static final String RESUMEN_FECHA = "FECHA";
+    public static final String CREATE_TABLE_RESUMEN = "CREATE TABLE " + TABLA_RESUMEN + " ("
+            + RESUMEN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + RESUMEN_ANALISIS + " VARCHAR(255) NOT NULL, "
+            + RESUMEN_FECHA + " DATE NOT NULL);";
+    public static final String DROP_TABLE_RESUMEN = "DROP TABLE IF EXISTS " + TABLA_RESUMEN + ";";
+
+    //Tabla Dia
+    public static final String TABLA_DIA = "tabla_dia";
+    public static final String DIA_NOMBRE = "NOMBRE";
+    public static final String CREATE_TABLA_DIA = "CREATE TABLE " + TABLA_DIA + " ("
+            + DIA_NOMBRE + " VARCHAR(255) PRIMARY KEY);";
+    public static final String DROP_TABLA_DIA = "DROP TABLE IF EXISTS " + TABLA_DIA + ";";
+
+    //Tabla Rutina
+    public static final String TABLA_RUTINA = "tabla_rutina";
+    public static final String RUTINA_ID = "ID";
+    public static final String RUTINA_NOMBRE = "NOMBRE";
+    public static final String RUTINA_DESCRIPCON = "DESCRIPCION";
+    public static final String RUTINA_INICIO = "FECHA_INICIO";
+    public static final String RUTINA_TERMINO = "FECHA_TERMINO";
+    public static final String RUTINA_ESTADO = "ESTADO";
+    public static final String RUTINA_RESUMEN_ID = "RESUMEN_ID";
+    public static final String CREATE_TABLA_RUTINA = "CREATE TABLE " + TABLA_RUTINA + " ("
+            + RUTINA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + RUTINA_NOMBRE + " VARCHAR(40) NOT NULL, "
+            + RUTINA_DESCRIPCON + " VARCHAR(40), "
+            + RUTINA_INICIO + " DATE NOT NULL, "
+            + RUTINA_TERMINO + " FLOAT NOT NULL, "
+            + RUTINA_ESTADO + " FLOAT NOT NULL, "
+            + RUTINA_RESUMEN_ID + " INTEGER NOT NULL);";
+    public static final String DROP_TABLA_RUTINA = "DROP TABLE IF EXISTS " + TABLA_RUTINA + ";";
+
     private Context context;
 
     public Helper(Context context) {
@@ -91,10 +141,14 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_DESAFIO);
             db.execSQL(CREATE_TABLE_OBJETIVO);
             db.execSQL(CREATE_TABLE_DESAFIOOBJETIVO);
+            db.execSQL(CREATE_TABLE_RESUMEN);
+            db.execSQL(CREATE_TABLA_DIA);
+            db.execSQL(CREATE_TABLA_RUTINA);
+            db.execSQL(CREATE_TABLE_DIASRUTINA);
             //Mensaje asd = new Mensaje(context, "OnCreate called");
         } catch (SQLException e) {
             //Mensaje asd = new Mensaje(context, e + "");
-            Log.v("porque", e + "");
+            //Log.v("porque", e + "");
         }
     }
 
@@ -105,10 +159,14 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(DROP_TABLE_DESAFIO);
             db.execSQL(DROP_TABLE_OBJETIVO);
             db.execSQL(DROP_TABLE_DESAFIOOBJETIVO);
+            db.execSQL(DROP_TABLE_RESUMEN);
+            db.execSQL(DROP_TABLA_DIA);
+            db.execSQL(DROP_TABLA_RUTINA);
+            db.execSQL(DROP_TABLE_DIASRUTINA);
             //Mensaje asd = new Mensaje(context, "OnUpgrade called");
             onCreate(db);
         } catch (SQLException e) {
-            Mensaje asd = new Mensaje(context, e + "");
+            //Mensaje asd = new Mensaje(context, e + "");
         }
     }
 }

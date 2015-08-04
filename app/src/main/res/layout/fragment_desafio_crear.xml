@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:hint="Nombre del desafio"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -20,6 +23,9 @@
         android:layout_below="@+id/EditTextNombreDesafio"
         android:layout_marginBottom="24dp"
         android:hint="Nota del desafio"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <GridView

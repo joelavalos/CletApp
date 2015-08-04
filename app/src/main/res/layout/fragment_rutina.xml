@@ -3,15 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="16dp"
-    android:orientation="vertical"
     tools:context="com.example.joel.cletapp.fragments.RutinaFragment">
 
-    <TextView
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/ButtonCrearRutinas"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hola soy el fragment Rutina" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/separadorRutinas"
+        android:background="@drawable/boton_sliding"
+        android:text="Crear rutina"
+        android:textColor="@color/colorBlanco" />
 
+    <ImageView
+        android:id="@+id/ImageViewBotonCrearRutina"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_alignBottom="@+id/ButtonCrearRutinas"
+        android:layout_alignLeft="@+id/ButtonCrearRutinas"
+        android:layout_alignRight="@+id/ButtonCrearRutinas"
+        android:background="@color/colorMorado"
+        android:elevation="2dp" />
+
+    <android.widget.Space
+        android:id="@+id/separadorRutinas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/ButtonMisRutinas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/separadorRutinas"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/boton_sliding"
+        android:text="Mis rutinas"
+        android:textColor="@color/colorBlanco" />
+
+    <ImageView
+        android:id="@+id/ImageViewBotonMisRutinas"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_alignBottom="@+id/ButtonMisRutinas"
+        android:layout_alignLeft="@+id/ButtonMisRutinas"
+        android:layout_alignRight="@+id/ButtonMisRutinas"
+        android:background="@color/colorMorado"
+        android:elevation="2dp"
+        android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/contenedorRutinas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ButtonMisRutinas"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+    </RelativeLayout>
 </RelativeLayout>

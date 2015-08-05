@@ -6,9 +6,48 @@
     android:layout_height="match_parent"
     tools:context="com.example.joel.cletapp.fragments.MisRutinasFragment">
 
-    <TextView
-        android:text="Aca se crean las rutinas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/EditTextNombreRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Nombre de la rutina"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/EditTextNotaRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EditTextNombreRutina"
+        android:layout_marginBottom="24dp"
+        android:hint="Nota de la rutina"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <GridView
+        android:id="@+id/GridViewDatosRutina"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/EditTextNotaRutina"
+        android:numColumns="2"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:verticalSpacing="24dp" />
+
+    <Button
+        android:id="@+id/ButtonCrearRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/boton"
+        android:text="Crear desafio"
+        android:textColor="@color/colorBlanco" />
 
 </RelativeLayout>

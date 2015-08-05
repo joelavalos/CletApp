@@ -125,6 +125,19 @@ public class Helper extends SQLiteOpenHelper {
             + RUTINA_RESUMEN_ID + " INTEGER NOT NULL);";
     public static final String DROP_TABLA_RUTINA = "DROP TABLE IF EXISTS " + TABLA_RUTINA + ";";
 
+    //Tabla desafiosRutina (Relacion many to many)
+    public static final String TABLA_DESAFIOSRUTINA = "tabla_desafiosrutina";
+    public static final String DESAFIOSRUTINA_ID = "ID";
+    public static final String DESAFIOSRUTINA_RUTINA_ID = "RUTINA_ID";
+    public static final String DESAFIOSRUTINA_DESAFIO_ID = "DESAFIO_ID";
+    public static final String DESAFIOSRUTINA_FECHA = "FECHA";
+    public static final String CREATE_TABLE_DESAFIOSRUTINA = "CREATE TABLE " + TABLA_DESAFIOSRUTINA + " ("
+            + DESAFIOSRUTINA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + DESAFIOSRUTINA_RUTINA_ID + " INTEGER NOT NULL, "
+            + DESAFIOSRUTINA_DESAFIO_ID + " VARCHAR(255) NOT NULL, "
+            + DESAFIOSRUTINA_FECHA + " DATE NOT NULL);";
+    public static final String DROP_TABLE_DESAFIOSRUTINA = "DROP TABLE IF EXISTS " + TABLA_DESAFIOSRUTINA + ";";
+
     private Context context;
 
     public Helper(Context context) {
@@ -145,6 +158,7 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLA_DIA);
             db.execSQL(CREATE_TABLA_RUTINA);
             db.execSQL(CREATE_TABLE_DIASRUTINA);
+            db.execSQL(CREATE_TABLE_DESAFIOSRUTINA);
             //Mensaje asd = new Mensaje(context, "OnCreate called");
         } catch (SQLException e) {
             //Mensaje asd = new Mensaje(context, e + "");
@@ -163,6 +177,7 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(DROP_TABLA_DIA);
             db.execSQL(DROP_TABLA_RUTINA);
             db.execSQL(DROP_TABLE_DIASRUTINA);
+            db.execSQL(DROP_TABLE_DESAFIOSRUTINA);
             //Mensaje asd = new Mensaje(context, "OnUpgrade called");
             onCreate(db);
         } catch (SQLException e) {

@@ -48,6 +48,5 @@ public class DialogoDatePickerDesafioFragment extends DialogFragment implements 
         valores[posicion] = formattedDate;
         AdapterCrearDesafio adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
-
     }
 }

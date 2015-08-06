@@ -41,7 +41,7 @@ public class CrearRutinasFragment extends Fragment {
     private ListView ListViewDesafiosRutina;
     private String[] camposDesafios = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
     private String[] valoresDesafios = {"", "", "", "", "", "", ""};
-    private int[] idDesafios = {-1,-1,-1,-1,-1,-1,-1};
+    private String[] nombres = {"", "", "", "", "", "", ""};
     private AdapterDesafio adapterDesafio;
 
     private GridView GridViewDatosRutina;
@@ -57,7 +57,6 @@ public class CrearRutinasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_rutina_crear, container, false);
 
-        Mensaje asd = new Mensaje(getActivity().getApplicationContext(), "Inicializo todo");
         inicializarBaseDeDatos();
         inicializarComponentes(root);
 
@@ -69,7 +68,7 @@ public class CrearRutinasFragment extends Fragment {
                 bundle.putStringArray("valores", valores);
                 bundle.putStringArray("camposDesafios", camposDesafios);
                 bundle.putStringArray("valoresDesafios", valoresDesafios);
-                bundle.putIntArray("idDesafios", idDesafios);
+                bundle.putStringArray("nombres", nombres);
                 bundle.putInt("posicion", position);
 
                 switch (position) {
@@ -88,16 +87,24 @@ public class CrearRutinasFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putStringArray("camposDesafios", camposDesafios);
                 bundle.putStringArray("valoresDesafios", valoresDesafios);
-                bundle.putIntArray("idDesafios", idDesafios);
+                bundle.putStringArray("nombres", nombres);
                 bundle.putStringArrayList("desafios", listaDesafios2);
                 bundle.putInt("posicion", position);
 
-                Mensaje asds = new Mensaje(getActivity().getApplicationContext(), listaDesafios2.size()+"");
-                Log.v("hola", idDesafios[0] + " " + idDesafios[1] + " " + idDesafios[2] + " " + idDesafios[3] + " " + idDesafios[4] + " " + idDesafios[5] + " " + idDesafios[6]);
+                //Borrar luego
+                AdapterDesafio pepelota = (AdapterDesafio) ListViewDesafiosRutina.getAdapter();
+                Mensaje asd = new Mensaje(getActivity().getApplicationContext(), pepelota.getData(position));
 
                 DialogoDesafioSelector dialogo = new DialogoDesafioSelector();
                 dialogo.setArguments(bundle);
                 dialogo.show(getFragmentManager(), "categoriaPicker");
+            }
+        });
+
+        ButtonCrearRutina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Mensaje asd = new Mensaje(getActivity().getApplicationContext(), "Crear la rutina a futuro");
             }
         });
 
@@ -119,6 +126,7 @@ public class CrearRutinasFragment extends Fragment {
         actualizarFechas();
         valores[1] = format.format(c.getTime());
 
+        ButtonCrearRutina = (Button) root.findViewById(R.id.ButtonCrearRutina);
         GridViewDatosRutina = (GridView) root.findViewById(R.id.GridViewDatosRutina);
         ListViewDesafiosRutina = (ListView) root.findViewById(R.id.ListViewDesafiosRutina);
         ButtonCrearRutina = (Button) root.findViewById(R.id.ButtonCrearRutina);
@@ -127,7 +135,7 @@ public class CrearRutinasFragment extends Fragment {
         adapterCrearRutina = new AdapterCrearRutina(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosRutina.setAdapter(adapterCrearRutina);
 
-        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, idDesafios);
+        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres);
         ListViewDesafiosRutina.setAdapter(adapterDesafio);
     }
 
@@ -209,19 +217,25 @@ class AdapterDesafio extends ArrayAdapter<String> {
     Context context;
     String[] campos;
     String[] valores;
-    int[] idDesafio;
+    String[] soloNombre;
 
-    public AdapterDesafio(Context c, String[] listaCampos, String[] listaValores, int[] listaIdDesafios) {
+    public AdapterDesafio(Context c, String[] listaCampos, String[] listaValores, String[] listaNombres) {
         super(c, R.layout.single_perfil_row, R.id.TextViewNombreCampo, listaCampos);
         this.context = c;
         this.campos = listaCampos;
         this.valores = listaValores;
-        this.idDesafio = listaIdDesafios;
+        this.soloNombre = listaNombres;
     }
 
     @Override
     public String getItem(int position) {
         return super.getItem(position);
+    }
+
+    public String getData(int position) {
+        String data = valores[position] + " " + soloNombre[position];
+
+        return data;
     }
 
     @Override
@@ -239,7 +253,7 @@ class AdapterDesafio extends ArrayAdapter<String> {
         }
 
         holder.nombreCampo.setText(campos[position]);
-        holder.valorCampo.setText(valores[position]);
+        holder.valorCampo.setText(soloNombre[position]);
 
         return row;
     }

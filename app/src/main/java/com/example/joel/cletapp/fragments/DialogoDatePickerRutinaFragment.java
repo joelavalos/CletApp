@@ -27,7 +27,7 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
 
     private String[] camposDesafios;
     private String[] valoresDesafios;
-    private int[] idDesafios;
+    private String[] nombres;
     private ListView ListViewDesafiosRutina;
     AdapterDesafio adapterDesafio;
 
@@ -39,7 +39,7 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
         valores = getArguments().getStringArray("valores");
         camposDesafios = getArguments().getStringArray("camposDesafios");
         valoresDesafios = getArguments().getStringArray("valoresDesafios");
-        idDesafios = getArguments().getIntArray("idDesafios");
+        nombres = getArguments().getStringArray("nombres");
         posicion = getArguments().getInt("posicion");
 
         String[] fechaActual = valores[posicion].split("/");
@@ -65,7 +65,7 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
 
         adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosRutina.setAdapter(adapterCrearDesafio);
-        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, idDesafios);
+        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres);
         ListViewDesafiosRutina.setAdapter(adapterDesafio);
     }
 

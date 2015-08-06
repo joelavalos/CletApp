@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 
-import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
 import java.util.ArrayList;
@@ -19,8 +18,9 @@ public class DialogoDesafioSelector extends DialogFragment {
     private ListView ListViewDesafiosRutina;
     private String[] camposDesafios;
     private String[] valoresDesafios;
-    private int[] idDesafios;
+    private String[] nombres;
     private ArrayList<String> desafios = new ArrayList<>();
+    private ArrayList<String> desafiosPresentar = new ArrayList<>();
     private AdapterDesafio adapterDesafio;
 
     private int posicion;
@@ -30,13 +30,20 @@ public class DialogoDesafioSelector extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Mensaje asd = new Mensaje(getActivity().getApplicationContext(), "Inicializo el dialogo");
         ListViewDesafiosRutina = (ListView) getActivity().findViewById(R.id.ListViewDesafiosRutina);
         camposDesafios = getArguments().getStringArray("camposDesafios");
         valoresDesafios = getArguments().getStringArray("valoresDesafios");
-        idDesafios = getArguments().getIntArray("idDesafios");
+        nombres = getArguments().getStringArray("nombres");
         posicion = getArguments().getInt("posicion");
         desafios = getArguments().getStringArrayList("desafios");
+
+        for (int i = 0; i < desafios.size(); i++) {
+            if (desafios.get(i).equals("Descansar")) {
+                desafiosPresentar.add(desafios.get(i));
+            } else {
+                desafiosPresentar.add(desafios.get(i).split("-")[1]);
+            }
+        }
 
         desafioSeleccion = -1;
         if (valoresDesafios[posicion].equals("Descansar")) {
@@ -47,7 +54,7 @@ public class DialogoDesafioSelector extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Seleccione desafio")
-                .setSingleChoiceItems(desafios.toArray(new String[desafios.size()]), desafioSeleccion, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(desafiosPresentar.toArray(new String[desafiosPresentar.size()]), desafioSeleccion, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         ultimaSeleccion = whichButton;
                     }
@@ -56,14 +63,15 @@ public class DialogoDesafioSelector extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                         valoresDesafios[posicion] = desafios.toArray(new String[desafios.size()])[ultimaSeleccion];
+                        nombres[posicion] = desafios.toArray(new String[desafios.size()])[ultimaSeleccion];
 
                         if (valoresDesafios[posicion].equals("Descansar")) {
                             if (!desafios.contains(ultimaSeleccionDesafio) && !ultimaSeleccionDesafio.equals("")) {
                                 desafios.add(ultimaSeleccionDesafio);
-                                idDesafios[posicion] = -1;
+                                nombres[posicion] = "Descansar";
                             }
                         } else {
-                            idDesafios[posicion] = Integer.parseInt(desafios.toArray(new String[desafios.size()])[ultimaSeleccion].split("-")[0]);
+                            nombres[posicion] = desafios.toArray(new String[desafios.size()])[ultimaSeleccion].split("-")[1];
                             desafios.remove(valoresDesafios[posicion]);
                             if (ultimaSeleccionDesafio.equals(valoresDesafios[posicion])) {
 
@@ -74,7 +82,7 @@ public class DialogoDesafioSelector extends DialogFragment {
                             }
                         }
 
-                        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, idDesafios);
+                        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres);
                         ListViewDesafiosRutina.setAdapter(adapterDesafio);
                     }
                 });

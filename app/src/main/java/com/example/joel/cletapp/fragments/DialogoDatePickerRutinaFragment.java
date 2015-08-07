@@ -28,6 +28,7 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
     private String[] camposDesafios;
     private String[] valoresDesafios;
     private String[] nombres;
+    private String[] objetivos;
     private ListView ListViewDesafiosRutina;
     AdapterDesafio adapterDesafio;
 
@@ -40,6 +41,7 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
         camposDesafios = getArguments().getStringArray("camposDesafios");
         valoresDesafios = getArguments().getStringArray("valoresDesafios");
         nombres = getArguments().getStringArray("nombres");
+        objetivos = getArguments().getStringArray("objetivos");
         posicion = getArguments().getInt("posicion");
 
         String[] fechaActual = valores[posicion].split("/");
@@ -65,14 +67,14 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
 
         adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosRutina.setAdapter(adapterCrearDesafio);
-        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres);
+        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres, objetivos);
         ListViewDesafiosRutina.setAdapter(adapterDesafio);
     }
 
     private void actualizarFechas(Calendar c) {
         Locale spanish = new Locale("es", "PE");
         for (int i = 0; i < camposDesafios.length; i++) {
-            camposDesafios[i] = sdf.format(c.getTime()) + "     " + c.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, spanish);
+            camposDesafios[i] = sdf.format(c.getTime()) + " " + c.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, spanish);
 
             if ((i + 1) < camposDesafios.length) {
                 c.add(Calendar.DATE, +1);

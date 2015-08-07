@@ -13,16 +13,12 @@ import android.view.MenuItem;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
-import com.example.joel.cletapp.CRUDDatabase.DiaCRUD;
-import com.example.joel.cletapp.CRUDDatabase.DiaRutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
-import com.example.joel.cletapp.ClasesDataBase.Dia;
-import com.example.joel.cletapp.ClasesDataBase.DiaRutina;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
@@ -124,49 +120,50 @@ public class MainActivity extends ActionBarActivity {
                 desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
             }
         }
-        /*
-        //Insertar resumen
-        Date parsedFechaDesafio = null;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            parsedFechaDesafio = format.parse("01/01/2015");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        ResumenCRUD resumenCRUD = new ResumenCRUD(this);
-        Resumen newResumen = new Resumen(0, "Analisis jaja", new java.sql.Date(parsedFechaDesafio.getTime()));
-        newResumen = resumenCRUD.insertarResumen(newResumen);
-
-        //Insertar rutina
-        Date parsedInicio = null;
-        Date parsedFinal = null;
-        try {
-            parsedInicio = format.parse("01/01/2015");
-            parsedFinal = format.parse("02/01/2015");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         RutinaCRUD rutinaCRUD = new RutinaCRUD(this);
-        Rutina newRutina = new Rutina(0, "Rutina 1", "Descriptor", new java.sql.Date(parsedInicio.getTime()), new java.sql.Date(parsedFinal.getTime()), 'P', newResumen);
-        newRutina = rutinaCRUD.insertarRutina(newRutina);
+        List<Rutina> listaRutinas = rutinaCRUD.buscarTodasLasRutinas();
 
-        //Buscar desafio
-        DesafioCRUD desafioCRUD = new DesafioCRUD(this);
-        Desafio newDesafio = null;
-        try {
-            newDesafio = desafioCRUD.buscarDesafioPorId(1);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (listaRutinas.isEmpty()) {
+            //Insertar resumen
+            Date parsedFechaDesafio = null;
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                parsedFechaDesafio = format.parse("01/01/2015");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            ResumenCRUD resumenCRUD = new ResumenCRUD(this);
+            Resumen newResumen = new Resumen(0, "Resumen defecto", new java.sql.Date(parsedFechaDesafio.getTime()));
+            newResumen = resumenCRUD.insertarResumen(newResumen);
+
+            //Insertar rutina
+            Date parsedInicio = null;
+            Date parsedFinal = null;
+            try {
+                parsedInicio = format.parse("01/01/2015");
+                parsedFinal = format.parse("02/01/2015");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Rutina newRutina = new Rutina(0, "Rutina 1", "Rutina defecto", new java.sql.Date(parsedInicio.getTime()), new java.sql.Date(parsedFinal.getTime()), 'T', newResumen);
+            newRutina = rutinaCRUD.insertarRutina(newRutina);
+
+            //Buscar desafio
+            DesafioCRUD desafioCRUD = new DesafioCRUD(this);
+            Desafio newDesafio = null;
+            try {
+                newDesafio = desafioCRUD.buscarDesafioPorId(1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //Insertar desafioRutina
+            DesafioRutinaCRUD desafioRutinaCRUD = new DesafioRutinaCRUD(this);
+            DesafioRutina newDesafioRutina = new DesafioRutina(0, newRutina, newDesafio, new java.sql.Date(parsedInicio.getTime()));
+            newDesafioRutina = desafioRutinaCRUD.insertarDesafioRutina(newDesafioRutina);
         }
-
-        //Insertar desafioRutina
-        DesafioRutinaCRUD desafioRutinaCRUD = new DesafioRutinaCRUD(this);
-        DesafioRutina newDesafioRutina = new DesafioRutina(0, newRutina, newDesafio, new java.sql.Date(parsedInicio.getTime()));
-        newDesafioRutina = desafioRutinaCRUD.insertarDesafioRutina(newDesafioRutina);
-
-        Mensaje asdqweqweasd = new Mensaje(this, "Rutina: " + newDesafioRutina.getRutina().getRutinaNombre() + " Desafio: " + newDesafioRutina.getDesafio().getDesafioNombre());
-        */
     }
 
     public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {

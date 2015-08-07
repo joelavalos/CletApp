@@ -15,6 +15,8 @@ import com.example.joel.cletapp.Helper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Joel on 05/08/2015.
@@ -76,6 +78,19 @@ public class DesafioRutinaCRUD {
         cursor.close();
 
         return newDesafioRutina;
+    }
+
+    public List<DesafioRutina> buscarDesafioRutinaPorIdRutina(Rutina ID) throws ParseException {
+        List<DesafioRutina> listRutinas = new ArrayList<DesafioRutina>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOSRUTINA, mAllColumns, Helper.DESAFIOSRUTINA_RUTINA_ID + " ='" + ID.getRutinaId() + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            DesafioRutina desafioRutina = cursorToDesafioRutina(cursor);
+            listRutinas.add(desafioRutina);
+        }
+        cursor.close();
+
+        return listRutinas;
     }
 
     public DesafioRutina cursorToDesafioRutina(Cursor cursor) throws ParseException {

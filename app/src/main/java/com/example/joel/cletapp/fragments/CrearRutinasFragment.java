@@ -39,11 +39,11 @@ import java.util.Locale;
  * Created by Joel on 04/08/2015.
  */
 public class CrearRutinasFragment extends Fragment {
-    private Calendar c = Calendar.getInstance();
+    private Calendar c;
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     private String[] campos = {"Fecha de inicio", "Fecha final"};
-    private String[] valores = {format.format(c.getTime()), format.format(c.getTime())};
+    private String[] valores = {"", ""};
     private Date parsedInicio;
     private Date parsedFinal;
     private Date parsedDesafio;
@@ -253,6 +253,8 @@ public class CrearRutinasFragment extends Fragment {
     }
 
     private void inicializarComponentes(View root) {
+        c = Calendar.getInstance();
+        valores[0] = format.format(c.getTime());
         actualizarFechas();
         valores[1] = format.format(c.getTime());
         fechasDesafios = new ArrayList<>();

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ImageViewImagenRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_directions_bike_black_48dp" />
+
+    <TextView
+        android:id="@+id/TextViewNombreRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewImagenRutina"
+        android:layout_marginRight="128dp"
+        android:layout_toRightOf="@+id/ImageViewImagenRutina"
+        android:singleLine="true"
+        android:text="Nombre rutina"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewCategoriaRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewNombreRutina"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/TextViewNotaRutina"
+        android:gravity="center_horizontal"
+        android:text="Desafios"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewValorRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextViewNotaRutina"
+        android:layout_alignLeft="@+id/TextViewCategoriaRutina"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextViewCategoriaRutina"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="5"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewNotaRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ImageViewImagenRutina"
+        android:layout_alignRight="@+id/TextViewNombreRutina"
+        android:layout_below="@+id/TextViewNombreRutina"
+        android:layout_toRightOf="@+id/ImageViewImagenRutina"
+        android:text="Esta rutina fue creado para entrenar relajado de peso asdasdasdsad"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#9E9E9E" />
+
+    <TextView
+        android:id="@+id/TextViewFechaRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ImageViewImagenRutina"
+        android:layout_below="@+id/ImageViewImagenRutina"
+        android:layout_marginRight="16dp"
+        android:text="Desde: 11/11/2011 hasta: 17/11/2011"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#9E9E9E" />
+
+    <TextView
+        android:id="@+id/TextViewEstadoRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ImageViewImagenRutina"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextViewFechaRutina"
+        android:layout_marginRight="16dp"
+        android:text="Pendiente"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorMorado" />
+
+</RelativeLayout>

@@ -5,9 +5,27 @@
     android:layout_height="match_parent"
     tools:context="com.example.joel.cletapp.fragments.MisRutinasFragment">
 
-    <TextView
-        android:text="Mis rutinas (Lista)"
+    <Button
+        android:id="@+id/ButtonRutinasPendientes"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/boton"
+        android:text="Rutinas pendientes"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/ButtonRutinasFinalizadas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ButtonRutinasPendientes"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/boton"
+        android:text="Rutinas terminadas"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

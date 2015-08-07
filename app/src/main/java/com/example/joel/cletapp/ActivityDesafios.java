@@ -1,6 +1,7 @@
 package com.example.joel.cletapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -77,7 +78,10 @@ public class ActivityDesafios extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String idDesafio = (String) parent.getAdapter().getItem(position);
-                Log.v("testeando", idDesafio);
+
+                Intent newIntent = new Intent(getApplicationContext(), ActivityDesafioOpciones.class);
+                newIntent.putExtra("Desafio", idDesafio);
+                startActivity(newIntent);
             }
         });
     }

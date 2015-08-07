@@ -14,6 +14,8 @@ import com.example.joel.cletapp.Helper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Joel on 04/08/2015.
@@ -95,6 +97,54 @@ public class RutinaCRUD {
         cursor.close();
 
         return rutina;
+    }
+
+    public List<Rutina> buscarTodasLasRutinasPendientes(){
+        List<Rutina> listRutinas = new ArrayList<Rutina>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, Helper.RUTINA_ESTADO + " ='" + "P" + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Rutina rutina = cursorToRutina(cursor);
+                listRutinas.add(rutina);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listRutinas;
+    }
+
+    public List<Rutina> buscarTodasLasRutinasTerminadas(){
+        List<Rutina> listRutinas = new ArrayList<Rutina>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, Helper.RUTINA_ESTADO + " ='" + "T" + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Rutina rutina = cursorToRutina(cursor);
+                listRutinas.add(rutina);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listRutinas;
+    }
+
+    public List<Rutina> buscarTodasLasRutinas(){
+        List<Rutina> listRutinas = new ArrayList<Rutina>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, null , null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Rutina rutina = cursorToRutina(cursor);
+                listRutinas.add(rutina);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listRutinas;
     }
 
     public Rutina cursorToRutina(Cursor cursor) throws ParseException {

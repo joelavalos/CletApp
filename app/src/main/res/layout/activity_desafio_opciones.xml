@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.joel.cletapp.ActivityDesafioOpciones">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <EditText
+        android:id="@+id/EditTextNombreDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:layout_marginBottom="16dp"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+        android:hint="Nombre del desafio"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/EditTextNotaDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EditTextNombreDesafio"
+        android:layout_marginBottom="24dp"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+        android:hint="Nota del desafio"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <GridView
+        android:id="@+id/GridViewDatosDesafio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/EditTextNotaDesafio"
+        android:numColumns="2"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:verticalSpacing="24dp" />
+
+    <Button
+        android:id="@+id/ButtonActualizarDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/boton"
+        android:text="Actualizar desafio"
+        android:layout_alignRight="@+id/separadorBotones"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/colorBlanco" />
+
+    <android.widget.Space
+        android:id="@+id/separadorBotones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/ButtonEliminarDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/boton"
+        android:text="Eliminar desafio"
+        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@+id/separadorBotones"
+        android:textColor="@color/colorBlanco" />
+
+</RelativeLayout>

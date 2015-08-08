@@ -42,6 +42,7 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
+    private TextView TextViewEstadoDesafio;
     private EditText EditTextNombreDesafio;
     private EditText EditTextNotaDesafio;
     private Button ButtonActualizarDesafio;
@@ -176,6 +177,7 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
         EditTextNotaDesafio = (EditText) findViewById(R.id.EditTextNotaDesafio);
         ButtonActualizarDesafio = (Button) findViewById(R.id.ButtonActualizarDesafio);
         ButtonEliminarDesafio = (Button) findViewById(R.id.ButtonEliminarDesafio);
+        TextViewEstadoDesafio = (TextView) findViewById(R.id.TextViewEstadoDesafio);
 
         EditTextNombreDesafio.setText(buscadoDesafio.getDesafioNombre());
         EditTextNotaDesafio.setText(buscadoDesafio.getDesafioDescripcion());
@@ -188,6 +190,23 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
         adapterCrearDesafio = new AdapterCrearDesafio(this, campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
 
+        if (!(buscadoDesafio.getEstadoDesafio() == 'P')) {
+            ButtonActualizarDesafio.setVisibility(View.INVISIBLE);
+            ButtonEliminarDesafio.setVisibility(View.INVISIBLE);
+            ButtonActualizarDesafio.setClickable(false);
+            ButtonEliminarDesafio.setClickable(false);
+
+            if (buscadoDesafio.getExitoDesafio() == true) {
+                TextViewEstadoDesafio.setText("Logrado");
+                TextViewEstadoDesafio.setTextColor(getResources().getColor(R.color.colorVerde));
+            } else {
+                TextViewEstadoDesafio.setText("No logrado");
+                TextViewEstadoDesafio.setTextColor(getResources().getColor(R.color.colorRojo));
+            }
+        } else {
+            TextViewEstadoDesafio.setText("Pendiente");
+            TextViewEstadoDesafio.setTextColor(getResources().getColor(R.color.colorMorado));
+        }
     }
 
     private void inicializarToolbar() {

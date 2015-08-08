@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/list_item_selector"
     tools:context="com.example.joel.cletapp.ActivityDesafioOpciones">
 
     <include
@@ -9,14 +10,14 @@
         layout="@layout/app_bar" />
 
     <EditText
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:id="@+id/EditTextNombreDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/app_bar"
         android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
         android:hint="Nombre del desafio"
         android:imeOptions="actionDone"
@@ -25,13 +26,13 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:id="@+id/EditTextNotaDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/EditTextNombreDesafio"
         android:layout_marginBottom="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
         android:hint="Nota del desafio"
         android:imeOptions="actionDone"
@@ -40,29 +41,40 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <GridView
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:id="@+id/GridViewDatosDesafio"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/EditTextNotaDesafio"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:numColumns="2"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
+        android:layout_marginBottom="24dp"
         android:verticalSpacing="24dp" />
 
+    <TextView
+        android:id="@+id/TextViewEstadoDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/GridViewDatosDesafio"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Estado"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
     <Button
-        android:layout_marginLeft="16dp"
         android:id="@+id/ButtonActualizarDesafio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/separadorBotones"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/boton"
         android:text="Actualizar"
-        android:layout_alignRight="@+id/separadorBotones"
-        android:layout_alignParentLeft="true"
         android:textColor="@color/colorBlanco" />
 
     <android.widget.Space
@@ -74,15 +86,15 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_marginRight="16dp"
         android:id="@+id/ButtonEliminarDesafio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/separadorBotones"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
         android:background="@drawable/boton"
         android:text="Eliminar"
-        android:layout_alignParentRight="true"
-        android:layout_alignLeft="@+id/separadorBotones"
         android:textColor="@color/colorBlanco" />
 
 </RelativeLayout>

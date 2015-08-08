@@ -45,6 +45,7 @@ public class DesafioObjetivoCRUD {
 
     public void open() throws SQLException {
         mDatabase = mDbHelper.getWritableDatabase();
+        mDatabase.execSQL("PRAGMA foreign_keys=ON;");
     }
 
     public void close() {

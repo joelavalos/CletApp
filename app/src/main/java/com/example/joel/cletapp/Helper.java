@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by Joel on 27/07/2015.
@@ -72,7 +71,8 @@ public class Helper extends SQLiteOpenHelper {
             + DESAFIOOBJETIVO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DESAFIOOBJETIVO_DESAFIO_ID + " INTEGER NOT NULL, "
             + DESAFIOOBJETIVO_OBJETIVO_ID + " INTEGER NOT NULL, "
-            + DESAFIOOBJETIVO_VALOR + " INTEGER NOT NULL);";
+            + DESAFIOOBJETIVO_VALOR + " INTEGER NOT NULL, "
+            + " FOREIGN KEY (" + DESAFIOOBJETIVO_DESAFIO_ID + ") REFERENCES " + TABLA_DESAFIO + " (" + DESAFIO_ID + ") ON DELETE CASCADE);";
     public static final String DROP_TABLE_DESAFIOOBJETIVO = "DROP TABLE IF EXISTS " + TABLA_DESAFIOOBJETIVO + ";";
 
     //Tabla diasRutina (Relacion many to many)
@@ -135,7 +135,8 @@ public class Helper extends SQLiteOpenHelper {
             + DESAFIOSRUTINA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DESAFIOSRUTINA_RUTINA_ID + " INTEGER NOT NULL, "
             + DESAFIOSRUTINA_DESAFIO_ID + " VARCHAR(255) NOT NULL, "
-            + DESAFIOSRUTINA_FECHA + " DATE NOT NULL);";
+            + DESAFIOSRUTINA_FECHA + " DATE NOT NULL, "
+            + " FOREIGN KEY (" + DESAFIOSRUTINA_DESAFIO_ID + ") REFERENCES " + TABLA_DESAFIO + " (" + DESAFIO_ID + ") ON DELETE CASCADE);";
     public static final String DROP_TABLE_DESAFIOSRUTINA = "DROP TABLE IF EXISTS " + TABLA_DESAFIOSRUTINA + ";";
 
     private Context context;

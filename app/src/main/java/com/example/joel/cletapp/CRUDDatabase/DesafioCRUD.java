@@ -52,6 +52,7 @@ public class DesafioCRUD {
 
     public void open() throws SQLException {
         mDatabase = mDbHelper.getWritableDatabase();
+        //mDatabase.execSQL("PRAGMA foreign_keys=ON;");
     }
 
     public void close() {
@@ -87,6 +88,11 @@ public class DesafioCRUD {
         return newDesafio;
     }
 
+    public int eliminarDesafio(Desafio desafio) {
+        int id = mDatabase.delete(Helper.TABLA_DESAFIO, Helper.DESAFIO_ID + " ='" + desafio.getDesafioId() + "'", null);
+        return id;
+    }
+
     public Desafio buscarDesafioPorId(long ID) throws ParseException {
         String[] columns = {Helper.DESAFIO_ID, Helper.DESAFIO_NOMBRE, Helper.DESAFIO_DESCRIPCON, Helper.DESAFIO_INICIO, Helper.DESAFIO_TERMINO, Helper.DESAFIO_ESTADO, Helper.DESAFIO_EXITO};
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, columns, Helper.DESAFIO_ID + " ='" + ID + "'", null, null, null, null);
@@ -103,7 +109,7 @@ public class DesafioCRUD {
         return desafio;
     }
 
-    public int actualizarDatosDesafio(Desafio desafio) {
+    public Desafio actualizarDatosDesafio(Desafio desafio) throws ParseException {
         ContentValues newValues = new ContentValues();
 
         newValues.put(Helper.DESAFIO_NOMBRE, desafio.getDesafioNombre());
@@ -116,7 +122,16 @@ public class DesafioCRUD {
         String[] whereArgs = {String.valueOf(desafio.getDesafioId())};
 
         int count = mDatabase.update(Helper.TABLA_DESAFIO, newValues, Helper.DESAFIO_ID + " =?", whereArgs);
-        return count;
+
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ID + " ='" + desafio.getDesafioId() + "'", null, null, null, null);
+        Desafio desafioReturn = new Desafio();
+
+        while (cursor.moveToNext()) {
+            desafioReturn = cursorToDesafio(cursor);
+        }
+        cursor.close();
+
+        return desafioReturn;
     }
 
     public List<Desafio> buscarTodosLosDesafiosPendientes(){
@@ -201,6 +216,22 @@ public class DesafioCRUD {
 
         return listDesafios;
     }
+
+    /*public int actualizarDatosDesafio(Desafio desafio) {
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(Helper.DESAFIO_NOMBRE, desafio.getDesafioNombre());
+        newValues.put(Helper.DESAFIO_DESCRIPCON, desafio.getDesafioDescripcion());
+        newValues.put(Helper.DESAFIO_INICIO, df.format(desafio.getInicioDesafio()));
+        newValues.put(Helper.DESAFIO_TERMINO, df.format(desafio.getTerminoDesafio()));
+        newValues.put(Helper.DESAFIO_ESTADO, String.valueOf(desafio.getEstadoDesafio()));
+        newValues.put(Helper.DESAFIO_EXITO, String.valueOf(desafio.getExitoDesafio()));
+
+        String[] whereArgs = {String.valueOf(desafio.getDesafioId())};
+
+        int count = mDatabase.update(Helper.TABLA_CICLISTA, newValues, Helper.COL_1 + " =?", whereArgs);
+        return count;
+    }*/
 
     public Desafio cursorToDesafio(Cursor cursor) throws ParseException {
 

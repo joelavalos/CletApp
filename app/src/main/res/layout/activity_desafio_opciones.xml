@@ -9,6 +9,9 @@
         layout="@layout/app_bar" />
 
     <EditText
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/EditTextNombreDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +25,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/EditTextNotaDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,6 +40,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <GridView
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/GridViewDatosDesafio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,12 +54,13 @@
         android:verticalSpacing="24dp" />
 
     <Button
+        android:layout_marginLeft="16dp"
         android:id="@+id/ButtonActualizarDesafio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/boton"
-        android:text="Actualizar desafio"
+        android:text="Actualizar"
         android:layout_alignRight="@+id/separadorBotones"
         android:layout_alignParentLeft="true"
         android:textColor="@color/colorBlanco" />
@@ -66,12 +74,13 @@
         android:layout_centerHorizontal="true" />
 
     <Button
+        android:layout_marginRight="16dp"
         android:id="@+id/ButtonEliminarDesafio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/boton"
-        android:text="Eliminar desafio"
+        android:text="Eliminar"
         android:layout_alignParentRight="true"
         android:layout_alignLeft="@+id/separadorBotones"
         android:textColor="@color/colorBlanco" />

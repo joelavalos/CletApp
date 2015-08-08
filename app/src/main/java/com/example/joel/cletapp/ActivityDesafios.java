@@ -56,13 +56,19 @@ public class ActivityDesafios extends ActionBarActivity {
     private DesafioObjetivoCRUD desafioObjetivoCRUD;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        inicializarBaseDeDatos();
+        inicializarComponentes();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_desafios);
 
         Bundle extras = getIntent().getExtras();
         buscar = extras.getString("Estado");
-
         inicializarToolbar();
         inicializarBaseDeDatos();
         inicializarComponentes();
@@ -90,6 +96,15 @@ public class ActivityDesafios extends ActionBarActivity {
         desafioCRUD = new DesafioCRUD(this);
         objetivoCRUD = new ObjetivoCRUD(this);
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(this);
+        listDesafiosPendientes = new ArrayList<>();
+        idDesafios = new ArrayList<>();
+        imagenes = new ArrayList<>();
+        nombreDesafios = new ArrayList<>();
+        notaDesafios = new ArrayList<>();
+        fechaDesafios = new ArrayList<>();
+        estadoDesafios = new ArrayList<>();
+        valorDesafios = new ArrayList<>();
+        categoriaDesafios = new ArrayList<>();
 
         if (buscar.equals("Pendiente")) {
             listDesafiosPendientes = desafioCRUD.buscarTodosLosDesafiosPendientes();
@@ -108,7 +123,6 @@ public class ActivityDesafios extends ActionBarActivity {
             notaDesafios.add(listDesafiosPendientes.get(i).getDesafioDescripcion());
             fechaDesafios.add("Desde: " + format.format(listDesafiosPendientes.get(i).getInicioDesafio()) + " hasta: " + format.format(listDesafiosPendientes.get(i).getTerminoDesafio()));
 
-            Log.v("asd", listDesafiosPendientes.get(i).getExitoDesafio() + "");
             if (listDesafiosPendientes.get(i).getEstadoDesafio() == 'P') {
                 estadoDesafios.add("Pendiente");
             } else {

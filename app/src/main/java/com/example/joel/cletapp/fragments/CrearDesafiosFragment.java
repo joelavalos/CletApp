@@ -190,6 +190,14 @@ public class CrearDesafiosFragment extends Fragment {
         Date dateInicio = new java.sql.Date(parsedInicio.getTime());
         Date dateFin = new java.sql.Date(parsedFinal.getTime());
 
+        Calendar cInicial = Calendar.getInstance();
+        cInicial.add(Calendar.DATE, -1);
+        Date actual = cInicial.getTime();
+
+        if (dateInicio.getTime() < actual.getTime()) {
+            validar = "La fecha inicial debe ser despues de: " + format.format(actual.getTime());
+        }
+
         if (dateInicio.getTime() >= dateFin.getTime()) {
             validar = "La fecha final debe ser despues de: " + valores[0];
         }

@@ -76,6 +76,29 @@ public class DesafioObjetivoCRUD {
         return newDesafioObjetivo;
     }
 
+    public DesafioObjetivo actualizarDatosDesafioObjetivo(DesafioObjetivo desafioObjetivo) throws ParseException {
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(Helper.DESAFIOOBJETIVO_DESAFIO_ID, desafioObjetivo.getDesafio().getDesafioId());
+        newValues.put(Helper.DESAFIOOBJETIVO_OBJETIVO_ID, desafioObjetivo.getObjetivo().getObjetivoId());
+        newValues.put(Helper.DESAFIOOBJETIVO_VALOR, desafioObjetivo.getValor());
+
+        String[] whereArgs = {String.valueOf(desafioObjetivo.getDesObjId())};
+
+        int count = mDatabase.update(Helper.TABLA_DESAFIOOBJETIVO, newValues, Helper.DESAFIOOBJETIVO_ID + " =?", whereArgs);
+
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOOBJETIVO, mAllColumns, Helper.DESAFIOOBJETIVO_ID + " ='" + desafioObjetivo.getDesObjId() + "'", null, null, null, null);
+
+        DesafioObjetivo desafioObjetivo1 = new DesafioObjetivo();
+
+        while (cursor.moveToNext()) {
+            desafioObjetivo1 = cursorToDesafioObjetivo(cursor);
+        }
+        cursor.close();
+
+        return desafioObjetivo1;
+    }
+
     public DesafioObjetivo buscarDesafioObjetivoPorIdDesafio(Desafio ID) throws ParseException {
         String[] columns = {Helper.DESAFIOOBJETIVO_ID, Helper.DESAFIOOBJETIVO_DESAFIO_ID, Helper.DESAFIOOBJETIVO_OBJETIVO_ID, Helper.DESAFIOOBJETIVO_VALOR};
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOOBJETIVO, columns, Helper.DESAFIOOBJETIVO_DESAFIO_ID + " ='" + ID.getDesafioId() + "'", null, null, null, null);

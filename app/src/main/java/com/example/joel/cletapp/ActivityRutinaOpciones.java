@@ -571,6 +571,9 @@ class AdapterDesafio extends ArrayAdapter<String> {
 
         holder.nombreCampo.setText(campos[position]);
         holder.valorCampo.setText(soloNombre[position]);
+        if (soloNombre[position].equals("Descansar")){
+            holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));
+        }
         holder.objetivoCampo.setText(objetivo[position]);
         holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
 

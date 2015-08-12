@@ -11,12 +11,13 @@
         android:paddingTop="8dp"
         android:text="Fecha y dia"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorGris2" />
+        android:textColor="@color/accentColor" />
 
     <ImageView
         android:id="@+id/ImageViewImagenDesafioRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_below="@+id/TextViewNombreDesafioRutina"
         android:src="@drawable/ic_star_black_24dp" />
 

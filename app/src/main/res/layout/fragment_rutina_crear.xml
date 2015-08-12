@@ -44,11 +44,10 @@
     <ListView
         android:id="@+id/ListViewDesafiosRutina"
         android:layout_width="wrap_content"
-        android:layout_height="480dp"
+        android:layout_height="590dp"
         android:layout_below="@+id/GridViewDatosRutina"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp">
-    </ListView>
+        android:paddingRight="4dp"></ListView>
 
     <Button
         android:id="@+id/ButtonCrearRutina"

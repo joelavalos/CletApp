@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -56,6 +57,12 @@ public class DialogoValorObjetivo extends DialogFragment {
                         }
                         AdapterCrearDesafio adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
                         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
+
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getActivity().getSystemService(getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow(EditTextValorCampo.getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

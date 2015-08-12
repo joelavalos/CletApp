@@ -109,11 +109,10 @@ public class ActivityRutinas extends ActionBarActivity {
                 e.printStackTrace();
             }
 
-            if (listaDesafioRutinas.isEmpty()){
+            if (listaDesafioRutinas.isEmpty()) {
                 resumenCRUD.eliminarResumen(listaRutinas.get(i).getResumen());
                 rutinaCRUD.eliminarRutina(listaRutinas.get(i));
-            }
-            else{
+            } else {
                 idRutinas.add(String.valueOf(listaRutinas.get(i).getRutinaId()));
                 imagenes.add(R.drawable.ic_directions_bike_black_48dp);
                 nombreRutinas.add(listaRutinas.get(i).getRutinaNombre());

@@ -65,6 +65,7 @@ public class DialogoDesafioSelector extends DialogFragment {
             ultimaSeleccion = 0;
         }
         ultimaSeleccionDesafio = valoresDesafios[posicion];
+        //desafios.remove(valoresDesafios[posicion]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Seleccione desafio")

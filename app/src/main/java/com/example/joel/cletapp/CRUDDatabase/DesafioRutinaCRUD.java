@@ -81,6 +81,12 @@ public class DesafioRutinaCRUD {
         return newDesafioRutina;
     }
 
+    public int eliminarDesafioRutina(Desafio desafio, Rutina rutina) {
+        String[] whereArgs = {String.valueOf(desafio.getDesafioId()), String.valueOf(rutina.getRutinaId())};
+        int id = mDatabase.delete(Helper.TABLA_DESAFIOSRUTINA, Helper.DESAFIOSRUTINA_DESAFIO_ID + " =? AND " + Helper.DESAFIOSRUTINA_RUTINA_ID + " =?", whereArgs);
+        return id;
+    }
+
     public List<DesafioRutina> buscarDesafioRutinaPorIdRutina(Rutina ID) throws ParseException {
         List<DesafioRutina> listRutinas = new ArrayList<DesafioRutina>();
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOSRUTINA, mAllColumns, Helper.DESAFIOSRUTINA_RUTINA_ID + " ='" + ID.getRutinaId() + "'", null, null, null, null);

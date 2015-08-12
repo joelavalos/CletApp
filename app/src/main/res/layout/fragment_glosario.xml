@@ -7,12 +7,9 @@
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
     android:orientation="vertical"
-    android:background="@drawable/list_item_selector"
     tools:context="com.example.joel.cletapp.fragments.GlosarioFragment">
 
     <ListView
-        android:paddingRight="4dp"
-        android:paddingLeft="4dp"
         android:id="@+id/LisViewGlosario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>

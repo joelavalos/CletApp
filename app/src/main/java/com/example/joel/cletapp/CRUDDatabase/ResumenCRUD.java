@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
+import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.Helper;
 
 import java.text.DateFormat;
@@ -45,6 +46,7 @@ public class ResumenCRUD {
 
     public void open() throws SQLException {
         mDatabase = mDbHelper.getWritableDatabase();
+        mDatabase.execSQL("PRAGMA foreign_keys=ON;");
     }
 
     public void close() {
@@ -73,6 +75,11 @@ public class ResumenCRUD {
         }
 
         return newResumen;
+    }
+
+    public int eliminarResumen(Resumen resumen) {
+        int id = mDatabase.delete(Helper.TABLA_RESUMEN, Helper.RESUMEN_ID + " ='" + resumen.getResumenId() + "'", null);
+        return id;
     }
 
     public Resumen buscarResumenPorId(long ID) throws ParseException {

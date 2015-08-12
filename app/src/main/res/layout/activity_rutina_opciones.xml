@@ -1,0 +1,127 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_item_selector"
+    tools:context="com.example.joel.cletapp.ActivityRutinaOpciones">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <ScrollView
+        android:layout_below="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/list_item_selector">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector">
+
+            <EditText
+                android:id="@+id/EditTextNombreRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="Nombre de la rutina"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/EditTextNotaRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/EditTextNombreRutina"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="Nota de la rutina"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <GridView
+                android:id="@+id/GridViewDatosRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/EditTextNotaRutina"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:numColumns="2"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:verticalSpacing="24dp" />
+
+            <ListView
+                android:id="@+id/ListViewDesafiosRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="480dp"
+                android:layout_below="@+id/GridViewDatosRutina"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"></ListView>
+
+            <TextView
+                android:id="@+id/TextViewEstadoRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ListViewDesafiosRutina"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Estado"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/ButtonActualizarRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/separadorBotones"
+                android:layout_below="@+id/TextViewEstadoRutina"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/boton"
+                android:text="Actualizar"
+                android:textColor="@color/colorBlanco" />
+
+            <android.widget.Space
+                android:id="@+id/separadorBotones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:id="@+id/ButtonEliminarRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/TextViewEstadoRutina"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/separadorBotones"
+                android:background="@drawable/boton"
+                android:text="Eliminar"
+                android:textColor="@color/colorBlanco" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+
+
+

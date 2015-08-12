@@ -47,12 +47,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/EditTextNotaDesafio"
+        android:layout_marginBottom="24dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:numColumns="2"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:layout_marginBottom="24dp"
         android:verticalSpacing="24dp" />
 
     <TextView

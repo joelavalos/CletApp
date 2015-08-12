@@ -15,14 +15,23 @@
         <item>Rutinas de entrenamiento</item>
         <item>Glosario</item>
     </string-array>
-    
+
     <string-array name="tabs">
         <item>Desafios</item>
         <item>Rutinas</item>
     </string-array>
 
+    <!-- TODO: Dialogo de confirmacion text -->
+    <string name="dialogo_titulo_actualizar">Actualizar</string>
+    <string name="dialogo_titulo_eliminar">Eliminar</string>
+    <string name="dialogo_titulo_reiniciar">Reiniciar</string>
+    <string name="dialogo_mensaje_reiniciar">Esta accion reiniciara la agenda, desesa continuar?</string>
+    <string name="dialogo_mensaje_actualizar_rutina">Seguro que desea actualizar la rutina?</string>
+    <string name="dialogo_mensaje_eliminar_rutina">Seguro que desea eliminar la rutina?</string>
+    <string name="dialogo_mensaje_actualizar_desafio">Seguro que desea actualizar el desafio?</string>
+    <string name="dialogo_mensaje_eliminar_desafio">Seguro que desea eliminar el desafio?</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navigation_drawer_view">NavigationDrawerView</string>
     <string name="title_activity_perfil">Perfil</string>
@@ -34,4 +43,5 @@
     <string name="title_activity_activity_desafios">Desafios</string>
     <string name="title_activity_activity_rutinas">Rutinas</string>
     <string name="title_activity_activity_desafio_opciones">Desafio</string>
+    <string name="title_activity_activity_rutina_opciones">Rutina</string>
 </resources>

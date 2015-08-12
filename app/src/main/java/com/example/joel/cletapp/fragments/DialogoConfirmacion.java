@@ -16,16 +16,22 @@ public class DialogoConfirmacion extends DialogFragment {
     private Communicator comm;
     private String accion = "";
     private String mensaje = "";
+    private String titulo = "";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         accion = getArguments().getString("Accion");
+        mensaje = getArguments().getString("Mensaje");
+        titulo = getArguments().getString("Titulo");
 
-        if (accion.equals("Actualizar")) {
+        /*if (accion.equals("Actualizar")) {
             mensaje = "Seguro que desea actualizar el desafio?";
+        } else if (accion.equals("Reiniciar")) {
+            mensaje = "Esta accion reiniciara la agenda, desesa continuar?";
         } else {
             mensaje = "Seguro que desea eliminar el desafio?";
-        }
+        }*/
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -33,24 +39,26 @@ public class DialogoConfirmacion extends DialogFragment {
 
         comm = (Communicator) getActivity();
 
-        builder.setTitle("Confirmar")
+        builder.setTitle(titulo)
                 //.setView(viewDialogo)
                 .setMessage(mensaje)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (accion.equals("Actualizar")) {
                             comm.Actualizar("Aceptar");
+                        } else if (accion.equals("Reiniciar")) {
+                            comm.Reiniciar("Aceptar");
                         } else {
                             comm.Eliminar("Aceptar");
                         }
-
-
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (accion.equals("Actualizar")) {
                             comm.Actualizar("Cancelar");
+                        } else if (accion.equals("Reiniciar")) {
+                            comm.Reiniciar("Cancelar");
                         } else {
                             comm.Eliminar("Cancelar");
                         }

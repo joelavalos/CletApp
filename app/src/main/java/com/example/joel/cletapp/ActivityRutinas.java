@@ -1,6 +1,7 @@
 package com.example.joel.cletapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,12 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
@@ -44,8 +47,16 @@ public class ActivityRutinas extends ActionBarActivity {
 
     private RutinaCRUD rutinaCRUD;
     private DesafioRutinaCRUD desafioRutinaCRUD;
+    private ResumenCRUD resumenCRUD;
     private List<Rutina> listaRutinas;
     private List<DesafioRutina> listaDesafioRutinas;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inicializarBaseDeDatos();
+        inicializarComponentes();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +69,32 @@ public class ActivityRutinas extends ActionBarActivity {
         inicializarToolbar();
         inicializarBaseDeDatos();
         inicializarComponentes();
+
+        ListViewRutinasCreadas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String idRutina = (String) parent.getAdapter().getItem(position);
+                Intent newIntent = new Intent(getApplicationContext(), ActivityRutinaOpciones.class);
+                newIntent.putExtra("idRutina", idRutina);
+                startActivity(newIntent);
+            }
+        });
     }
 
     private void inicializarBaseDeDatos() {
         rutinaCRUD = new RutinaCRUD(this);
         desafioRutinaCRUD = new DesafioRutinaCRUD(this);
+        resumenCRUD = new ResumenCRUD(this);
+
+        listaRutinas = new ArrayList<>();
+        idRutinas = new ArrayList<>();
+        imagenes = new ArrayList<>();
+        nombreRutinas = new ArrayList<>();
+        notaRutinas = new ArrayList<>();
+        fechaRutinas = new ArrayList<>();
+        estadoRutinas = new ArrayList<>();
+        valorRutinas = new ArrayList<>();
+        categoriaRutinas = new ArrayList<>();
 
         if (buscar.equals("Pendiente")) {
             listaRutinas = rutinaCRUD.buscarTodasLasRutinasPendientes();
@@ -71,26 +103,32 @@ public class ActivityRutinas extends ActionBarActivity {
         }
 
         for (int i = 0; i < listaRutinas.size(); i++) {
-            idRutinas.add(String.valueOf(listaRutinas.get(i).getRutinaId()));
-            imagenes.add(R.drawable.ic_directions_bike_black_48dp);
-            nombreRutinas.add(listaRutinas.get(i).getRutinaNombre());
-            notaRutinas.add(listaRutinas.get(i).getRutinaDescripcion());
-            fechaRutinas.add("Desde: " + format.format(listaRutinas.get(i).getRutinaInicio()) + " hasta: " + format.format(listaRutinas.get(i).getRutinaTermino()));
-
-            if (listaRutinas.get(i).getRutinaEstado() == 'P') {
-                estadoRutinas.add("Pendiente");
-            } else {
-                estadoRutinas.add("Terminada");
-            }
-
             try {
                 listaDesafioRutinas = desafioRutinaCRUD.buscarDesafioRutinaPorIdRutina(listaRutinas.get(i));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            valorRutinas.add(String.valueOf(Math.round(listaDesafioRutinas.size())));
-            categoriaRutinas.add("Desafios");
+            if (listaDesafioRutinas.isEmpty()){
+                resumenCRUD.eliminarResumen(listaRutinas.get(i).getResumen());
+                rutinaCRUD.eliminarRutina(listaRutinas.get(i));
+            }
+            else{
+                idRutinas.add(String.valueOf(listaRutinas.get(i).getRutinaId()));
+                imagenes.add(R.drawable.ic_directions_bike_black_48dp);
+                nombreRutinas.add(listaRutinas.get(i).getRutinaNombre());
+                notaRutinas.add(listaRutinas.get(i).getRutinaDescripcion());
+                fechaRutinas.add("Desde: " + format.format(listaRutinas.get(i).getRutinaInicio()) + " hasta: " + format.format(listaRutinas.get(i).getRutinaTermino()));
+
+                if (listaRutinas.get(i).getRutinaEstado() == 'P') {
+                    estadoRutinas.add("Pendiente");
+                } else {
+                    estadoRutinas.add("Terminada");
+                }
+
+                valorRutinas.add(String.valueOf(Math.round(listaDesafioRutinas.size())));
+                categoriaRutinas.add("Desafios");
+            }
         }
     }
 

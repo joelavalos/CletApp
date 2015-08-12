@@ -84,7 +84,6 @@ public class ActivityDesafios extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String idDesafio = (String) parent.getAdapter().getItem(position);
-
                 Intent newIntent = new Intent(getApplicationContext(), ActivityDesafioOpciones.class);
                 newIntent.putExtra("Desafio", idDesafio);
                 startActivity(newIntent);

@@ -52,6 +52,7 @@ public class RutinaCRUD {
 
     public void open() throws SQLException {
         mDatabase = mDbHelper.getWritableDatabase();
+        mDatabase.execSQL("PRAGMA foreign_keys=ON;");
     }
 
     public void close() {
@@ -84,6 +85,36 @@ public class RutinaCRUD {
         }
 
         return newRutina;
+    }
+
+    public int eliminarRutina(Rutina rutina) {
+        int id = mDatabase.delete(Helper.TABLA_RUTINA, Helper.RUTINA_ID + " ='" + rutina.getRutinaId() + "'", null);
+        return id;
+    }
+
+    public Rutina actualizarRutina(Rutina rutina) throws ParseException {
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(Helper.RUTINA_NOMBRE, rutina.getRutinaNombre());
+        newValues.put(Helper.RUTINA_DESCRIPCON, rutina.getRutinaDescripcion());
+        newValues.put(Helper.RUTINA_INICIO, df.format(rutina.getRutinaInicio()));
+        newValues.put(Helper.RUTINA_TERMINO, df.format(rutina.getRutinaTermino()));
+        newValues.put(Helper.RUTINA_ESTADO, String.valueOf(rutina.getRutinaEstado()));
+        newValues.put(Helper.RUTINA_RESUMEN_ID, rutina.getResumen().getResumenId());
+
+        String[] whereArgs = {String.valueOf(rutina.getRutinaId())};
+
+        int count = mDatabase.update(Helper.TABLA_RUTINA, newValues, Helper.RUTINA_ID + " =?", whereArgs);
+
+        Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, Helper.RUTINA_ID + " ='" + rutina.getRutinaId() + "'", null, null, null, null);
+        Rutina rutina1 = new Rutina();
+
+        while (cursor.moveToNext()) {
+            rutina1 = cursorToRutina(cursor);
+        }
+        cursor.close();
+
+        return rutina1;
     }
 
     public Rutina buscarRutinaPorId(long ID) throws ParseException {

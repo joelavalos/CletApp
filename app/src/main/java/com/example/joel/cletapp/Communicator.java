@@ -6,4 +6,5 @@ package com.example.joel.cletapp;
 public interface Communicator {
     public void Actualizar(String data);
     public void Eliminar(String data);
+    public void Reiniciar(String data);
 }

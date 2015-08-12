@@ -3,11 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/list_item_selector"
     tools:context="com.example.joel.cletapp.fragments.CrearDesafiosFragment">
 
     <EditText
-        android:layout_marginTop="16dp"
         android:id="@+id/EditTextNombreDesafio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

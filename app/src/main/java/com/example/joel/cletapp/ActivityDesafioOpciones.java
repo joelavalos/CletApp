@@ -84,36 +84,39 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
         GridViewDatosDesafio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putStringArray("campos", campos);
-                bundle.putStringArray("valores", valores);
-                bundle.putStringArrayList("categorias", categorias);
-                bundle.putInt("posicion", position);
 
-                switch (position) {
-                    case 0:
-                        DialogFragment pickerInicio = new DialogoDatePickerDesafioFragment();
-                        pickerInicio.setArguments(bundle);
-                        pickerInicio.show(getSupportFragmentManager(), "datePicker");
-                        break;
+                if ((buscadoDesafio.getEstadoDesafio() == 'P')) {
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray("campos", campos);
+                    bundle.putStringArray("valores", valores);
+                    bundle.putStringArrayList("categorias", categorias);
+                    bundle.putInt("posicion", position);
 
-                    case 1:
-                        DialogFragment pickerFinal = new DialogoDatePickerDesafioFragment();
-                        pickerFinal.setArguments(bundle);
-                        pickerFinal.show(getSupportFragmentManager(), "datePicker2");
-                        break;
+                    switch (position) {
+                        case 0:
+                            DialogFragment pickerInicio = new DialogoDatePickerDesafioFragment();
+                            pickerInicio.setArguments(bundle);
+                            pickerInicio.show(getSupportFragmentManager(), "datePicker");
+                            break;
 
-                    case 2:
-                        DialogoCategoriaSelector dialogo = new DialogoCategoriaSelector();
-                        dialogo.setArguments(bundle);
-                        dialogo.show(getSupportFragmentManager(), "categoriaPicker");
-                        break;
+                        case 1:
+                            DialogFragment pickerFinal = new DialogoDatePickerDesafioFragment();
+                            pickerFinal.setArguments(bundle);
+                            pickerFinal.show(getSupportFragmentManager(), "datePicker2");
+                            break;
 
-                    case 3:
-                        DialogoValorObjetivo dialogoValorObjetivo = new DialogoValorObjetivo();
-                        dialogoValorObjetivo.setArguments(bundle);
-                        dialogoValorObjetivo.show(getSupportFragmentManager(), "valorDialog");
-                        break;
+                        case 2:
+                            DialogoCategoriaSelector dialogo = new DialogoCategoriaSelector();
+                            dialogo.setArguments(bundle);
+                            dialogo.show(getSupportFragmentManager(), "categoriaPicker");
+                            break;
+
+                        case 3:
+                            DialogoValorObjetivo dialogoValorObjetivo = new DialogoValorObjetivo();
+                            dialogoValorObjetivo.setArguments(bundle);
+                            dialogoValorObjetivo.show(getSupportFragmentManager(), "valorDialog");
+                            break;
+                    }
                 }
             }
         });
@@ -124,6 +127,8 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
             @Override
             public void onClick(View v) {
                 bundle.putString("Accion", "Actualizar");
+                bundle.putString("Mensaje", getResources().getString(R.string.dialogo_mensaje_actualizar_desafio));
+                bundle.putString("Titulo", getResources().getString(R.string.dialogo_titulo_actualizar));
                 DialogoConfirmacion dialogoConfirmacion = new DialogoConfirmacion();
                 dialogoConfirmacion.setArguments(bundle);
                 dialogoConfirmacion.show(getSupportFragmentManager(), "valorDialog");
@@ -136,6 +141,8 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
             @Override
             public void onClick(View v) {
                 bundle.putString("Accion", "Eliminar");
+                bundle.putString("Mensaje", getResources().getString(R.string.dialogo_mensaje_eliminar_desafio));
+                bundle.putString("Titulo", getResources().getString(R.string.dialogo_titulo_eliminar));
                 DialogoConfirmacion dialogoConfirmacion = new DialogoConfirmacion();
                 dialogoConfirmacion.setArguments(bundle);
                 dialogoConfirmacion.show(getSupportFragmentManager(), "valorDialog");
@@ -195,6 +202,10 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
             ButtonEliminarDesafio.setVisibility(View.INVISIBLE);
             ButtonActualizarDesafio.setClickable(false);
             ButtonEliminarDesafio.setClickable(false);
+            EditTextNombreDesafio.setEnabled(false);
+            EditTextNotaDesafio.setEnabled(false);
+            EditTextNombreDesafio.setTextColor(getResources().getColor(R.color.colorNegro));
+            EditTextNotaDesafio.setTextColor(getResources().getColor(R.color.colorNegro));
 
             if (buscadoDesafio.getExitoDesafio() == true) {
                 TextViewEstadoDesafio.setText("Logrado");
@@ -287,6 +298,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
         } else {
 
         }
+    }
+
+    @Override
+    public void Reiniciar(String data) {
+
     }
 
     private String validarCreacion() {

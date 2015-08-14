@@ -15,4 +15,13 @@
         android:layout_height="wrap_content"
         android:text="Hola soy el fragment principal" />
 
+    <Button
+        android:id="@+id/ButtonFrecuencioa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/asd"
+        android:background="@drawable/boton"
+        android:text="Frecuencia"
+        android:textColor="@color/colorBlanco" />
+
 </RelativeLayout>

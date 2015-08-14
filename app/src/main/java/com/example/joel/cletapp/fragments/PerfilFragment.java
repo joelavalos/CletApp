@@ -17,11 +17,13 @@ import android.widget.TextView;
 
 import com.example.joel.cletapp.CRUDDatabase.CiclistaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Ciclista;
+import com.example.joel.cletapp.Communicator;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 //import com.example.joel.cletapp.DataBaseAdapter;
@@ -29,13 +31,13 @@ import java.util.Date;
 /**
  * Created by Joel on 21/07/2015.
  */
-public class PerfilFragment extends Fragment {
+public class PerfilFragment extends Fragment implements Communicator {
 
     private Button ButtonGuardarPerfil;
     private ListView ListViewDatosPerfil;
 
     private String[] campos = {"Nombre", "Apellido", "Fecha de nacimiento", "Peso", "Altura", "Sexo"};
-    private String[] valores = {"", "", "01/01/1990", "0", "0", "Indefinido"};
+    private String[] valores = {"", "", "", "0", "0", "Indefinido"};
     private String[] valoresActualizados;
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private Date parsed = null;
@@ -55,14 +57,13 @@ public class PerfilFragment extends Fragment {
         ButtonGuardarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdapterPerfil adapterPerfilActualizado = (AdapterPerfil) ListViewDatosPerfil.getAdapter();
-                valoresActualizados = adapterPerfilActualizado.getValores();
-                int id = updateData("0", valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5]);
-
-                if (id < 0) {
-                    Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Error al actualizar " + id);
+                if (!validarCreacion().equals("")) {
+                    new Mensaje(getActivity().getApplicationContext(), validarCreacion());
                 } else {
-                    Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Perfil actualizado");
+                    AdapterPerfil adapterPerfilActualizado = (AdapterPerfil) ListViewDatosPerfil.getAdapter();
+                    valoresActualizados = adapterPerfilActualizado.getValores();
+                    int id = updateData("0", valoresActualizados[0], valoresActualizados[1], valoresActualizados[2], valoresActualizados[3], valoresActualizados[4], valoresActualizados[5]);
+                    new Mensaje(getActivity().getApplicationContext(), "Perfil actualizado");
                 }
             }
         });
@@ -113,6 +114,22 @@ public class PerfilFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private String validarCreacion() {
+        String validar = "";
+
+        if (valores[5].equals("Indefinido")) {
+            validar = "Seleccione sexo";
+        }
+        if (valores[4].equals("0.0 m")) {
+            validar = "Ingrese altura";
+        }
+        if (valores[3].equals("0.0 Kg")) {
+            validar = "Ingrese peso";
+        }
+
+        return validar;
     }
 
     private void inicializarComponentes(View root) {
@@ -228,6 +245,25 @@ public class PerfilFragment extends Fragment {
         }
 
         return stringSexo;
+    }
+
+    @Override
+    public void Actualizar(String data) {
+        if (data.equals("Aceptar")) {
+            new Mensaje(getActivity().getApplicationContext(), "Perfil actualizado");
+        } else {
+
+        }
+    }
+
+    @Override
+    public void Eliminar(String data) {
+
+    }
+
+    @Override
+    public void Reiniciar(String data) {
+
     }
 }
 

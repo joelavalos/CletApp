@@ -27,6 +27,7 @@
     <string name="dialogo_titulo_reiniciar">Reiniciar</string>
     <string name="dialogo_mensaje_reiniciar">Esta accion reiniciara la agenda, desesa continuar?</string>
     <string name="dialogo_mensaje_actualizar_rutina">Seguro que desea actualizar la rutina?</string>
+    <string name="dialogo_mensaje_actualizar_perfil">Seguro que desea actualizar el perfil?</string>
     <string name="dialogo_mensaje_eliminar_rutina">Seguro que desea eliminar la rutina?</string>
     <string name="dialogo_mensaje_actualizar_desafio">Seguro que desea actualizar el desafio?</string>
     <string name="dialogo_mensaje_eliminar_desafio">Seguro que desea eliminar el desafio?</string>
@@ -44,4 +45,8 @@
     <string name="title_activity_activity_rutinas">Rutinas</string>
     <string name="title_activity_activity_desafio_opciones">Desafio</string>
     <string name="title_activity_activity_rutina_opciones">Rutina</string>
+    <string name="title_activity_heart_rate_monitor">HeartRateMonitor</string>
+
+    <string name="default_text">--</string>
+    <string name="app_name2">HeartRateMonitor</string>
 </resources>

@@ -20,7 +20,7 @@ public class DialogoDatePickerFragment extends DialogFragment implements DatePic
     private ListView ListViewDatosPerfil;
     private String[] campos;
     private String[] valores;
-    private int posicion;
+    private int posicion, year, month, day;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,10 +31,16 @@ public class DialogoDatePickerFragment extends DialogFragment implements DatePic
         valores = getArguments().getStringArray("valores");
         posicion = getArguments().getInt("posicion");
 
-        String[] fechaActual = valores[posicion].split("/");
-        int year = Integer.parseInt(fechaActual[2]);
-        int month = Integer.parseInt(fechaActual[1]) - 1;
-        int day = Integer.parseInt(fechaActual[0]);
+        if (valores[posicion].equals("")){
+            year = Integer.parseInt("2000");
+            month = Integer.parseInt("9");
+            day = Integer.parseInt("17");
+        }else{
+            String[] fechaActual = valores[posicion].split("/");
+            year = Integer.parseInt(fechaActual[2]);
+            month = Integer.parseInt(fechaActual[1]) - 1;
+            day = Integer.parseInt(fechaActual[0]);
+        }
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);

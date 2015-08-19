@@ -2,6 +2,8 @@ package com.example.joel.cletapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -80,6 +82,10 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
                 onBackPressed();
             }
         });
+
+        if (!(buscadoDesafio.getEstadoDesafio() == 'P')) {
+            GridViewDatosDesafio.setSelector(R.color.colorTransparente);
+        }
 
         GridViewDatosDesafio.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

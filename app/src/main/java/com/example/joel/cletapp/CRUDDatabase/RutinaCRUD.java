@@ -146,6 +146,22 @@ public class RutinaCRUD {
         return listRutinas;
     }
 
+    public List<Rutina> buscarTodasLasRutinasIniciadas(){
+        List<Rutina> listRutinas = new ArrayList<Rutina>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, Helper.RUTINA_ESTADO + " ='" + "I" + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            try {
+                Rutina rutina = cursorToRutina(cursor);
+                listRutinas.add(rutina);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listRutinas;
+    }
+
     public List<Rutina> buscarTodasLasRutinasTerminadas(){
         List<Rutina> listRutinas = new ArrayList<Rutina>();
         Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, Helper.RUTINA_ESTADO + " ='" + "T" + "'", null, null, null, null);

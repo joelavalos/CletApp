@@ -119,15 +119,7 @@ public class NavigationDrawerFragment extends Fragment {
                         cargarFragmento(getRutinaFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
                         v2 = view;
                     }
-                } /*else if (opcionSeleccionada.equals("Historial")) {
-                    mDrawerLayout.closeDrawer(containerView);
-
-                    if (!(v2 == view)) {
-                        cargarFragmento(getHistorialFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
-                        v2 = view;
-                    }
-                }*/
-                else if (opcionSeleccionada.equals("Glosario")) {
+                } else if (opcionSeleccionada.equals("Glosario")) {
                     mDrawerLayout.closeDrawer(containerView);
 
                     if (!(v2 == view)) {
@@ -166,7 +158,7 @@ public class NavigationDrawerFragment extends Fragment {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.setCustomAnimations(animacionSalida, animacioEntrada, animacionSalida, animacioEntrada);
-        transaction.replace(R.id.contenedor, fragment);
+        transaction.replace(R.id.contenedor, fragment, "TagPrincipal");
         transaction.commit();
     }
 

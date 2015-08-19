@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements Communicator{
 
     private Toolbar toolbar; //Variable para manejar la ToolBar
     private NavigationDrawerFragment drawerFargment; //Variable para manejar el Navegation
@@ -202,6 +202,24 @@ public class MainActivity extends ActionBarActivity {
             mainFragment = new MainFragment();
         }
         return mainFragment;
+    }
+
+    @Override
+    public void Actualizar(String data) {
+        FragmentManager manager = this.getSupportFragmentManager();
+        MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+        asd.actualizarDatos(data);
+
+    }
+
+    @Override
+    public void Eliminar(String data) {
+
+    }
+
+    @Override
+    public void Reiniciar(String data) {
+
     }
 
     /*@Override

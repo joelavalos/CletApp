@@ -16,4 +16,5 @@
     <color name="colorGris2">#757575</color>
     <color name="colorGris3">#E0E0E0</color>
     <color name="colorCeleste">#E0E0E0</color>
+    <color name="colorTransparente">#00000000</color>
 </resources>

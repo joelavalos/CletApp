@@ -24,18 +24,8 @@ public class DialogoConfirmacion extends DialogFragment {
         mensaje = getArguments().getString("Mensaje");
         titulo = getArguments().getString("Titulo");
 
-        /*if (accion.equals("Actualizar")) {
-            mensaje = "Seguro que desea actualizar el desafio?";
-        } else if (accion.equals("Reiniciar")) {
-            mensaje = "Esta accion reiniciara la agenda, desesa continuar?";
-        } else {
-            mensaje = "Seguro que desea eliminar el desafio?";
-        }*/
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        //View viewDialogo = inflater.inflate(R.layout.input_dialog_peso, null);
 
         comm = (Communicator) getActivity();
 
@@ -48,6 +38,8 @@ public class DialogoConfirmacion extends DialogFragment {
                             comm.Actualizar("Aceptar");
                         } else if (accion.equals("Reiniciar")) {
                             comm.Reiniciar("Aceptar");
+                        } else if (accion.equals("DetenerRutina")) {
+                            comm.Eliminar("Aceptar");
                         } else {
                             comm.Eliminar("Aceptar");
                         }
@@ -59,6 +51,8 @@ public class DialogoConfirmacion extends DialogFragment {
                             comm.Actualizar("Cancelar");
                         } else if (accion.equals("Reiniciar")) {
                             comm.Reiniciar("Cancelar");
+                        } else if (accion.equals("DetenerRutina")) {
+                            comm.Eliminar("Cancelar");
                         } else {
                             comm.Eliminar("Cancelar");
                         }

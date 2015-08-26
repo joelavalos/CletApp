@@ -100,6 +100,20 @@ public class DesafioRutinaCRUD {
         return listRutinas;
     }
 
+    public List<DesafioRutina> buscarDesafioRutinaPorIdRutinaOrderByFecha(Rutina ID) throws ParseException {
+        List<DesafioRutina> listRutinas = new ArrayList<DesafioRutina>();
+        String[] whereArgs = {String.valueOf(ID.getRutinaId())};
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIOSRUTINA, mAllColumns, Helper.DESAFIOSRUTINA_RUTINA_ID + " =?", whereArgs, null, null, Helper.DESAFIOSRUTINA_FECHA + " ASC");
+
+        while (cursor.moveToNext()) {
+            DesafioRutina desafioRutina = cursorToDesafioRutina(cursor);
+            listRutinas.add(desafioRutina);
+        }
+        cursor.close();
+
+        return listRutinas;
+    }
+
     public DesafioRutina cursorToDesafioRutina(Cursor cursor) throws ParseException {
 
         DesafioRutina newDesafioRutina = new DesafioRutina();

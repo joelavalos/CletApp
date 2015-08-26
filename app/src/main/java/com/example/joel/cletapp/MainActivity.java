@@ -209,12 +209,13 @@ public class MainActivity extends ActionBarActivity implements Communicator{
         FragmentManager manager = this.getSupportFragmentManager();
         MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
         asd.actualizarDatos(data);
-
     }
 
     @Override
     public void Eliminar(String data) {
-
+        FragmentManager manager = this.getSupportFragmentManager();
+        MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+        asd.detenerRutina(data);
     }
 
     @Override

@@ -223,6 +223,13 @@ public class MainActivity extends ActionBarActivity implements Communicator{
 
     }
 
+    @Override
+    public void TerminarRutina(String data) {
+        FragmentManager manager = this.getSupportFragmentManager();
+        MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+        asd.terminarRutina(data);
+    }
+
     /*@Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();

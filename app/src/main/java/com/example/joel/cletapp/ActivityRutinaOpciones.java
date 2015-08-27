@@ -460,6 +460,11 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
 
         }
     }
+
+    @Override
+    public void TerminarRutina(String data) {
+
+    }
 }
 
 class AdapterCrearRutinaRow {

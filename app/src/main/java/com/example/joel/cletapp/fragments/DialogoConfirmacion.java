@@ -40,6 +40,8 @@ public class DialogoConfirmacion extends DialogFragment {
                             comm.Reiniciar("Aceptar");
                         } else if (accion.equals("DetenerRutina")) {
                             comm.Eliminar("Aceptar");
+                        }else if (accion.equals("RutinaTerminada")) {
+                            comm.TerminarRutina("Aceptar");
                         } else {
                             comm.Eliminar("Aceptar");
                         }
@@ -53,6 +55,8 @@ public class DialogoConfirmacion extends DialogFragment {
                             comm.Reiniciar("Cancelar");
                         } else if (accion.equals("DetenerRutina")) {
                             comm.Eliminar("Cancelar");
+                        }else if (accion.equals("RutinaTerminada")) {
+                            comm.TerminarRutina("Cancelar");
                         } else {
                             comm.Eliminar("Cancelar");
                         }

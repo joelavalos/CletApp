@@ -2,8 +2,6 @@ package com.example.joel.cletapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -298,9 +296,13 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
     @Override
     public void Eliminar(String data) {
         if (data.equals("Aceptar")) {
-            desafioCRUD.eliminarDesafio(buscadoDesafio);
-            onBackPressed();
-            new Mensaje(this, "Desafio eliminado");
+            if (buscadoDesafio.getEstadoDesafio() == 'I') {
+                new Mensaje(this, "El desafio esta en uso");
+            } else {
+                desafioCRUD.eliminarDesafio(buscadoDesafio);
+                onBackPressed();
+                new Mensaje(this, "Desafio eliminado");
+            }
         } else {
 
         }
@@ -308,6 +310,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
     @Override
     public void Reiniciar(String data) {
+
+    }
+
+    @Override
+    public void TerminarRutina(String data) {
 
     }
 

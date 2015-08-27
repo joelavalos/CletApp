@@ -265,6 +265,11 @@ public class PerfilFragment extends Fragment implements Communicator {
     public void Reiniciar(String data) {
 
     }
+
+    @Override
+    public void TerminarRutina(String data) {
+
+    }
 }
 
 class AdapterPerfilRow {

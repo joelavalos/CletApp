@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.ActivityRutinaOpciones;
+import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
@@ -39,6 +41,7 @@ public class MainFragment extends Fragment {
     private boolean encontrado = false;
     private boolean nextDesafio = false;
     private String diff = "";
+    private String fechaActual = "";
 
     private Button ButtonFrecuencioa;
     private Button ButtonIniciarRutina;
@@ -64,6 +67,7 @@ public class MainFragment extends Fragment {
     private List<Rutina> listaRutinasIniciadas;
     private List<DesafioRutina> listaDesafiosRutina;
     private Rutina actualRutina;
+    private DesafioCRUD desafioCRUD;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,6 +110,15 @@ public class MainFragment extends Fragment {
                     TextViewEstado.setTextColor(getResources().getColor(R.color.colorVerde));
 
                     actualRutina.setRutinaEstado('I');
+                    for (int i = 0; i < listaDesafiosRutina.size(); i++){
+                        listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('I');
+
+                        try {
+                            desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                     try {
                         rutinaCRUD.actualizarRutina(actualRutina);
@@ -126,7 +139,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 bundle.putString("Accion", "DetenerRutina");
-                bundle.putString("Mensaje", "Si detiene la rutina se perderan todos los progresos");
+                bundle.putString("Mensaje", "Detener la rutina forzara la evaluacion con el progreso actual");
                 bundle.putString("Titulo", "Detener rutina");
 
                 DialogoConfirmacion dialogo = new DialogoConfirmacion();
@@ -139,6 +152,7 @@ public class MainFragment extends Fragment {
     }
 
     private void inicializarBaseDeDatos() {
+        desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
         rutinaCRUD = new RutinaCRUD(getActivity().getApplicationContext());
         desafioRutinaCRUD = new DesafioRutinaCRUD(getActivity().getApplicationContext());
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
@@ -181,11 +195,19 @@ public class MainFragment extends Fragment {
         TextViewElegirRutina = (TextView) root.findViewById(R.id.TextViewElegirRutina);
         TextViewElegirDesafioActual = (TextView) root.findViewById(R.id.TextViewElegirDesafioActual);
 
+        cambiarVisibilidadRutina(View.INVISIBLE);
+        cambiarVisibilidadDesafioActual(View.INVISIBLE);
+
         if (listaRutinasIniciadas.isEmpty()) {
-            cambiarVisibilidadRutina(View.INVISIBLE);
-            cambiarVisibilidadDesafioActual(View.INVISIBLE);
 
         } else {
+            Calendar cInicial = Calendar.getInstance();
+            cInicial.add(Calendar.DATE, +6);
+            Date actual = cInicial.getTime();
+            String fechaDesafioTermino = format.format(listaRutinasIniciadas.get(0).getRutinaTermino());
+            fechaActual = format.format(actual);
+
+            new Mensaje(getActivity().getApplicationContext(), "Rutina en curso");
             actualRutina = listaRutinasIniciadas.get(0);
             TextViewElegirRutina.setText("");
             TextViewElegirRutina.setEnabled(false);
@@ -210,6 +232,21 @@ public class MainFragment extends Fragment {
             }
 
             cargarDesafio(String.valueOf(R.drawable.ic_grade_black_48dp));
+
+            if (actual.after(listaRutinasIniciadas.get(0).getRutinaTermino())) {
+                new Mensaje(getActivity().getApplicationContext(), "Rutina terminada");
+
+                Bundle bundle = new Bundle();
+                bundle.putString("Accion", "RutinaTerminada");
+                bundle.putString("Mensaje", "Desea ver las resultados?");
+                bundle.putString("Titulo", "Rutina terminada");
+
+                DialogoConfirmacion dialogo = new DialogoConfirmacion();
+                dialogo.setArguments(bundle);
+                dialogo.show(getFragmentManager(), "categoriaPicker");
+            } else {
+
+            }
         }
     }
 
@@ -238,7 +275,6 @@ public class MainFragment extends Fragment {
 
     private void cargarDesafio(String imagen) {
         Calendar cInicial = Calendar.getInstance();
-        //cInicial.add(Calendar.DATE, +1);
         Date actual = cInicial.getTime();
         String fechaDesafio = format.format(listaDesafiosRutina.get(0).getFecha());
         String fechaActual = format.format(actual);
@@ -338,6 +374,7 @@ public class MainFragment extends Fragment {
     }
 
     private void cargarDatosRutina(int imagen, String rutinaNombre, String desafios, String valorDesafio, String rutinaDescripcion, String fecha, String estado) {
+        cambiarVisibilidadRutina(View.VISIBLE);
         ImageViewImagenDesafio2.setImageResource(imagen);
         TextViewNombreDesafio.setText(rutinaNombre);
         TextViewCategoriaDesafio.setText(desafios);
@@ -353,6 +390,42 @@ public class MainFragment extends Fragment {
         TextViewEstado.setText(estado);
     }
 
+    public void terminarRutina(String data) {
+        actualRutina.setRutinaEstado('T');
+        cambiarVisibilidadDesafioActual(View.INVISIBLE);
+        cambiarVisibilidadRutina(View.INVISIBLE);
+        TextViewElegirRutina.setText("Seleccionar rutina");
+        TextViewElegirRutina.setEnabled(true);
+        TextViewElegirDesafioActual.setText("Desafio actual");
+        ButtonDetenerRutina.setEnabled(false);
+
+        try {
+            rutinaCRUD.actualizarRutina(actualRutina);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < listaDesafiosRutina.size(); i++){
+            listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
+            listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(true);
+
+            try {
+                desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (data.equals("Aceptar")) {
+            String idRutina = String.valueOf(listaRutinasIniciadas.get(0).getRutinaId());
+            Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityRutinaOpciones.class);
+            newIntent.putExtra("idRutina", idRutina);
+            startActivity(newIntent);
+        } else {
+
+        }
+    }
+
     public void detenerRutina(String data) {
         if (data.equals("Aceptar")) {
             actualRutina.setRutinaEstado('T');
@@ -361,15 +434,31 @@ public class MainFragment extends Fragment {
             TextViewElegirRutina.setText("Seleccionar rutina");
             TextViewElegirRutina.setEnabled(true);
             TextViewElegirDesafioActual.setText("Desafio actual");
+            ButtonDetenerRutina.setEnabled(false);
 
             try {
                 rutinaCRUD.actualizarRutina(actualRutina);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            for (int i = 0; i < listaDesafiosRutina.size(); i++){
+                listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
+                listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(false);
+
+                try {
+                    desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            String idRutina = String.valueOf(actualRutina.getRutinaId());
+            Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityRutinaOpciones.class);
+            newIntent.putExtra("idRutina", idRutina);
+            startActivity(newIntent);
         } else {
 
         }
-        //new Mensaje(getActivity().getApplicationContext(), "Rutina detenida " + data);
     }
 }

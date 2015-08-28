@@ -16,6 +16,7 @@ import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
@@ -68,6 +69,10 @@ public class MainFragment extends Fragment {
     private List<DesafioRutina> listaDesafiosRutina;
     private Rutina actualRutina;
     private DesafioCRUD desafioCRUD;
+    private ResumenCRUD resumenCRUD;
+
+    private List<Rutina> todasLasRutinas;
+    private List<DesafioRutina> todosLosDesafiosRutinasTemporal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,7 +107,9 @@ public class MainFragment extends Fragment {
         ButtonIniciarRutina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (ButtonIniciarRutina.isEnabled()) {
+
                     ButtonIniciarRutina.setEnabled(false);
                     ButtonDetenerRutina.setEnabled(true);
                     TextViewElegirRutina.setEnabled(false);
@@ -110,7 +117,7 @@ public class MainFragment extends Fragment {
                     TextViewEstado.setTextColor(getResources().getColor(R.color.colorVerde));
 
                     actualRutina.setRutinaEstado('I');
-                    for (int i = 0; i < listaDesafiosRutina.size(); i++){
+                    for (int i = 0; i < listaDesafiosRutina.size(); i++) {
                         listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('I');
 
                         try {
@@ -124,6 +131,24 @@ public class MainFragment extends Fragment {
                         rutinaCRUD.actualizarRutina(actualRutina);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                    }
+
+                    todasLasRutinas = rutinaCRUD.buscarTodasLasRutinasPendientes();
+
+                    for (int i = 0; i < todasLasRutinas.size(); i++) {
+                        try {
+                            todosLosDesafiosRutinasTemporal = desafioRutinaCRUD.buscarDesafioRutinaPorIdRutina(todasLasRutinas.get(i));
+
+                            for (int j = 0; j < todosLosDesafiosRutinasTemporal.size(); j++) {
+                                if (todosLosDesafiosRutinasTemporal.get(j).getDesafio().getEstadoDesafio() == 'I') {
+                                    resumenCRUD.eliminarResumen(todasLasRutinas.get(i).getResumen());
+                                    rutinaCRUD.eliminarRutina(todasLasRutinas.get(i));
+                                    j = todosLosDesafiosRutinasTemporal.size();
+                                }
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     if (!TextViewNombreDesafioActual.getText().toString().equals("Descansar")) {
@@ -153,11 +178,14 @@ public class MainFragment extends Fragment {
 
     private void inicializarBaseDeDatos() {
         desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
+        resumenCRUD = new ResumenCRUD(getActivity().getApplicationContext());
         rutinaCRUD = new RutinaCRUD(getActivity().getApplicationContext());
         desafioRutinaCRUD = new DesafioRutinaCRUD(getActivity().getApplicationContext());
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
         listaRutinasIniciadas = new ArrayList<>();
         listaDesafiosRutina = new ArrayList<>();
+        todasLasRutinas = new ArrayList<>();
+        todosLosDesafiosRutinasTemporal = new ArrayList<>();
 
         listaRutinasIniciadas = rutinaCRUD.buscarTodasLasRutinasIniciadas();
     }
@@ -202,7 +230,7 @@ public class MainFragment extends Fragment {
 
         } else {
             Calendar cInicial = Calendar.getInstance();
-            cInicial.add(Calendar.DATE, +6);
+            //cInicial.add(Calendar.DATE, +6);
             Date actual = cInicial.getTime();
             String fechaDesafioTermino = format.format(listaRutinasIniciadas.get(0).getRutinaTermino());
             fechaActual = format.format(actual);
@@ -405,7 +433,7 @@ public class MainFragment extends Fragment {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < listaDesafiosRutina.size(); i++){
+        for (int i = 0; i < listaDesafiosRutina.size(); i++) {
             listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
             listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(true);
 
@@ -442,7 +470,7 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < listaDesafiosRutina.size(); i++){
+            for (int i = 0; i < listaDesafiosRutina.size(); i++) {
                 listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
                 listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(false);
 

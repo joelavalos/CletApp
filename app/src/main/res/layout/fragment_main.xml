@@ -225,15 +225,26 @@
         android:text="Terminar rutina"
         android:textColor="@color/colorBlanco" />
 
-    <Button
+    <ImageButton
         android:id="@+id/ButtonIniciarDesafio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:background="@drawable/boton"
-        android:text="Iniciar desafio"
+        android:background="@drawable/boton_play"
+        android:src="@drawable/ic_play_arrow_white_24dp"
+        android:textColor="@color/colorBlanco" />
+
+    <ImageButton
+        android:id="@+id/ButtonDetenerDesafio"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/ButtonIniciarDesafio"
+        android:background="@drawable/boton_circular"
+        android:src="@drawable/ic_stop_white_24dp"
         android:textColor="@color/colorBlanco" />
 
     <Button

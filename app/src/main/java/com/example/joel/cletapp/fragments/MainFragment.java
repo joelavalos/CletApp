@@ -47,7 +47,7 @@ public class MainFragment extends Fragment {
     private Button ButtonFrecuencioa;
     private Button ButtonIniciarRutina;
     private Button ButtonDetenerRutina;
-    private Button ButtonIniciarDesafio;
+    private ImageView ButtonIniciarDesafio;
 
     private ImageView ImageViewImagenDesafio2, ImageViewImagenDesafioActual;
     private TextView TextViewNombreDesafio, TextViewNombreDesafioActual;
@@ -173,6 +173,24 @@ public class MainFragment extends Fragment {
             }
         });
 
+        ButtonIniciarDesafio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (actualDesafio.getEstadoDesafio() == 'I') {
+                    actualDesafio.setEstadoDesafio('T');
+                    actualDesafio.setExitoDesafio(true);
+                    try {
+                        desafioCRUD.actualizarDatosDesafio(actualDesafio);
+                        TextViewEstadoActual.setText("Terminado");
+                        TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
+                        ButtonIniciarDesafio.setEnabled(false);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         return root;
     }
 
@@ -194,7 +212,7 @@ public class MainFragment extends Fragment {
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
         ButtonIniciarRutina = (Button) root.findViewById(R.id.ButtonIniciarRutina);
         ButtonDetenerRutina = (Button) root.findViewById(R.id.ButtonDetenerRutina);
-        ButtonIniciarDesafio = (Button) root.findViewById(R.id.ButtonIniciarDesafio);
+        ButtonIniciarDesafio = (ImageView) root.findViewById(R.id.ButtonIniciarDesafio);
 
         ButtonIniciarDesafio.setEnabled(false);
         ButtonIniciarRutina.setEnabled(false);
@@ -303,7 +321,16 @@ public class MainFragment extends Fragment {
 
     private void cargarDesafio(String imagen) {
         Calendar cInicial = Calendar.getInstance();
+        Calendar cInicialRev = Calendar.getInstance();
+
+        cInicialRev.add(Calendar.DATE, -1);
+
+        //cInicial.add(Calendar.DATE, +2);
+        //cInicialRev.add(Calendar.DATE, +2);
+
         Date actual = cInicial.getTime();
+        Date actualRev = cInicialRev.getTime();
+
         String fechaDesafio = format.format(listaDesafiosRutina.get(0).getFecha());
         String fechaActual = format.format(actual);
 
@@ -314,6 +341,8 @@ public class MainFragment extends Fragment {
                 encontrado = true;
             }
         }
+
+        actualizarEstadoDesafios(actualRev);
 
         if (encontrado == false) {
             for (int i = 0; i < listaDesafiosRutina.size(); i++) {
@@ -351,14 +380,24 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
+            String estadoDesafioCargado = "Pendiente";
+            if (actualDesafio.getEstadoDesafio() == 'I') {
+                estadoDesafioCargado = "Pendiente";
+            } else if (actualDesafio.getEstadoDesafio() == 'T') {
+                estadoDesafioCargado = "Terminado";
+            }
             cambiarVisibilidadDesafioActual(View.VISIBLE);
             cargarDatosDesafioActual(Integer.parseInt(imagen), actualDesafio.getDesafioNombre(), desafioObjetivo.getObjetivo().getObjetivoNombre(), String.valueOf(Math.round(desafioObjetivo.getValor())),
                     actualDesafio.getDesafioDescripcion(),
                     format.format(actual),
-                    "Pendiente");
+                    estadoDesafioCargado);
 
             if (!listaRutinasIniciadas.isEmpty()) {
                 ButtonIniciarDesafio.setEnabled(true);
+            }
+
+            if (estadoDesafioCargado.equals("Terminado")) {
+                ButtonIniciarDesafio.setEnabled(false);
             }
 
             encontrado = false;
@@ -368,6 +407,22 @@ public class MainFragment extends Fragment {
             cargarDatosDesafioActual(Integer.parseInt(imagen), "Descansar", "", "", "", format.format(actual), diff);
 
             ButtonIniciarDesafio.setEnabled(false);
+        }
+    }
+
+    private void actualizarEstadoDesafios(Date actualRev) {
+        for (int i = 0; i < listaDesafiosRutina.size(); i++) {
+            if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() == 'I') {
+                if (listaDesafiosRutina.get(i).getFecha().before(actualRev)) {
+                    listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
+                    listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(false);
+                    try {
+                        desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
@@ -399,6 +454,10 @@ public class MainFragment extends Fragment {
         TextViewNotaDesafioActual.setText(desafioDescripcion);
         TextViewFechaDesafioActual.setText(fecha);
         TextViewEstadoActual.setText(estado);
+
+        if (estado.equals("Terminado")) {
+            TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
+        }
     }
 
     private void cargarDatosRutina(int imagen, String rutinaNombre, String desafios, String valorDesafio, String rutinaDescripcion, String fecha, String estado) {
@@ -486,7 +545,6 @@ public class MainFragment extends Fragment {
             newIntent.putExtra("idRutina", idRutina);
             startActivity(newIntent);
         } else {
-
         }
     }
 }

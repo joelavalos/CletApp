@@ -9,6 +9,10 @@
     <color name="colorBlanco">#FFFFFF</color>
     <color name="colorVerde">#4CAF50</color>
     <color name="colorRojo">#F44336</color>
+    <color name="colorRojoStop">#D50000</color>
+    <color name="colorRojoOscuroStop">#B71C1C</color>
+    <color name="colorVerdePlay">#4CAF50</color>
+    <color name="colorVerdeOscuroPlay">#1B5E20</color>
     <color name="colorNegro">#000000</color>
     <color name="colorMorado">#673AB7</color>
     <color name="colorSeleccionado">#E0E0E0</color>

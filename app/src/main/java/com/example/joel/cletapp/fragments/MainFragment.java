@@ -1,7 +1,9 @@
 package com.example.joel.cletapp.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +50,20 @@ public class MainFragment extends Fragment {
     private Button ButtonFrecuencioa;
     private Button ButtonIniciarRutina;
     private Button ButtonDetenerRutina;
-    private ImageView ButtonIniciarDesafio;
+    private ImageButton ButtonIniciarDesafio;
+    private ImageButton ButtonDetenerDesafio;
+
+    private TextView textoCronometro;
+    private int totalSegundos = 0;
+    private int segundos = 0;
+    private int minutos = 0;
+    private int horas = 0;
+    private String segundosString;
+    private String minutosString;
+    private String horasString;
+    public boolean estado = true;
+    public boolean pauseDesafioActivado = false;
+    public int intValorCronometro = 0;
 
     private ImageView ImageViewImagenDesafio2, ImageViewImagenDesafioActual;
     private TextView TextViewNombreDesafio, TextViewNombreDesafioActual;
@@ -83,6 +99,27 @@ public class MainFragment extends Fragment {
 
         inicializarBaseDeDatos();
         inicializarComponentes(root);
+        Cronometro.setUpdateListener(this);
+
+        if (cargarEstadoDesafio().equals("iniciado")) {
+            ButtonIniciarDesafio.setEnabled(true);
+            ButtonIniciarDesafio.setImageResource(R.drawable.ic_pause_white_24dp);
+            ButtonIniciarDesafio.setTag(R.drawable.ic_pause_white_24dp);
+            ButtonDetenerDesafio.setVisibility(View.VISIBLE);
+            ButtonDetenerDesafio.setVisibility(View.VISIBLE);
+            ButtonDetenerRutina.setEnabled(false);
+        } else {
+            intValorCronometro = 0;
+        }
+
+        if (cargarEstadoDesafioPause().equals("pause")) {
+            ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+            ButtonDetenerDesafio.setVisibility(View.VISIBLE);
+            intValorCronometro = cargarValorEstadoDesafioPause();
+            textoCronometro.setText(segundosToHoras(intValorCronometro));
+            guardarEstadoDesafioNoPause();
+        }
 
         TextViewElegirRutina.setOnClickListener(new View.OnClickListener() {
             Bundle bundle = new Bundle();
@@ -174,24 +211,172 @@ public class MainFragment extends Fragment {
         });
 
         ButtonIniciarDesafio.setOnClickListener(new View.OnClickListener() {
+            int play = R.drawable.ic_play_arrow_white_24dp;
+            int pause = R.drawable.ic_pause_white_24dp;
+
             @Override
             public void onClick(View v) {
-                if (actualDesafio.getEstadoDesafio() == 'I') {
-                    actualDesafio.setEstadoDesafio('T');
-                    actualDesafio.setExitoDesafio(true);
-                    try {
-                        desafioCRUD.actualizarDatosDesafio(actualDesafio);
-                        TextViewEstadoActual.setText("Terminado");
-                        TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
-                        ButtonIniciarDesafio.setEnabled(false);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                if ((Integer) ButtonIniciarDesafio.getTag() == play) {
+
+                    pauseDesafioActivado = false;
+                    ButtonIniciarDesafio.setImageResource(R.drawable.ic_pause_white_24dp);
+                    ButtonIniciarDesafio.setTag(R.drawable.ic_pause_white_24dp);
+                    ButtonDetenerDesafio.setVisibility(View.VISIBLE);
+                    ButtonDetenerRutina.setEnabled(false);
+                    iniciarCronometro();
+                    guardarEstadoDesafioIniciado();
+                    new Mensaje(getActivity().getApplicationContext(), "Iniciado cronometro");
+
+                } else {
+                    ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+                    ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+                    pauseDesafioActivado = true;
+                    guardarEstadoDesafioPause();
                 }
             }
         });
 
+        ButtonDetenerDesafio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pararCronometro();
+                guardarEstadoDesafioDetenido();
+                guardarEstadoDesafioNoPause();
+            }
+        });
+
         return root;
+    }
+
+    private String cargarEstadoDesafio() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "nada";
+        String estadoDesafioRecuperado = sharedPref.getString("estadoDesafio", defaultValue);
+
+        return estadoDesafioRecuperado;
+    }
+
+    private void guardarEstadoDesafioIniciado() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("estadoDesafio", "iniciado");
+        editor.commit();
+    }
+
+    private void guardarEstadoDesafioDetenido() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("estadoDesafio", "detenido");
+        editor.commit();
+    }
+
+    private void guardarEstadoDesafioPause() {
+        pararCronometro();
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("estadoDesafioPause", "pause");
+        editor.putInt("valorDesafioPause", intValorCronometro);
+        editor.commit();
+    }
+
+    private void guardarEstadoDesafioNoPause() {
+        pararCronometro();
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("estadoDesafioPause", "nopause");
+        editor.putInt("valorDesafioPause", 0);
+        editor.commit();
+    }
+
+    private String cargarEstadoDesafioPause() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "nada";
+        String estadoDesafioRecuperado = sharedPref.getString("estadoDesafioPause", defaultValue);
+
+        return estadoDesafioRecuperado;
+    }
+
+    private int cargarValorEstadoDesafioPause() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int defaultValue = 0;
+        int estadoDesafioRecuperado = sharedPref.getInt("valorDesafioPause", defaultValue);
+
+        return estadoDesafioRecuperado;
+    }
+
+    public void completarDesafio() {
+        actualDesafio.setEstadoDesafio('T');
+        actualDesafio.setExitoDesafio(true);
+        try {
+            desafioCRUD.actualizarDatosDesafio(actualDesafio);
+            TextViewEstadoActual.setText("Terminado");
+            TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
+            ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setEnabled(false);
+            ButtonDetenerRutina.setEnabled(true);
+            ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
+            guardarEstadoDesafioNoPause();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        new Mensaje(getActivity().getApplicationContext(), "Desafio terminado");
+        guardarEstadoDesafioDetenido();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //guardarEstadoDesafio("detenido");
+    }
+
+    private void iniciarCronometro() {
+        Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
+        getActivity().startService(service);
+    }
+
+    private void pararCronometro() {
+        Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
+        getActivity().stopService(service);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        estado = false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        estado = true;
+    }
+
+    public void actualizarCronometro(int tiempo) {
+        intValorCronometro = tiempo;
+        textoCronometro.setText(segundosToHoras(tiempo));
+    }
+
+    public String segundosToHoras(int totalSegundos) {
+        horas = totalSegundos / 3600;
+        horasString = String.valueOf(horas);
+        if (horasString.length() == 1) {
+            horasString = "0" + horasString;
+        }
+
+        minutos = (totalSegundos - (3600 * horas)) / 60;
+        minutosString = String.valueOf(minutos);
+        if (minutosString.length() == 1) {
+            minutosString = "0" + minutosString;
+        }
+
+        segundos = totalSegundos - ((horas * 3600) + (minutos * 60));
+        segundosString = String.valueOf(segundos);
+        if (segundosString.length() == 1) {
+            segundosString = "0" + segundosString;
+        }
+
+        return horasString + ":" + minutosString + ":" + segundosString;
     }
 
     private void inicializarBaseDeDatos() {
@@ -212,10 +397,16 @@ public class MainFragment extends Fragment {
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
         ButtonIniciarRutina = (Button) root.findViewById(R.id.ButtonIniciarRutina);
         ButtonDetenerRutina = (Button) root.findViewById(R.id.ButtonDetenerRutina);
-        ButtonIniciarDesafio = (ImageView) root.findViewById(R.id.ButtonIniciarDesafio);
+        ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);
+        ButtonDetenerDesafio = (ImageButton) root.findViewById(R.id.ButtonDetenerDesafio);
+
+        textoCronometro = (TextView) root.findViewById(R.id.cronometro);
+        textoCronometro.setText("00:00:00");
 
         ButtonIniciarDesafio.setEnabled(false);
+        ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
         ButtonIniciarRutina.setEnabled(false);
+        ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
 
         ImageViewImagenDesafio2 = (ImageView) root.findViewById(R.id.ImageViewImagenDesafio2);
         ImageViewImagenDesafioActual = (ImageView) root.findViewById(R.id.ImageViewImagenDesafioActual);

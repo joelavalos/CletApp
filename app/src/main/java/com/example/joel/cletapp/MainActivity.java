@@ -1,5 +1,8 @@
 package com.example.joel.cletapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +25,7 @@ import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
+import com.example.joel.cletapp.fragments.Cronometro;
 import com.example.joel.cletapp.fragments.MainFragment;
 
 import java.text.ParseException;
@@ -220,7 +224,7 @@ public class MainActivity extends ActionBarActivity implements Communicator{
 
     @Override
     public void Reiniciar(String data) {
-
+        new Mensaje(this, data);
     }
 
     @Override
@@ -228,6 +232,35 @@ public class MainActivity extends ActionBarActivity implements Communicator{
         FragmentManager manager = this.getSupportFragmentManager();
         MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
         asd.terminarRutina(data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        guardarEstadoDesafioDetenido();
+        guardarEstadoDesafioNoPause();
+        pararCronometro();
+    }
+
+    private void guardarEstadoDesafioDetenido() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("estadoDesafio", "detenido");
+        editor.commit();
+    }
+
+    private void guardarEstadoDesafioNoPause() {
+        pararCronometro();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("estadoDesafioPause", "nopause");
+        editor.putInt("valorDesafioPause", 0);
+        editor.commit();
+    }
+
+    private void pararCronometro() {
+        Intent service = new Intent(getBaseContext(), Cronometro.class);
+        stopService(service);
     }
 
     /*@Override

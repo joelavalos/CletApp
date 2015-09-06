@@ -49,4 +49,6 @@
 
     <string name="default_text">--</string>
     <string name="app_name2">HeartRateMonitor</string>
+    <string name="local_service_started">localServiceStarted</string>
+    <string name="local_service_label">Notificacion titulo</string>
 </resources>

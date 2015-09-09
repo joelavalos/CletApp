@@ -12,6 +12,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.joel.cletapp.ActivityDesafioOpciones;
 import com.example.joel.cletapp.MainActivity;
 import com.example.joel.cletapp.R;
 
@@ -33,7 +34,7 @@ public class Cronometro extends Service {
     private PendingIntent resultPendingIntent;
 
     private NotificationCompat.Builder mBuilder;
-    private int tiempoLimite = 60;
+    private int tiempoLimite = 10;
 
     public static void setUpdateListener(MainFragment poiService) {
         UPDATE_LISTENER = poiService;
@@ -95,6 +96,7 @@ public class Cronometro extends Service {
 
             Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(500);
+
         } else {
             mBuilder.setSmallIcon(R.drawable.ic_directions_bike_white_24dp)
                     .setColor(getResources().getColor(R.color.colorPrimary))

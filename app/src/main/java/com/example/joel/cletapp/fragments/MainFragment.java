@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.ActivityDesafioOpciones;
 import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
@@ -48,8 +49,8 @@ public class MainFragment extends Fragment {
     private String fechaActual = "";
 
     private Button ButtonFrecuencioa;
-    private Button ButtonIniciarRutina;
-    private Button ButtonDetenerRutina;
+    private ImageButton ButtonIniciarRutina;
+    private ImageButton ButtonDetenerRutina;
     private ImageButton ButtonIniciarDesafio;
     private ImageButton ButtonDetenerDesafio;
 
@@ -62,6 +63,8 @@ public class MainFragment extends Fragment {
     private String minutosString;
     private String horasString;
     public boolean estado = true;
+
+    //Datos para el servicio
     public boolean pauseDesafioActivado = false;
     public int intValorCronometro = 0;
 
@@ -108,6 +111,8 @@ public class MainFragment extends Fragment {
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setEnabled(false);
+            ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+            new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
         } else {
             intValorCronometro = 0;
         }
@@ -116,9 +121,11 @@ public class MainFragment extends Fragment {
             ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
+            ButtonDetenerRutina.setVisibility(View.VISIBLE);
             intValorCronometro = cargarValorEstadoDesafioPause();
             textoCronometro.setText(segundosToHoras(intValorCronometro));
-            guardarEstadoDesafioNoPause();
+            new Mensaje(getActivity().getApplicationContext(), "Esyo en pause");
+            //guardarEstadoDesafioNoPause();
         }
 
         TextViewElegirRutina.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +155,11 @@ public class MainFragment extends Fragment {
                 if (ButtonIniciarRutina.isEnabled()) {
 
                     ButtonIniciarRutina.setEnabled(false);
+                    ButtonIniciarRutina.setVisibility(View.INVISIBLE);
+
                     ButtonDetenerRutina.setEnabled(true);
+                    ButtonDetenerRutina.setVisibility(View.VISIBLE);
+
                     TextViewElegirRutina.setEnabled(false);
                     TextViewEstado.setText("Iniciada");
                     TextViewEstado.setTextColor(getResources().getColor(R.color.colorVerde));
@@ -217,7 +228,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((Integer) ButtonIniciarDesafio.getTag() == play) {
-
+                    guardarEstadoDesafioNoPause();
                     pauseDesafioActivado = false;
                     ButtonIniciarDesafio.setImageResource(R.drawable.ic_pause_white_24dp);
                     ButtonIniciarDesafio.setTag(R.drawable.ic_pause_white_24dp);
@@ -239,9 +250,14 @@ public class MainFragment extends Fragment {
         ButtonDetenerDesafio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+                ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+                ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
+                ButtonDetenerRutina.setEnabled(true);
                 pararCronometro();
                 guardarEstadoDesafioDetenido();
                 guardarEstadoDesafioNoPause();
+                actualizarCronometro(0);
             }
         });
 
@@ -315,6 +331,7 @@ public class MainFragment extends Fragment {
             ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setEnabled(false);
             ButtonDetenerRutina.setEnabled(true);
+            ButtonDetenerRutina.setVisibility(View.VISIBLE);
             ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
             guardarEstadoDesafioNoPause();
         } catch (ParseException e) {
@@ -395,8 +412,8 @@ public class MainFragment extends Fragment {
 
     private void inicializarComponentes(View root) {
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
-        ButtonIniciarRutina = (Button) root.findViewById(R.id.ButtonIniciarRutina);
-        ButtonDetenerRutina = (Button) root.findViewById(R.id.ButtonDetenerRutina);
+        ButtonIniciarRutina = (ImageButton) root.findViewById(R.id.ButtonIniciarRutina);
+        ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
         ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);
         ButtonDetenerDesafio = (ImageButton) root.findViewById(R.id.ButtonDetenerDesafio);
 
@@ -405,7 +422,13 @@ public class MainFragment extends Fragment {
 
         ButtonIniciarDesafio.setEnabled(false);
         ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+
+        ButtonDetenerRutina.setEnabled(false);
+        ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+
         ButtonIniciarRutina.setEnabled(false);
+        ButtonIniciarRutina.setVisibility(View.INVISIBLE);
+
         ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
 
         ImageViewImagenDesafio2 = (ImageView) root.findViewById(R.id.ImageViewImagenDesafio2);
@@ -451,6 +474,7 @@ public class MainFragment extends Fragment {
             TextViewElegirDesafioActual.setText("");
 
             ButtonDetenerRutina.setEnabled(true);
+            ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
             try {
                 listaDesafiosRutina = desafioRutinaCRUD.buscarDesafioRutinaPorIdRutinaOrderByFecha(actualRutina);
@@ -495,6 +519,7 @@ public class MainFragment extends Fragment {
             TextViewElegirRutina.setText("");
             TextViewElegirDesafioActual.setText("");
             ButtonIniciarRutina.setEnabled(true);
+            ButtonIniciarRutina.setVisibility(View.VISIBLE);
 
             cambiarVisibilidadRutina(View.VISIBLE);
             cargarDatosRutina(Integer.parseInt(data.split("-")[1]), data.split("-")[2], data.split("-")[3], data.split("-")[4], data.split("-")[5], data.split("-")[6], data.split("-")[7]);
@@ -676,6 +701,7 @@ public class MainFragment extends Fragment {
         TextViewElegirRutina.setEnabled(true);
         TextViewElegirDesafioActual.setText("Desafio actual");
         ButtonDetenerRutina.setEnabled(false);
+        ButtonDetenerRutina.setVisibility(View.INVISIBLE);
 
         try {
             rutinaCRUD.actualizarRutina(actualRutina);
@@ -713,6 +739,8 @@ public class MainFragment extends Fragment {
             TextViewElegirRutina.setEnabled(true);
             TextViewElegirDesafioActual.setText("Desafio actual");
             ButtonDetenerRutina.setEnabled(false);
+            ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+            ButtonIniciarDesafio.setEnabled(false);
 
             try {
                 rutinaCRUD.actualizarRutina(actualRutina);

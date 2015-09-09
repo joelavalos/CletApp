@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/ImageViewImagenDesafio2"
-        android:layout_marginRight="128dp"
+        android:layout_marginRight="164dp"
         android:layout_toRightOf="@+id/ImageViewImagenDesafio2"
         android:singleLine="true"
         android:text="Nombre desafio"
@@ -47,8 +47,8 @@
         android:id="@+id/TextViewCategoriaDesafio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/TextViewNombreDesafio"
+        android:layout_toLeftOf="@+id/ButtonIniciarRutina"
         android:layout_toRightOf="@+id/TextViewNotaDesafio"
         android:gravity="center_horizontal"
         android:text="Categoria"
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/TextViewNotaDesafio"
         android:layout_alignLeft="@+id/TextViewCategoriaDesafio"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/TextViewCategoriaDesafio"
         android:layout_below="@+id/TextViewCategoriaDesafio"
         android:gravity="center"
         android:text="25 m"
@@ -85,10 +85,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/ImageViewImagenDesafio2"
+        android:layout_alignRight="@+id/TextViewNombreDesafio"
         android:layout_below="@+id/ImageViewImagenDesafio2"
         android:text="Desde: 11/11/2011 hasta: 12/11/2011"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#9E9E9E" />
+
+    <!--<ImageButton
+        android:id="@+id/ButtonIniciarRutinaCircular"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewValorDesafio"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/boton_play"
+        android:elevation="8dp"
+        android:src="@drawable/hdpi_ic_play_arrow_white_24dp" />
+
+    <ImageButton
+        android:id="@+id/ButtonDetenerRutinaCircular"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewValorDesafio"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/boton_play"
+        android:elevation="4dp"
+        android:src="@drawable/hdpi_ic_stop_white_24dp" />-->
 
     <TextView
         android:id="@+id/TextViewEstado"
@@ -193,7 +216,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorMorado" />
 
-    <Button
+    <!--<Button
         android:id="@+id/ButtonIniciarRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -203,7 +226,18 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/boton"
         android:text="Iniciar rutina"
-        android:textColor="@color/colorBlanco" />
+        android:textColor="@color/colorBlanco" />-->
+
+    <ImageButton
+        android:id="@+id/ButtonIniciarRutina"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewValorDesafio"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/boton_play"
+        android:elevation="9dp"
+        android:src="@drawable/hdpi_ic_check_white_24dp" />
 
     <Space
         android:id="@+id/SpaceRutina"
@@ -212,7 +246,7 @@
         android:layout_below="@+id/TextViewEstadoActual"
         android:layout_centerHorizontal="true" />
 
-    <Button
+    <!--<Button
         android:id="@+id/ButtonDetenerRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -223,13 +257,26 @@
         android:background="@drawable/boton"
         android:enabled="false"
         android:text="Terminar rutina"
+        android:textColor="@color/colorBlanco" />-->
+
+    <ImageButton
+        android:id="@+id/ButtonDetenerRutina"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewValorDesafio"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/boton_circular"
+        android:elevation="8dp"
+        android:enabled="false"
+        android:src="@drawable/hdpi_ic_clear_white_24dp"
         android:textColor="@color/colorBlanco" />
 
     <ImageButton
-        android:layout_below="@+id/ButtonIniciarRutina"
         android:id="@+id/ButtonIniciarDesafio"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:layout_below="@+id/TextViewEstadoActual"
         android:layout_marginTop="32dp"
         android:background="@drawable/boton_play"
         android:elevation="8dp"
@@ -239,24 +286,24 @@
         android:id="@+id/ButtonDetenerDesafio"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginTop="16dp"
         android:layout_alignBottom="@+id/ButtonIniciarDesafio"
         android:layout_marginLeft="84dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/boton_circular"
         android:elevation="8dp"
         android:src="@drawable/ic_stop_white_24dp" />
 
     <TextView
         android:id="@+id/cronometro"
-        android:textColor="#4169E1"
-        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/ButtonIniciarDesafio"
         android:layout_toRightOf="@+id/ButtonIniciarDesafio"
-        android:layout_alignParentRight="true"
         android:gravity="center_horizontal"
-        android:text="00:00:00" />
+        android:text="00:00:00"
+        android:textColor="#4169E1"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/ButtonFrecuencioa"

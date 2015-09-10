@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityDesafioOpciones;
+import com.example.joel.cletapp.ActivityDesafioTerminado;
 import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
@@ -74,7 +75,7 @@ public class MainFragment extends Fragment {
     private TextView TextViewValorDesafio, TextViewValorDesafioActual;
     private TextView TextViewNotaDesafio, TextViewNotaDesafioActual;
     private TextView TextViewFechaDesafio, TextViewFechaDesafioActual;
-    private TextView TextViewEstado, TextViewEstadoActual;
+    private TextView TextViewEstado, TextViewEstadoActual, TextViewEstadoTerminado;
 
     private TextView TextViewElegirRutina;
     private TextView TextViewElegirDesafioActual;
@@ -261,6 +262,23 @@ public class MainFragment extends Fragment {
             }
         });
 
+        TextViewElegirDesafioActual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String idDesafio = String.valueOf(actualDesafio.getDesafioId());
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafioTerminado.class);
+                newIntent.putExtra("Desafio", idDesafio);
+                newIntent.putExtra("Duracion", segundosToHoras(35));
+                newIntent.putExtra("Distancia", TextViewValorDesafioActual.getText().toString());
+                newIntent.putExtra("Calorias", 0);
+                newIntent.putExtra("Pulso", 0);
+                newIntent.putExtra("Nombre", actualDesafio.getDesafioNombre());
+                newIntent.putExtra("Nota", actualDesafio.getDesafioDescripcion());
+                newIntent.putExtra("Fecha", format.format(actualDesafio.getTerminoDesafio()));
+                startActivity(newIntent);
+            }
+        });
+
         return root;
     }
 
@@ -333,6 +351,8 @@ public class MainFragment extends Fragment {
             ButtonDetenerRutina.setEnabled(true);
             ButtonDetenerRutina.setVisibility(View.VISIBLE);
             ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
+            TextViewElegirDesafioActual.setEnabled(true);
+            TextViewEstadoTerminado.setVisibility(View.VISIBLE);
             guardarEstadoDesafioNoPause();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -451,12 +471,16 @@ public class MainFragment extends Fragment {
 
         TextViewEstado = (TextView) root.findViewById(R.id.TextViewEstado);
         TextViewEstadoActual = (TextView) root.findViewById(R.id.TextViewEstadoActual);
+        TextViewEstadoTerminado = (TextView) root.findViewById(R.id.TextViewEstadoTerminado);
 
         TextViewElegirRutina = (TextView) root.findViewById(R.id.TextViewElegirRutina);
         TextViewElegirDesafioActual = (TextView) root.findViewById(R.id.TextViewElegirDesafioActual);
 
         cambiarVisibilidadRutina(View.INVISIBLE);
         cambiarVisibilidadDesafioActual(View.INVISIBLE);
+
+        TextViewElegirDesafioActual.setEnabled(false);
+        TextViewEstadoTerminado.setVisibility(View.INVISIBLE);
 
         if (listaRutinasIniciadas.isEmpty()) {
 
@@ -614,6 +638,8 @@ public class MainFragment extends Fragment {
 
             if (estadoDesafioCargado.equals("Terminado")) {
                 ButtonIniciarDesafio.setEnabled(false);
+                TextViewElegirDesafioActual.setEnabled(true);
+                TextViewEstadoTerminado.setVisibility(View.VISIBLE);
             }
 
             encontrado = false;
@@ -702,6 +728,7 @@ public class MainFragment extends Fragment {
         TextViewElegirDesafioActual.setText("Desafio actual");
         ButtonDetenerRutina.setEnabled(false);
         ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+        TextViewEstadoTerminado.setVisibility(View.INVISIBLE);
 
         try {
             rutinaCRUD.actualizarRutina(actualRutina);

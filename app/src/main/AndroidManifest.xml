@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.joel.cletapp">
+    package="com.example.joel.cletapp" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -11,39 +11,52 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/icono_app"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ActivityGlosario"
-            android:label="@string/title_activity_activity_glosario">
+            android:label="@string/title_activity_activity_glosario"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".ActivityDesafios"
-            android:label="@string/title_activity_activity_desafios">
+            android:label="@string/title_activity_activity_desafios"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".ActivityRutinas"
-            android:label="@string/title_activity_activity_rutinas">
+            android:label="@string/title_activity_activity_rutinas"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -51,7 +64,8 @@
         <activity
             android:name=".ActivityDesafioOpciones"
             android:label="@string/title_activity_activity_desafio_opciones"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -59,7 +73,8 @@
         <activity
             android:name=".ActivityRutinaOpciones"
             android:label="@string/title_activity_activity_rutina_opciones"
-            android:windowSoftInputMode="stateHidden">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -67,11 +82,16 @@
         <activity
             android:name=".HeartRateMonitor"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
 
-        <service android:name=".fragments.Cronometro"/>
+        <service android:name=".fragments.Cronometro" />
 
+        <activity
+            android:name=".ActivityDesafioTerminado"
+            android:label="@string/title_activity_activity_desafio_terminado"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

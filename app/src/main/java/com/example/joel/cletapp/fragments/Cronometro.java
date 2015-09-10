@@ -34,7 +34,7 @@ public class Cronometro extends Service {
     private PendingIntent resultPendingIntent;
 
     private NotificationCompat.Builder mBuilder;
-    private int tiempoLimite = 10;
+    private int tiempoLimite = 35;
 
     public static void setUpdateListener(MainFragment poiService) {
         UPDATE_LISTENER = poiService;

@@ -237,9 +237,9 @@ public class MainActivity extends ActionBarActivity implements Communicator{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        guardarEstadoDesafioDetenido();
-        guardarEstadoDesafioNoPause();
-        pararCronometro();
+        //guardarEstadoDesafioDetenido();
+        //guardarEstadoDesafioNoPause();
+        //pararCronometro();
     }
 
     private void guardarEstadoDesafioDetenido() {
@@ -250,7 +250,7 @@ public class MainActivity extends ActionBarActivity implements Communicator{
     }
 
     private void guardarEstadoDesafioNoPause() {
-        pararCronometro();
+        //pararCronometro();
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("estadoDesafioPause", "nopause");

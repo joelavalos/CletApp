@@ -4,18 +4,22 @@ package com.example.joel.cletapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.joel.cletapp.ActivityDesafioOpciones;
 import com.example.joel.cletapp.ActivityDesafioTerminado;
 import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
@@ -30,6 +34,10 @@ import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.HeartRateMonitor;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,6 +51,10 @@ import java.util.concurrent.TimeUnit;
  * Created by Joel on 21/07/2015.
  */
 public class MainFragment extends Fragment {
+
+    GoogleMap googleMap;
+    MapView mapView;
+
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private boolean encontrado = false;
     private boolean nextDesafio = false;
@@ -98,17 +110,55 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
+        mapView = (MapView) root.findViewById(R.id.mi_mapa);
+
+        mapView.onCreate(savedInstanceState);
+        googleMap = mapView.getMap();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.setMyLocationEnabled(true);
+
+        View btnMyLocation = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(80,80); // size of button in dp
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        params.setMargins(0, 0, 20, 20);
+        btnMyLocation.setLayoutParams(params);
+
+
+        Criteria criteria = new Criteria();
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        String provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
+        LatLng coordinate = new LatLng(lat, lng);
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 20));
+
+        new Mensaje(getActivity().getApplicationContext(), lat + " " + lng);
+
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
 
         inicializarBaseDeDatos();
         inicializarComponentes(root);
-        Cronometro.setUpdateListener(this);
+
+        Intent newIntent = getActivity().getIntent();
+        if (newIntent.getStringExtra("cronometroFinal") == null) {
+            //Si el desafio sigue en curso
+        } else {
+            textoCronometro.setText(newIntent.getStringExtra("cronometroFinal"));
+            ButtonIniciarDesafio.setEnabled(false);
+            guardarEstadoDesafioNoPause();
+            guardarEstadoDesafioDetenido();
+            completarDesafio();
+        }
 
         if (cargarEstadoDesafio().equals("iniciado")) {
             ButtonIniciarDesafio.setEnabled(true);
-            ButtonIniciarDesafio.setImageResource(R.drawable.ic_pause_white_24dp);
-            ButtonIniciarDesafio.setTag(R.drawable.ic_pause_white_24dp);
+            ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_pause_white_24dp);
+            ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_pause_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setEnabled(false);
@@ -119,8 +169,8 @@ public class MainFragment extends Fragment {
         }
 
         if (cargarEstadoDesafioPause().equals("pause")) {
-            ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
-            ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setVisibility(View.VISIBLE);
             intValorCronometro = cargarValorEstadoDesafioPause();
@@ -222,26 +272,29 @@ public class MainFragment extends Fragment {
             }
         });
 
+        Cronometro.setUpdateListener(this);
+
         ButtonIniciarDesafio.setOnClickListener(new View.OnClickListener() {
-            int play = R.drawable.ic_play_arrow_white_24dp;
-            int pause = R.drawable.ic_pause_white_24dp;
+            int play = R.drawable.xhdpi_ic_play_arrow_white_24dp;
+            int pause = R.drawable.xhdpi_ic_pause_white_24dp;
 
             @Override
             public void onClick(View v) {
                 if ((Integer) ButtonIniciarDesafio.getTag() == play) {
                     guardarEstadoDesafioNoPause();
                     pauseDesafioActivado = false;
-                    ButtonIniciarDesafio.setImageResource(R.drawable.ic_pause_white_24dp);
-                    ButtonIniciarDesafio.setTag(R.drawable.ic_pause_white_24dp);
+                    ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_pause_white_24dp);
+                    ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_pause_white_24dp);
                     ButtonDetenerDesafio.setVisibility(View.VISIBLE);
                     ButtonDetenerRutina.setEnabled(false);
+
                     iniciarCronometro();
-                    guardarEstadoDesafioIniciado();
                     new Mensaje(getActivity().getApplicationContext(), "Iniciado cronometro");
+                    guardarEstadoDesafioIniciado();
 
                 } else {
-                    ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
-                    ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+                    ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
+                    ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                     pauseDesafioActivado = true;
                     guardarEstadoDesafioPause();
                 }
@@ -251,8 +304,8 @@ public class MainFragment extends Fragment {
         ButtonDetenerDesafio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
-                ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+                ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
+                ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                 ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
                 ButtonDetenerRutina.setEnabled(true);
                 pararCronometro();
@@ -345,8 +398,8 @@ public class MainFragment extends Fragment {
             desafioCRUD.actualizarDatosDesafio(actualDesafio);
             TextViewEstadoActual.setText("Terminado");
             TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
-            ButtonIniciarDesafio.setImageResource(R.drawable.ic_play_arrow_white_24dp);
-            ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
+            ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setEnabled(false);
             ButtonDetenerRutina.setEnabled(true);
             ButtonDetenerRutina.setVisibility(View.VISIBLE);
@@ -364,11 +417,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mapView.onDestroy();
+        Cronometro.setUpdateListener(null);
         //guardarEstadoDesafio("detenido");
     }
 
     private void iniciarCronometro() {
         Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
+        Log.v("CletApp", "Servicio iniciado");
         getActivity().startService(service);
     }
 
@@ -380,17 +436,21 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        mapView.onPause();
         estado = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mapView.onResume();
+        //Cronometro.setUpdateListener(this);
         estado = true;
     }
 
     public void actualizarCronometro(int tiempo) {
         intValorCronometro = tiempo;
+        Log.v("CletApp", tiempo + "");
         textoCronometro.setText(segundosToHoras(tiempo));
     }
 
@@ -441,7 +501,7 @@ public class MainFragment extends Fragment {
         textoCronometro.setText("00:00:00");
 
         ButtonIniciarDesafio.setEnabled(false);
-        ButtonIniciarDesafio.setTag(R.drawable.ic_play_arrow_white_24dp);
+        ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
 
         ButtonDetenerRutina.setEnabled(false);
         ButtonDetenerRutina.setVisibility(View.INVISIBLE);
@@ -458,16 +518,16 @@ public class MainFragment extends Fragment {
         TextViewNombreDesafioActual = (TextView) root.findViewById(R.id.TextViewNombreDesafioActual);
 
         TextViewCategoriaDesafio = (TextView) root.findViewById(R.id.TextViewCategoriaDesafio);
-        TextViewCategoriaDesafioActual = (TextView) root.findViewById(R.id.TextViewCategoriaDesafioActual);
+        //TextViewCategoriaDesafioActual = (TextView) root.findViewById(R.id.TextViewCategoriaDesafioActual);
 
         TextViewValorDesafio = (TextView) root.findViewById(R.id.TextViewValorDesafio);
         TextViewValorDesafioActual = (TextView) root.findViewById(R.id.TextViewValorDesafioActual);
 
         TextViewNotaDesafio = (TextView) root.findViewById(R.id.TextViewNotaDesafio);
-        TextViewNotaDesafioActual = (TextView) root.findViewById(R.id.TextViewNotaDesafioActual);
+        //TextViewNotaDesafioActual = (TextView) root.findViewById(R.id.TextViewNotaDesafioActual);
 
         TextViewFechaDesafio = (TextView) root.findViewById(R.id.TextViewFechaDesafio);
-        TextViewFechaDesafioActual = (TextView) root.findViewById(R.id.TextViewFechaDesafioActual);
+        //TextViewFechaDesafioActual = (TextView) root.findViewById(R.id.TextViewFechaDesafioActual);
 
         TextViewEstado = (TextView) root.findViewById(R.id.TextViewEstado);
         TextViewEstadoActual = (TextView) root.findViewById(R.id.TextViewEstadoActual);
@@ -516,7 +576,7 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            cargarDesafio(String.valueOf(R.drawable.ic_grade_black_48dp));
+            cargarDesafio(String.valueOf(R.drawable.mdpi_ic_star_black_36dp));
 
             if (actual.after(listaRutinasIniciadas.get(0).getRutinaTermino())) {
                 new Mensaje(getActivity().getApplicationContext(), "Rutina terminada");
@@ -681,20 +741,20 @@ public class MainFragment extends Fragment {
     private void cambiarVisibilidadDesafioActual(int visible) {
         ImageViewImagenDesafioActual.setVisibility(visible);
         TextViewNombreDesafioActual.setVisibility(visible);
-        TextViewCategoriaDesafioActual.setVisibility(visible);
+        //TextViewCategoriaDesafioActual.setVisibility(visible);
         TextViewValorDesafioActual.setVisibility(visible);
-        TextViewNotaDesafioActual.setVisibility(visible);
-        TextViewFechaDesafioActual.setVisibility(visible);
+        //.setVisibility(visible);
+        //TextViewFechaDesafioActual.setVisibility(visible);
         TextViewEstadoActual.setVisibility(visible);
     }
 
     private void cargarDatosDesafioActual(int ic_grade_black_48dp, String desafioNombre, String objetivoNombre, String valorDesafio, String desafioDescripcion, String fecha, String estado) {
         ImageViewImagenDesafioActual.setImageResource(ic_grade_black_48dp);
         TextViewNombreDesafioActual.setText(desafioNombre);
-        TextViewCategoriaDesafioActual.setText(objetivoNombre);
+        //TextViewCategoriaDesafioActual.setText(objetivoNombre);
         TextViewValorDesafioActual.setText(valorDesafio);
-        TextViewNotaDesafioActual.setText(desafioDescripcion);
-        TextViewFechaDesafioActual.setText(fecha);
+        //TextViewNotaDesafioActual.setText(desafioDescripcion);
+        //TextViewFechaDesafioActual.setText(fecha);
         TextViewEstadoActual.setText(estado);
 
         if (estado.equals("Terminado")) {
@@ -762,6 +822,10 @@ public class MainFragment extends Fragment {
             actualRutina.setRutinaEstado('T');
             cambiarVisibilidadDesafioActual(View.INVISIBLE);
             cambiarVisibilidadRutina(View.INVISIBLE);
+            TextViewEstadoTerminado.setVisibility(View.INVISIBLE);
+            TextViewElegirDesafioActual.setTextColor(getResources().getColor(R.color.colorGris25));
+            TextViewElegirDesafioActual.setText("Sin desafio actual");
+            TextViewElegirDesafioActual.setEnabled(false);
             TextViewElegirRutina.setText("Seleccionar rutina");
             TextViewElegirRutina.setEnabled(true);
             TextViewElegirDesafioActual.setText("Desafio actual");

@@ -4,6 +4,7 @@ package com.example.joel.cletapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -38,6 +39,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +57,9 @@ public class MainFragment extends Fragment {
 
     GoogleMap googleMap;
     MapView mapView;
+    private LatLng nuevaCordenada;
+    private PolylineOptions options;
+    private Polyline line;
 
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private boolean encontrado = false;
@@ -137,6 +143,7 @@ public class MainFragment extends Fragment {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 20));
 
         new Mensaje(getActivity().getApplicationContext(), lat + " " + lng);
+        options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
@@ -452,6 +459,14 @@ public class MainFragment extends Fragment {
         intValorCronometro = tiempo;
         Log.v("CletApp", tiempo + "");
         textoCronometro.setText(segundosToHoras(tiempo));
+    }
+
+    public void mostrarCordenadas(double latitud, double longitud){
+        new Mensaje(getActivity().getApplicationContext(), "Cordenadas: " + latitud + ", " + longitud);
+        nuevaCordenada = new LatLng(latitud, longitud);
+
+        options.add(nuevaCordenada);
+        line = googleMap.addPolyline(options);
     }
 
     public String segundosToHoras(int totalSegundos) {

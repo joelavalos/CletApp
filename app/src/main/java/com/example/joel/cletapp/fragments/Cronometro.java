@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -14,6 +17,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.joel.cletapp.MainActivity;
 import com.example.joel.cletapp.R;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +30,7 @@ public class Cronometro extends Service {
     private static final long INTERVALO_ACTUALIZACION = 1000; // En ms
     public static MainFragment UPDATE_LISTENER;
     private int cronometro = 0;
+    private int cronometroCordenadas = 0;
 
     private Handler handler;
     private Vibrator alertaTermino;
@@ -38,7 +43,14 @@ public class Cronometro extends Service {
     private NotificationManager notifManager; // notifManager IS GLOBAL
     private NotificationCompat.Builder mBuilder;
     private NotificationCompat.Builder mBuilderForeground;
-    private int tiempoLimite = 15;
+    private int tiempoLimite = 300;
+
+    //Prueba
+    private double longitud, latitud;
+    private LocationManager locationManager;
+    private Location location;
+    private boolean gpsActivo;
+    //Fin prueba
 
     public static void setUpdateListener(MainFragment poiService) {
         UPDATE_LISTENER = poiService;
@@ -81,6 +93,10 @@ public class Cronometro extends Service {
             @Override
             public void handleMessage(Message msg) {
                 UPDATE_LISTENER.actualizarCronometro(cronometro);
+                if (cronometroCordenadas == 5){
+                    UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+                    cronometroCordenadas = 0;
+                }
                 if (cronometro == tiempoLimite) {
                     crearNotificacion();
                     UPDATE_LISTENER.completarDesafio();
@@ -98,11 +114,22 @@ public class Cronometro extends Service {
         temporizador.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 cronometro += 1;
+                cronometroCordenadas += 1;
 
                 int mNotificationId = 9;
                 mBuilderForeground.setContentText(segundosToHorasCronometro(cronometro));
                 n = mBuilderForeground.build();
                 notifManager.notify(mNotificationId, n);
+
+                //Prueba
+                Criteria criteria = new Criteria();
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                String provider = locationManager.getBestProvider(criteria, false);
+                Location location = locationManager.getLastKnownLocation(provider);
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+                LatLng coordinate = new LatLng(latitud, longitud);
+                //Fin prueba
 
                 if (UPDATE_LISTENER != null) {
                     handler.sendEmptyMessage(0);

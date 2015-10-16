@@ -112,6 +112,10 @@ public class MainFragment extends Fragment {
     private List<Rutina> todasLasRutinas;
     private List<DesafioRutina> todosLosDesafiosRutinasTemporal;
 
+    //Prueba
+    public List<LatLng> cordenadasRuta;
+    //Prueba
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
@@ -131,7 +135,6 @@ public class MainFragment extends Fragment {
         params.setMargins(0, 0, 20, 20);
         btnMyLocation.setLayoutParams(params);
 
-
         Criteria criteria = new Criteria();
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         String provider = locationManager.getBestProvider(criteria, false);
@@ -141,9 +144,7 @@ public class MainFragment extends Fragment {
         LatLng coordinate = new LatLng(lat, lng);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 20));
-
-        new Mensaje(getActivity().getApplicationContext(), lat + " " + lng);
-        options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
@@ -171,6 +172,8 @@ public class MainFragment extends Fragment {
             ButtonDetenerRutina.setEnabled(false);
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
+
+            cargarRuta();
         } else {
             intValorCronometro = 0;
         }
@@ -183,6 +186,8 @@ public class MainFragment extends Fragment {
             intValorCronometro = cargarValorEstadoDesafioPause();
             textoCronometro.setText(segundosToHoras(intValorCronometro));
             new Mensaje(getActivity().getApplicationContext(), "Esyo en pause");
+
+            cargarRuta();
             //guardarEstadoDesafioNoPause();
         }
 
@@ -280,6 +285,7 @@ public class MainFragment extends Fragment {
         });
 
         Cronometro.setUpdateListener(this);
+        //cordenadasRuta = Cronometro.getCordenadas();
 
         ButtonIniciarDesafio.setOnClickListener(new View.OnClickListener() {
             int play = R.drawable.xhdpi_ic_play_arrow_white_24dp;
@@ -340,6 +346,31 @@ public class MainFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void cargarRuta() {
+        googleMap.clear();
+        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
+        String misCordenadas = prefs.getString("misCordenadas", "nada");
+
+        if (misCordenadas.equals("nada")){
+        }
+        else{
+            String cordenadas[] = misCordenadas.split("X");
+            new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);
+
+            for (int i = 0; i < cordenadas.length; i++){
+                String stringLatLong = cordenadas[i];
+                double lat = Double.parseDouble(cordenadas[i].split("=")[0]);
+                double longi = Double.parseDouble(cordenadas[i].split("=")[1]);
+                nuevaCordenada = new LatLng(lat, longi);
+                options.add(nuevaCordenada);
+                //new Mensaje(getActivity().getApplicationContext(), "Lat.equals(" + lat+")" + " Long.equals("+longi+")");
+            }
+        }
+        line = googleMap.addPolyline(options);
     }
 
     private String cargarEstadoDesafio() {
@@ -462,9 +493,8 @@ public class MainFragment extends Fragment {
     }
 
     public void mostrarCordenadas(double latitud, double longitud){
-        new Mensaje(getActivity().getApplicationContext(), "Cordenadas: " + latitud + ", " + longitud);
+        //new Mensaje(getActivity().getApplicationContext(), "Cordenadas: " + latitud + ", " + longitud);
         nuevaCordenada = new LatLng(latitud, longitud);
-
         options.add(nuevaCordenada);
         line = googleMap.addPolyline(options);
     }
@@ -581,7 +611,7 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            cargarDatosRutina(R.drawable.ic_directions_bike_black_48dp, actualRutina.getRutinaNombre(), "Desafios", String.valueOf(listaDesafiosRutina.size()), actualRutina.getRutinaDescripcion(),
+            cargarDatosRutina(R.drawable.mdpi_ic_directions_bike_black_24dp, actualRutina.getRutinaNombre(), "Desafios", String.valueOf(listaDesafiosRutina.size()), actualRutina.getRutinaDescripcion(),
                     "Desde: " + format.format(actualRutina.getRutinaInicio()) + " hasta: " + format.format(actualRutina.getRutinaTermino()),
                     "Iniciada");
 
@@ -621,7 +651,7 @@ public class MainFragment extends Fragment {
             ButtonIniciarRutina.setVisibility(View.VISIBLE);
 
             cambiarVisibilidadRutina(View.VISIBLE);
-            cargarDatosRutina(Integer.parseInt(data.split("-")[1]), data.split("-")[2], data.split("-")[3], data.split("-")[4], data.split("-")[5], data.split("-")[6], data.split("-")[7]);
+            cargarDatosRutina(/*Integer.parseInt(data.split("-")[1])*/ R.drawable.mdpi_ic_directions_bike_black_24dp, data.split("-")[2], data.split("-")[3], data.split("-")[4], data.split("-")[5], data.split("-")[6], data.split("-")[7]);
 
             try {
                 actualRutina = rutinaCRUD.buscarRutinaPorId(Long.parseLong(data.split("-")[0]));

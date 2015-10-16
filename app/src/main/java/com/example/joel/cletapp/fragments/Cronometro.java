@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -19,6 +20,9 @@ import com.example.joel.cletapp.MainActivity;
 import com.example.joel.cletapp.R;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,13 +47,14 @@ public class Cronometro extends Service {
     private NotificationManager notifManager; // notifManager IS GLOBAL
     private NotificationCompat.Builder mBuilder;
     private NotificationCompat.Builder mBuilderForeground;
-    private int tiempoLimite = 300;
+    private int tiempoLimite = 10800;
 
     //Prueba
     private double longitud, latitud;
     private LocationManager locationManager;
     private Location location;
     private boolean gpsActivo;
+    public List<LatLng> cordenadas;
     //Fin prueba
 
     public static void setUpdateListener(MainFragment poiService) {
@@ -76,6 +81,7 @@ public class Cronometro extends Service {
         n = mBuilderForeground.build();
         notifManager.notify(mNotificationId, n);
 
+        cordenadas = new ArrayList<>();
         startForeground(mNotificationId, n);
 
         handler = new Handler() {
@@ -93,9 +99,8 @@ public class Cronometro extends Service {
             @Override
             public void handleMessage(Message msg) {
                 UPDATE_LISTENER.actualizarCronometro(cronometro);
-                if (cronometroCordenadas == 5){
+                if (cronometroCordenadas == 5) {
                     UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
-                    cronometroCordenadas = 0;
                 }
                 if (cronometro == tiempoLimite) {
                     crearNotificacion();
@@ -141,8 +146,28 @@ public class Cronometro extends Service {
                         stopSelf();
                     }
                 }
+
+                if (cronometroCordenadas == 5) {
+                    cronometroCordenadas = 0;
+                    cordenadas.add(coordinate);
+                    guardarCordenadas(cordenadas);
+                }
             }
         }, 0, INTERVALO_ACTUALIZACION);
+    }
+
+    private void guardarCordenadas(List<LatLng> guardarCordenadas) {
+        String guardar = "";
+        for (int i = 0; i<guardarCordenadas.size(); i++){
+            if (guardar.equals("")){
+                guardar = guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            }
+            else{
+                guardar = guardar + "X" + guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            }
+        }
+        SharedPreferences prefs = getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
+        prefs.edit().putString("misCordenadas", guardar).commit();
     }
 
     @Override

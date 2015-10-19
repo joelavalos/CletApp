@@ -7,9 +7,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -22,14 +23,13 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
  * Created by Joel on 05/09/2015.
  */
-public class Cronometro extends Service {
+public class Cronometro extends Service implements LocationListener {
     private Timer temporizador = new Timer();
     private static final long INTERVALO_ACTUALIZACION = 1000; // En ms
     public static MainFragment UPDATE_LISTENER;
@@ -55,6 +55,7 @@ public class Cronometro extends Service {
     private Location location;
     private boolean gpsActivo;
     public List<LatLng> cordenadas;
+    private LatLng coordinate;
     //Fin prueba
 
     public static void setUpdateListener(MainFragment poiService) {
@@ -82,6 +83,19 @@ public class Cronometro extends Service {
         notifManager.notify(mNotificationId, n);
 
         cordenadas = new ArrayList<>();
+
+        //Prueba ultima
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        gpsActivo = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (gpsActivo) {
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000 * 1/*1 minuto*/, 1/*Metros*/, this);
+            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+
+            latitud = location.getLatitude();
+            longitud = location.getLongitude();
+        }
+        //Prueba ultima
+
         startForeground(mNotificationId, n);
 
         handler = new Handler() {
@@ -100,7 +114,7 @@ public class Cronometro extends Service {
             public void handleMessage(Message msg) {
                 UPDATE_LISTENER.actualizarCronometro(cronometro);
                 if (cronometroCordenadas == 5) {
-                    UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+                    //UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
                 }
                 if (cronometro == tiempoLimite) {
                     crearNotificacion();
@@ -127,13 +141,27 @@ public class Cronometro extends Service {
                 notifManager.notify(mNotificationId, n);
 
                 //Prueba
-                Criteria criteria = new Criteria();
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                String provider = locationManager.getBestProvider(criteria, false);
-                Location location = locationManager.getLastKnownLocation(provider);
-                latitud = location.getLatitude();
-                longitud = location.getLongitude();
-                LatLng coordinate = new LatLng(latitud, longitud);
+                //Criteria criteria = new Criteria();
+                //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                //String provider = locationManager.getBestProvider(criteria, false);
+                //Location location = locationManager.getLastKnownLocation(provider);
+                //latitud = location.getLatitude();
+                //longitud = location.getLongitude();
+                //LatLng coordinate = new LatLng(latitud, longitud);
+
+                /*if (gpsActivo) {
+                    //locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000, 1, this);
+                    //location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+                    latitud = location.getLatitude();
+                    longitud = location.getLongitude();
+                    coordinate = new LatLng(latitud, longitud);
+
+
+                    if (cronometroCordenadas >= 5) {
+                        cordenadas.add(coordinate);
+                        guardarCordenadas(cordenadas);
+                    }
+                }*/
                 //Fin prueba
 
                 if (UPDATE_LISTENER != null) {
@@ -147,22 +175,19 @@ public class Cronometro extends Service {
                     }
                 }
 
-                if (cronometroCordenadas == 5) {
+                /*if (cronometroCordenadas >= 5) {
                     cronometroCordenadas = 0;
-                    cordenadas.add(coordinate);
-                    guardarCordenadas(cordenadas);
-                }
+                }*/
             }
         }, 0, INTERVALO_ACTUALIZACION);
     }
 
     private void guardarCordenadas(List<LatLng> guardarCordenadas) {
         String guardar = "";
-        for (int i = 0; i<guardarCordenadas.size(); i++){
-            if (guardar.equals("")){
+        for (int i = 0; i < guardarCordenadas.size(); i++) {
+            if (guardar.equals("")) {
                 guardar = guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
-            }
-            else{
+            } else {
                 guardar = guardar + "X" + guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
             }
         }
@@ -223,5 +248,44 @@ public class Cronometro extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (cronometroCordenadas >= 5) {
+            //new Mensaje(getApplicationContext(), "Tiempo: " + cronometroCordenadas);
+
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000, 1, this);
+            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+
+            latitud = location.getLatitude();
+            longitud = location.getLongitude();
+            LatLng coordinate = new LatLng(latitud, longitud);
+
+            cordenadas.add(coordinate);
+            guardarCordenadas(cordenadas);
+
+            if (UPDATE_LISTENER != null) {
+                UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+            }
+
+            cronometroCordenadas = 0;
+            //new Mensaje(getApplicationContext(), "Cordenada agregada");
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

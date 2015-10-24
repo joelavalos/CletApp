@@ -127,7 +127,9 @@ public class CrearDesafiosFragment extends Fragment {
                             new java.sql.Date(parsedInicio.getTime()),
                             new java.sql.Date(parsedFinal.getTime()),
                             'P',
-                            false);
+                            false,
+                            1,
+                            1);
                     desafio = desafioCRUD.insertarDesafio(desafio);
 
                     DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(valores[3].split(" ")[0]));

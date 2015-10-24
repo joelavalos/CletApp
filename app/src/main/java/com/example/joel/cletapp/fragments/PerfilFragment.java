@@ -23,7 +23,7 @@ import com.example.joel.cletapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 
 //import com.example.joel.cletapp.DataBaseAdapter;
@@ -268,6 +268,11 @@ public class PerfilFragment extends Fragment implements Communicator {
 
     @Override
     public void TerminarRutina(String data) {
+
+    }
+
+    @Override
+    public void DiasSeleccionados(ArrayList<Integer> data) {
 
     }
 }

@@ -100,6 +100,8 @@ public class MainActivity extends ActionBarActivity implements Communicator{
             float[] valores = {125, 145, 160, 170, 200};
             char[] estado = {'T', 'P', 'P', 'T', 'T'};
             boolean[] exito = {true, false, false, false, true};
+            int[] series = {1,2,3,4,5};
+            int[] repeticiones = {5,4,3,2,1};
 
             try {
                 parsedInicio = format.parse("01/01/2015");
@@ -116,7 +118,9 @@ public class MainActivity extends ActionBarActivity implements Communicator{
                         new java.sql.Date(parsedInicio.getTime()),
                         new java.sql.Date(parsedFinal.getTime()),
                         estado[i],
-                        exito[i]);
+                        exito[i],
+                        series[i],
+                        repeticiones[i]);
 
                 desafio = desafioCRUD.insertarDesafio(desafio);
 
@@ -232,6 +236,13 @@ public class MainActivity extends ActionBarActivity implements Communicator{
         FragmentManager manager = this.getSupportFragmentManager();
         MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
         asd.terminarRutina(data);
+    }
+
+    @Override
+    public void DiasSeleccionados(ArrayList<Integer> data) {
+        FragmentManager manager = this.getSupportFragmentManager();
+        MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+        asd.diasSeleccionados(data);
     }
 
     @Override

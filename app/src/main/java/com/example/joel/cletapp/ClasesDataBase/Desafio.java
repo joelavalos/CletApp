@@ -14,12 +14,14 @@ public class Desafio implements Serializable {
     private Date terminoDesafio;
     private char estadoDesafio;
     private boolean exitoDesafio;
+    private int series;
+    private int repeticiones;
 
     public Desafio() {
         this.desafioId = -1;
     }
 
-    public Desafio(long desafioId, String desafioNombre, String desafioDescripcion, Date inicioDesafio, Date terminoDesafio, char estadoDesafio, boolean exitoDesafio) {
+    public Desafio(long desafioId, String desafioNombre, String desafioDescripcion, Date inicioDesafio, Date terminoDesafio, char estadoDesafio, boolean exitoDesafio, int series, int repeticiones) {
         this.desafioId = desafioId;
         this.desafioNombre = desafioNombre;
         this.desafioDescripcion = desafioDescripcion;
@@ -27,6 +29,8 @@ public class Desafio implements Serializable {
         this.terminoDesafio = terminoDesafio;
         this.estadoDesafio = estadoDesafio;
         this.exitoDesafio = exitoDesafio;
+        this.series = series;
+        this.repeticiones = repeticiones;
     }
 
     public long getDesafioId() {
@@ -83,5 +87,21 @@ public class Desafio implements Serializable {
 
     public void setExitoDesafio(boolean exitoDesafio) {
         this.exitoDesafio = exitoDesafio;
+    }
+
+    public int getSeries() {
+        return series;
+    }
+
+    public void setSeries(int series) {
+        this.series = series;
+    }
+
+    public int getRepeticiones() {
+        return repeticiones;
+    }
+
+    public void setRepeticiones(int repeticiones) {
+        this.repeticiones = repeticiones;
     }
 }

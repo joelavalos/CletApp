@@ -36,7 +36,9 @@ public class DesafioCRUD {
             Helper.DESAFIO_INICIO,
             Helper.DESAFIO_TERMINO,
             Helper.DESAFIO_ESTADO,
-            Helper.DESAFIO_EXITO};
+            Helper.DESAFIO_EXITO,
+            Helper.DESAFIO_SERIES,
+            Helper.DESAFIO_REPETICIONES};
 
     public DesafioCRUD(Context context) {
         this.mContext = context;
@@ -69,6 +71,8 @@ public class DesafioCRUD {
         contentValues.put(Helper.DESAFIO_TERMINO, df.format(desafio.getTerminoDesafio()));
         contentValues.put(Helper.DESAFIO_ESTADO, String.valueOf(desafio.getEstadoDesafio()));
         contentValues.put(Helper.DESAFIO_EXITO, desafio.getExitoDesafio());
+        contentValues.put(Helper.DESAFIO_SERIES, desafio.getSeries());
+        contentValues.put(Helper.DESAFIO_REPETICIONES, desafio.getRepeticiones());
 
         long id = mDatabase.insert(mDbHelper.TABLA_DESAFIO, null, contentValues);
 
@@ -76,7 +80,7 @@ public class DesafioCRUD {
 
         Desafio newDesafio = new Desafio();
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
 
             try {
                 newDesafio = cursorToDesafio(cursor);
@@ -94,8 +98,8 @@ public class DesafioCRUD {
     }
 
     public Desafio buscarDesafioPorId(long ID) throws ParseException {
-        String[] columns = {Helper.DESAFIO_ID, Helper.DESAFIO_NOMBRE, Helper.DESAFIO_DESCRIPCON, Helper.DESAFIO_INICIO, Helper.DESAFIO_TERMINO, Helper.DESAFIO_ESTADO, Helper.DESAFIO_EXITO};
-        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, columns, Helper.DESAFIO_ID + " ='" + ID + "'", null, null, null, null);
+        //String[] columns = {Helper.DESAFIO_ID, Helper.DESAFIO_NOMBRE, Helper.DESAFIO_DESCRIPCON, Helper.DESAFIO_INICIO, Helper.DESAFIO_TERMINO, Helper.DESAFIO_ESTADO, Helper.DESAFIO_EXITO};
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ID + " ='" + ID + "'", null, null, null, null);
         List<String> stringBuffer = new ArrayList<String>();
 
         Desafio desafio = new Desafio();
@@ -118,6 +122,8 @@ public class DesafioCRUD {
         newValues.put(Helper.DESAFIO_TERMINO, df.format(desafio.getTerminoDesafio()));
         newValues.put(Helper.DESAFIO_ESTADO, String.valueOf(desafio.getEstadoDesafio()));
         newValues.put(Helper.DESAFIO_EXITO, Boolean.parseBoolean(String.valueOf(desafio.getExitoDesafio())));
+        newValues.put(Helper.DESAFIO_SERIES, desafio.getSeries());
+        newValues.put(Helper.DESAFIO_EXITO, desafio.getRepeticiones());
 
         String[] whereArgs = {String.valueOf(desafio.getDesafioId())};
 
@@ -134,7 +140,7 @@ public class DesafioCRUD {
         return desafioReturn;
     }
 
-    public List<Desafio> buscarTodosLosDesafiosPendientes(){
+    public List<Desafio> buscarTodosLosDesafiosPendientes() {
         List<Desafio> listDesafios = new ArrayList<Desafio>();
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " ='" + "P" + "'", null, null, null, null);
 
@@ -150,7 +156,7 @@ public class DesafioCRUD {
         return listDesafios;
     }
 
-    public List<Desafio> buscarTodosLosDesafiosTerminados(){
+    public List<Desafio> buscarTodosLosDesafiosTerminados() {
         List<Desafio> listDesafios = new ArrayList<Desafio>();
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " ='" + "T" + "'", null, null, null, null);
 
@@ -166,10 +172,10 @@ public class DesafioCRUD {
         return listDesafios;
     }
 
-    public List<Desafio> buscarTodosLosDesafiosTerminadosLogrados(){
+    public List<Desafio> buscarTodosLosDesafiosTerminadosLogrados() {
         List<Desafio> listDesafios = new ArrayList<Desafio>();
         String[] condiciones = {"T", "1"};
-        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " =? AND "+Helper.DESAFIO_EXITO+" =?", condiciones, null, null, null, null);
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " =? AND " + Helper.DESAFIO_EXITO + " =?", condiciones, null, null, null, null);
 
         while (cursor.moveToNext()) {
             try {
@@ -183,10 +189,10 @@ public class DesafioCRUD {
         return listDesafios;
     }
 
-    public List<Desafio> buscarTodosLosDesafiosTerminadosNoLogrados(){
+    public List<Desafio> buscarTodosLosDesafiosTerminadosNoLogrados() {
         List<Desafio> listDesafios = new ArrayList<Desafio>();
         String[] condiciones = {"T", "0"};
-        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " =? AND "+Helper.DESAFIO_EXITO+" =?", condiciones, null, null, null, null);
+        Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, Helper.DESAFIO_ESTADO + " =? AND " + Helper.DESAFIO_EXITO + " =?", condiciones, null, null, null, null);
 
         while (cursor.moveToNext()) {
             try {
@@ -200,7 +206,7 @@ public class DesafioCRUD {
         return listDesafios;
     }
 
-    public List<Desafio> buscarTodosLosDesafios(){
+    public List<Desafio> buscarTodosLosDesafios() {
         List<Desafio> listDesafios = new ArrayList<Desafio>();
         String[] condiciones = {"T", "0"};
         Cursor cursor = mDatabase.query(Helper.TABLA_DESAFIO, mAllColumns, null, null, null, null, null);
@@ -242,12 +248,13 @@ public class DesafioCRUD {
         desafio.setInicioDesafio(new java.sql.Date(format.parse(cursor.getString(3)).getTime()));
         desafio.setTerminoDesafio(new java.sql.Date(format.parse(cursor.getString(4)).getTime()));
         desafio.setEstadoDesafio(cursor.getString(5).charAt(0));
-        if (cursor.getString(6).equals("1")){
+        if (cursor.getString(6).equals("1")) {
             desafio.setExitoDesafio(true);
-        }
-        else{
+        } else {
             desafio.setExitoDesafio(false);
         }
+        desafio.setSeries(cursor.getInt(7));
+        desafio.setRepeticiones(cursor.getInt(8));
         //desafio.setExitoDesafio(Boolean.parseBoolean(String.valueOf(cursor.getString(6))));
         return desafio;
     }

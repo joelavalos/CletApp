@@ -1,7 +1,6 @@
 package com.example.joel.cletapp.fragments;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -395,7 +394,7 @@ class AdapterDesafio extends ArrayAdapter<String> {
 
         holder.nombreCampo.setText(campos[position]);
         holder.valorCampo.setText(soloNombre[position]);
-        if (soloNombre[position].equals("Descansar")){
+        if (soloNombre[position].equals("Descansar")) {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));
         }
         holder.objetivoCampo.setText(objetivo[position]);

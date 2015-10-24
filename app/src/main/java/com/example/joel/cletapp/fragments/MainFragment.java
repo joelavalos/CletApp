@@ -26,11 +26,14 @@ import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
+import com.example.joel.cletapp.ClasesDataBase.Objetivo;
+import com.example.joel.cletapp.ClasesDataBase.Resumen;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.HeartRateMonitor;
 import com.example.joel.cletapp.Mensaje;
@@ -48,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -71,6 +75,7 @@ public class MainFragment extends Fragment {
     private ImageButton ButtonIniciarRutina;
     private ImageButton ButtonDetenerRutina;
     private ImageButton ButtonIniciarDesafio;
+    private ImageButton ButtonCrearRutinaFlash;
     private ImageButton ButtonDetenerDesafio;
 
     private TextView textoCronometro;
@@ -94,6 +99,7 @@ public class MainFragment extends Fragment {
     private TextView TextViewNotaDesafio, TextViewNotaDesafioActual;
     private TextView TextViewFechaDesafio, TextViewFechaDesafioActual;
     private TextView TextViewEstado, TextViewEstadoActual, TextViewEstadoTerminado;
+    private TextView TextViewSeries, TextViewRepeticiones;
 
     private TextView TextViewElegirRutina;
     private TextView TextViewElegirDesafioActual;
@@ -115,6 +121,27 @@ public class MainFragment extends Fragment {
     //Prueba
     public List<LatLng> cordenadasRuta;
     //Prueba
+
+    //Pruebas para crear rutinas
+    private ObjetivoCRUD objetivoCRUD;
+
+    private String[] valores = {"", ""};
+    private Date parsedInicio;
+    private Date parsedFinal;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private String[] camposDesafios = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+    private String[] valoresDesafios = {"", "", "", "", "", "", ""};
+    private Resumen newResumen;
+    private Rutina newRutina;
+    private List<Desafio> listaDesafios;
+    private Desafio newDesafio;
+    private List<String> fechasDesafios;
+    private Date parsedDesafio;
+    private DesafioRutina newDesafioRutina;
+    private Calendar c;
+    private ArrayList<Integer> diasSelecionados;
+    private List<String> nuevosDesafios;
+    //Fin de pruebas
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -224,6 +251,8 @@ public class MainFragment extends Fragment {
                     ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
                     TextViewElegirRutina.setEnabled(false);
+                    ButtonCrearRutinaFlash.setEnabled(false);
+                    ButtonCrearRutinaFlash.setVisibility(View.INVISIBLE);
                     TextViewEstado.setText("Iniciada");
                     TextViewEstado.setTextColor(getResources().getColor(R.color.colorVerde));
 
@@ -314,6 +343,15 @@ public class MainFragment extends Fragment {
             }
         });
 
+        ButtonCrearRutinaFlash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogoMultiSelect dialogo = new DialogoMultiSelect();
+                dialogo.show(getFragmentManager(), "multiSelect");
+            }
+        });
+
         ButtonDetenerDesafio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -347,6 +385,204 @@ public class MainFragment extends Fragment {
 
         return root;
     }
+
+    private void crearRutinaFlash() {
+
+        for (int i = 0; i < diasSelecionados.size(); i++) {
+            crearDesafios();
+        }
+
+        inicializarBaseDeDatos();
+        listaDesafios = new ArrayList<>();
+        fechasDesafios = new ArrayList<>();
+        fechaFinal(c);
+
+        try {
+            parsedInicio = format.parse(valores[0]);
+            parsedFinal = format.parse(valores[1]);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        newResumen = new Resumen(0, "Rutina en curso", new java.sql.Date(parsedInicio.getTime()));
+        newResumen = resumenCRUD.insertarResumen(newResumen);
+
+        newRutina = new Rutina(0,
+                "AutoRutina",
+                "Nota Rutina",
+                new java.sql.Date(parsedInicio.getTime()),
+                new java.sql.Date(parsedFinal.getTime()),
+                'P',
+                newResumen);
+        newRutina = rutinaCRUD.insertarRutina(newRutina);
+
+        listaDesafios.clear();
+
+        String[] diasOrdenados = {"", "", "", "", "", "", ""};
+
+        for (int i = 0; i < camposDesafios.length; i++) {
+            if (camposDesafios[i].split(" ")[1].contains("lunes")) {
+                diasOrdenados[i] = "0";
+            } else if (camposDesafios[i].split(" ")[1].contains("martes")) {
+                diasOrdenados[i] = "1";
+
+            } else if (camposDesafios[i].split(" ")[1].contains("coles")) {
+                diasOrdenados[i] = "2";
+
+            } else if (camposDesafios[i].split(" ")[1].contains("jueves")) {
+                diasOrdenados[i] = "3";
+
+            } else if (camposDesafios[i].split(" ")[1].contains("viernes")) {
+                diasOrdenados[i] = "4";
+
+            } else if (camposDesafios[i].split(" ")[1].contains("bado")) {
+                diasOrdenados[i] = "5";
+
+            } else if (camposDesafios[i].split(" ")[1].contains("mingo")) {
+                diasOrdenados[i] = "6";
+
+            }
+        }
+
+        for (int i = 0; i < diasOrdenados.length; i++) {
+            for (int j = 0; j < diasSelecionados.size(); j++) {
+                if (diasSelecionados.get(j) == Integer.parseInt(diasOrdenados[i])) {
+                    valoresDesafios[i] = nuevosDesafios.get(j);
+                }
+            }
+        }
+
+        for (int i = 0; i < valoresDesafios.length; i++) {
+            if (valoresDesafios[i].equals("")) {
+                valoresDesafios[i] = "Descansar";
+            }
+        }
+
+        for (int i = 0; i < valoresDesafios.length; i++) {
+            if (!valoresDesafios[i].equals("Descansar")) {
+                try {
+                    newDesafio = desafioCRUD.buscarDesafioPorId(Long.parseLong(valoresDesafios[i].split("-")[0]));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                listaDesafios.add(newDesafio);
+                fechasDesafios.add(camposDesafios[i].split(" ")[0]);
+            }
+        }
+
+        for (int i = 0; i < listaDesafios.size(); i++) {
+
+            try {
+                parsedDesafio = format.parse(fechasDesafios.get(i));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            newDesafioRutina = new DesafioRutina(0, newRutina, listaDesafios.get(i), new java.sql.Date(parsedDesafio.getTime()));
+            newDesafioRutina = desafioRutinaCRUD.insertarDesafioRutina(newDesafioRutina);
+        }
+
+        new Mensaje(getActivity().getApplicationContext(), "Rutina creada");
+        reiniciarDatos();
+    }
+
+    private void crearDesafios() {
+        Objetivo objetivo = null;
+
+        try {
+            objetivo = objetivoCRUD.buscarObjetivoPorNombre("Distancia");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            parsedInicio = format.parse("10/10/2015");
+            parsedFinal = format.parse("10/10/2015");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Desafio desafio = new Desafio(0,
+                "Desafio Autogenerado",
+                "Nota Autogenerada",
+                new java.sql.Date(parsedInicio.getTime()),
+                new java.sql.Date(parsedFinal.getTime()),
+                'P',
+                false,
+                2,
+                3);
+        desafio = desafioCRUD.insertarDesafio(desafio);
+        nuevosDesafios.add(desafio.getDesafioId() + "-" + desafio.getDesafioNombre());
+
+        DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat("1800"));
+        desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
+    }
+
+    private void fechaFinal(Calendar c) {
+        c = Calendar.getInstance();
+        String formattedDate = sdf.format(c.getTime());
+        valores[0] = formattedDate;
+        actualizarFechas(c);
+        formattedDate = sdf.format(c.getTime());
+        valores[1] = formattedDate;
+    }
+
+    private void actualizarFechas(Calendar c) {
+        Locale spanish = new Locale("es", "PE");
+        for (int i = 0; i < camposDesafios.length; i++) {
+            camposDesafios[i] = sdf.format(c.getTime()) + " " + c.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, spanish);
+            if ((i + 1) < camposDesafios.length) {
+                c.add(Calendar.DATE, +1);
+            }
+        }
+    }
+
+    private void reiniciarDatos() {
+
+        c = Calendar.getInstance();
+        valores[0] = format.format(c.getTime());
+        valores[1] = format.format(c.getTime());
+
+        for (int i = 0; i < valoresDesafios.length; i++) {
+            valoresDesafios[i] = "";
+        }
+    }
+
+    /*private String validarCreacion() {
+        String validar = "";
+        int diasDescanso = 0;
+
+        for (int i = 0; i < valoresDesafios.length; i++) {
+            if (valoresDesafios[i].equals("")) {
+                validar = "Agenda incompleta";
+            } else if (valoresDesafios[i].equals("Descansar")) {
+                diasDescanso++;
+            }
+        }
+
+        if (diasDescanso == 7) {
+            validar = "Seleccione al menos 1 desafio";
+        }
+
+        try {
+            parsedInicio = format.parse(valores[0]);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cInicial = Calendar.getInstance();
+        cInicial.add(Calendar.DATE, -1);
+        Date dateInicio = new java.sql.Date(parsedInicio.getTime());
+        Date actual = cInicial.getTime();
+
+        if (dateInicio.getTime() < actual.getTime()) {
+            validar = "La fecha inicial debe ser despues de: " + format.format(actual.getTime());
+        }
+
+        if (EditTextNombreRutina.getText().toString().equals("")) {
+            validar = "Ingrese nombre";
+        }
+
+        return validar;
+    }*/
 
     private void cargarRuta() {
         googleMap.clear();
@@ -444,6 +680,7 @@ public class MainFragment extends Fragment {
             ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
             TextViewElegirDesafioActual.setEnabled(true);
             TextViewEstadoTerminado.setVisibility(View.VISIBLE);
+            cambiarVisibilidadDesafioActual(View.INVISIBLE);
             guardarEstadoDesafioNoPause();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -522,6 +759,12 @@ public class MainFragment extends Fragment {
     }
 
     private void inicializarBaseDeDatos() {
+        //Prueba para crear desafios
+        desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
+        desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
+        objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
+        //Fin de las pruebas
+
         desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
         resumenCRUD = new ResumenCRUD(getActivity().getApplicationContext());
         rutinaCRUD = new RutinaCRUD(getActivity().getApplicationContext());
@@ -536,10 +779,13 @@ public class MainFragment extends Fragment {
     }
 
     private void inicializarComponentes(View root) {
+        diasSelecionados = new ArrayList<>();
+        nuevosDesafios = new ArrayList<>();
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
         ButtonIniciarRutina = (ImageButton) root.findViewById(R.id.ButtonIniciarRutina);
         ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
         ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);
+        ButtonCrearRutinaFlash = (ImageButton) root.findViewById(R.id.ButtonCrearRutinaFlash);
         ButtonDetenerDesafio = (ImageButton) root.findViewById(R.id.ButtonDetenerDesafio);
 
         textoCronometro = (TextView) root.findViewById(R.id.cronometro);
@@ -581,6 +827,9 @@ public class MainFragment extends Fragment {
         TextViewElegirRutina = (TextView) root.findViewById(R.id.TextViewElegirRutina);
         TextViewElegirDesafioActual = (TextView) root.findViewById(R.id.TextViewElegirDesafioActual);
 
+        TextViewSeries = (TextView) root.findViewById(R.id.TextViewSeries);
+        TextViewRepeticiones = (TextView) root.findViewById(R.id.TextViewRepeticiones);
+
         cambiarVisibilidadRutina(View.INVISIBLE);
         cambiarVisibilidadDesafioActual(View.INVISIBLE);
 
@@ -600,6 +849,9 @@ public class MainFragment extends Fragment {
             actualRutina = listaRutinasIniciadas.get(0);
             TextViewElegirRutina.setText("");
             TextViewElegirRutina.setEnabled(false);
+            ButtonCrearRutinaFlash.setEnabled(false);
+            ButtonCrearRutinaFlash.setVisibility(View.INVISIBLE);
+
             TextViewElegirDesafioActual.setText("");
 
             ButtonDetenerRutina.setEnabled(true);
@@ -621,7 +873,7 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            cargarDesafio(String.valueOf(R.drawable.mdpi_ic_star_black_36dp));
+            cargarDesafio(String.valueOf(R.drawable.mdpi_ic_star_black_24dp));
 
             if (actual.after(listaRutinasIniciadas.get(0).getRutinaTermino())) {
                 new Mensaje(getActivity().getApplicationContext(), "Rutina terminada");
@@ -660,7 +912,8 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            cargarDesafio(data.split("-")[1]);
+            //cargarDesafio(data.split("-")[1]);
+            cargarDesafio(String.valueOf(R.drawable.mdpi_ic_star_black_24dp));
         }
     }
 
@@ -735,7 +988,9 @@ public class MainFragment extends Fragment {
             cargarDatosDesafioActual(Integer.parseInt(imagen), actualDesafio.getDesafioNombre(), desafioObjetivo.getObjetivo().getObjetivoNombre(), String.valueOf(Math.round(desafioObjetivo.getValor())),
                     actualDesafio.getDesafioDescripcion(),
                     format.format(actual),
-                    estadoDesafioCargado);
+                    estadoDesafioCargado,
+                    actualDesafio.getSeries(),
+                    actualDesafio.getRepeticiones());
 
             if (!listaRutinasIniciadas.isEmpty()) {
                 ButtonIniciarDesafio.setEnabled(true);
@@ -745,13 +1000,14 @@ public class MainFragment extends Fragment {
                 ButtonIniciarDesafio.setEnabled(false);
                 TextViewElegirDesafioActual.setEnabled(true);
                 TextViewEstadoTerminado.setVisibility(View.VISIBLE);
+                cambiarVisibilidadDesafioActual(View.INVISIBLE);
             }
 
             encontrado = false;
 
         } else {
             cambiarVisibilidadDesafioActual(View.VISIBLE);
-            cargarDatosDesafioActual(Integer.parseInt(imagen), "Descansar", "", "", "", format.format(actual), diff);
+            cargarDatosDesafioActual(Integer.parseInt(imagen), "Descansar", "", "", "", format.format(actual), diff, 0, 0);
 
             ButtonIniciarDesafio.setEnabled(false);
         }
@@ -776,11 +1032,14 @@ public class MainFragment extends Fragment {
     private void cambiarVisibilidadRutina(int visible) {
         ImageViewImagenDesafio2.setVisibility(visible);
         TextViewNombreDesafio.setVisibility(visible);
-        TextViewCategoriaDesafio.setVisibility(visible);
-        TextViewValorDesafio.setVisibility(visible);
-        TextViewNotaDesafio.setVisibility(visible);
-        TextViewFechaDesafio.setVisibility(visible);
-        TextViewEstado.setVisibility(visible);
+
+        //TextViewRepeticiones.setVisibility(visible);
+        //TextViewSeries.setVisibility(visible);
+        //TextViewCategoriaDesafio.setVisibility(visible);
+        //TextViewValorDesafio.setVisibility(visible);
+        //TextViewNotaDesafio.setVisibility(visible);
+        //TextViewFechaDesafio.setVisibility(visible);
+        //TextViewEstado.setVisibility(visible);
     }
 
     private void cambiarVisibilidadDesafioActual(int visible) {
@@ -788,12 +1047,15 @@ public class MainFragment extends Fragment {
         TextViewNombreDesafioActual.setVisibility(visible);
         //TextViewCategoriaDesafioActual.setVisibility(visible);
         TextViewValorDesafioActual.setVisibility(visible);
+
+        TextViewRepeticiones.setVisibility(visible);
+        TextViewSeries.setVisibility(visible);
         //.setVisibility(visible);
         //TextViewFechaDesafioActual.setVisibility(visible);
-        TextViewEstadoActual.setVisibility(visible);
+        //TextViewEstadoActual.setVisibility(visible);
     }
 
-    private void cargarDatosDesafioActual(int ic_grade_black_48dp, String desafioNombre, String objetivoNombre, String valorDesafio, String desafioDescripcion, String fecha, String estado) {
+    private void cargarDatosDesafioActual(int ic_grade_black_48dp, String desafioNombre, String objetivoNombre, String valorDesafio, String desafioDescripcion, String fecha, String estado, int series, int repeticiones) {
         ImageViewImagenDesafioActual.setImageResource(ic_grade_black_48dp);
         TextViewNombreDesafioActual.setText(desafioNombre);
         //TextViewCategoriaDesafioActual.setText(objetivoNombre);
@@ -801,6 +1063,8 @@ public class MainFragment extends Fragment {
         //TextViewNotaDesafioActual.setText(desafioDescripcion);
         //TextViewFechaDesafioActual.setText(fecha);
         TextViewEstadoActual.setText(estado);
+        TextViewSeries.setText("Series: 0/" + series);
+        TextViewRepeticiones.setText("Repeticiones: 0/" + repeticiones);
 
         if (estado.equals("Terminado")) {
             TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
@@ -830,6 +1094,8 @@ public class MainFragment extends Fragment {
         cambiarVisibilidadRutina(View.INVISIBLE);
         TextViewElegirRutina.setText("Seleccionar rutina");
         TextViewElegirRutina.setEnabled(true);
+        ButtonCrearRutinaFlash.setEnabled(true);
+        ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
         TextViewElegirDesafioActual.setText("Desafio actual");
         ButtonDetenerRutina.setEnabled(false);
         ButtonDetenerRutina.setVisibility(View.INVISIBLE);
@@ -873,6 +1139,8 @@ public class MainFragment extends Fragment {
             TextViewElegirDesafioActual.setEnabled(false);
             TextViewElegirRutina.setText("Seleccionar rutina");
             TextViewElegirRutina.setEnabled(true);
+            ButtonCrearRutinaFlash.setEnabled(true);
+            ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
             TextViewElegirDesafioActual.setText("Desafio actual");
             ButtonDetenerRutina.setEnabled(false);
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
@@ -901,5 +1169,10 @@ public class MainFragment extends Fragment {
             startActivity(newIntent);
         } else {
         }
+    }
+
+    public void diasSeleccionados(ArrayList<Integer> data) {
+        diasSelecionados = data;
+        crearRutinaFlash();
     }
 }

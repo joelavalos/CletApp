@@ -23,6 +23,19 @@
         android:src="@drawable/xhdpi_ic_play_arrow_white_24dp" />
 
     <ImageButton
+        android:id="@+id/ButtonCrearRutinaFlash"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:layout_alignBottom="@+id/mi_mapa"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="74dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/boton_add"
+        android:elevation="8dp"
+        android:src="@drawable/xhdpi_ic_add_white_24dp" />
+
+    <ImageButton
         android:id="@+id/ButtonDetenerDesafio"
         android:layout_width="44dp"
         android:layout_height="44dp"
@@ -68,7 +81,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_toRightOf="@+id/ImageViewCircularDuracion"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:text="00:00:00"
         android:textColor="#4169E1"
         android:textSize="24dp" />
@@ -117,7 +130,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/mdpi_ic_star_black_36dp" />
+        android:src="@drawable/mdpi_ic_star_black_24dp" />
 
     <TextView
         android:id="@+id/TextViewNombreDesafioActual"
@@ -132,17 +145,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#000000" />
 
-    <!--<TextView
-        android:id="@+id/TextViewCategoriaDesafioActual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/TextViewNombreDesafioActual"
-        android:gravity="center_horizontal"
-        android:text="Categoria"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#000000" />-->
-
     <TextView
         android:id="@+id/TextViewValorDesafioActual"
         android:layout_width="wrap_content"
@@ -155,32 +157,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000" />
 
-    <!--
-    <TextView
-        android:id="@+id/TextViewNotaDesafioActual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ImageViewImagenDesafioActual"
-        android:layout_alignRight="@+id/TextViewNombreDesafioActual"
-        android:layout_below="@+id/TextViewNombreDesafioActual"
-        android:layout_toRightOf="@+id/ImageViewImagenDesafioActual"
-        android:text="Este desafio fue creado para bajar de peso asdasdasdsad"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/colorGris25" />
-
-
-    <TextView
-        android:id="@+id/TextViewFechaDesafioActual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ImageViewImagenDesafioActual"
-        android:layout_below="@+id/ImageViewImagenDesafioActual"
-        android:text="Inicia: 11/11/2011"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#9E9E9E" />
-
-        -->
-
     <TextView
         android:id="@+id/TextViewEstadoActual"
         android:layout_width="wrap_content"
@@ -191,20 +167,21 @@
         android:gravity="center_horizontal"
         android:text="Disponible"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorMorado" />
+        android:textColor="@color/colorMorado"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/TextViewEstadoTerminado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/desafioContainer"
         android:layout_alignLeft="@+id/desafioContainer"
         android:layout_alignRight="@+id/desafioContainer"
-        android:layout_below="@+id/TextViewEstadoActual"
-        android:gravity="center_horizontal"
+        android:layout_alignTop="@+id/desafioContainer"
+        android:gravity="center"
         android:text="Ver resultados"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorNegro" />
-
 
     <TextView
         android:id="@+id/rutinaContainer"
@@ -273,7 +250,8 @@
         android:gravity="center_horizontal"
         android:text="Categoria"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/TextViewValorDesafio"
@@ -286,7 +264,8 @@
         android:gravity="center"
         android:text="25 m"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/TextViewNotaDesafio"
@@ -298,7 +277,8 @@
         android:layout_toRightOf="@+id/ImageViewImagenDesafio2"
         android:text="Este desafio fue creado para bajar de peso asdasdasdsad"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#9E9E9E" />
+        android:textColor="#9E9E9E"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/TextViewFechaDesafio"
@@ -308,7 +288,8 @@
         android:layout_alignRight="@+id/TextViewCategoriaDesafio"
         android:text="Desde: 11/11/2011 hasta: 12/11/2011"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#9E9E9E" />
+        android:textColor="#9E9E9E"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/TextViewEstado"
@@ -319,7 +300,8 @@
         android:layout_below="@+id/TextViewFechaDesafio"
         android:text="Pendiente"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorMorado" />
+        android:textColor="@color/colorMorado"
+        android:visibility="invisible" />
 
     <ImageButton
         android:id="@+id/ButtonIniciarRutina"
@@ -327,6 +309,7 @@
         android:layout_height="48dp"
         android:layout_alignBottom="@+id/TextViewElegirRutina"
         android:layout_alignRight="@+id/TextViewElegirRutina"
+        android:layout_marginBottom="3dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/boton_play"
         android:elevation="9dp"
@@ -338,12 +321,52 @@
         android:layout_height="48dp"
         android:layout_alignBottom="@+id/TextViewElegirRutina"
         android:layout_alignRight="@+id/TextViewElegirRutina"
+        android:layout_marginBottom="3dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/boton_circular"
         android:elevation="8dp"
         android:enabled="false"
         android:src="@drawable/hdpi_ic_clear_white_24dp"
         android:textColor="@color/colorBlanco" />
+
+    <TextView
+        android:id="@+id/datosRutinaContainer"
+        android:layout_width="168dp"
+        android:layout_height="53dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/rutinaContainer"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/SpaceEspacio2"
+        android:background="@color/colorBlanco"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/TextViewSeries"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/datosRutinaContainer"
+        android:layout_alignRight="@+id/datosRutinaContainer"
+        android:layout_alignTop="@+id/datosRutinaContainer"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Series: 0/0"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextViewRepeticiones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/datosRutinaContainer"
+        android:layout_alignLeft="@+id/datosRutinaContainer"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Repeticiones: 0/0"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/ButtonFrecuencioa"

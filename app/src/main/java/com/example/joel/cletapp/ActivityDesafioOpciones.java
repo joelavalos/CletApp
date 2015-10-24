@@ -318,6 +318,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
     }
 
+    @Override
+    public void DiasSeleccionados(ArrayList<Integer> data) {
+
+    }
+
     private String validarCreacion() {
         String validar = "";
 

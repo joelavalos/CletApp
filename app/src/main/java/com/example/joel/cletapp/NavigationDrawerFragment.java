@@ -78,7 +78,7 @@ public class NavigationDrawerFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
         inicializarComponentes(root);
-        Mensaje asdzxcasd = new Mensaje(getActivity().getApplicationContext(), "NavigationDrawer creado");
+        //new Mensaje(getActivity().getApplicationContext(), "NavigationDrawer creado");
 
         listOpciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -189,7 +189,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         //En caso de nunca haber visto el Drawer
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            Mensaje message = new Mensaje(getActivity().getApplicationContext(), "nunca habia visto el drawer");
+            //new Mensaje(getActivity().getApplicationContext(), "nunca habia visto el drawer");
             //mDrawerLayout.openDrawer(containerView);
         }
 

@@ -38,7 +38,7 @@ public class DialogoMultiSelect extends DialogFragment {
                             selectedItems.remove(Integer.valueOf(which));
                         }
                     }
-                }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                }).setPositiveButton("Crear", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 comm.DiasSeleccionados(selectedItems);

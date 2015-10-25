@@ -4,10 +4,6 @@ package com.example.joel.cletapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -18,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityDesafioTerminado;
@@ -38,12 +33,7 @@ import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.HeartRateMonitor;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -59,11 +49,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainFragment extends Fragment {
 
-    GoogleMap googleMap;
+    /*GoogleMap googleMap;
     MapView mapView;
     private LatLng nuevaCordenada;
     private PolylineOptions options;
-    private Polyline line;
+    private Polyline line;*/
 
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private boolean encontrado = false;
@@ -147,7 +137,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mapView = (MapView) root.findViewById(R.id.mi_mapa);
+        /*mapView = (MapView) root.findViewById(R.id.mi_mapa);
 
         mapView.onCreate(savedInstanceState);
         googleMap = mapView.getMap();
@@ -171,7 +161,7 @@ public class MainFragment extends Fragment {
         LatLng coordinate = new LatLng(lat, lng);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 20));
-        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
+        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);*/
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
@@ -200,7 +190,7 @@ public class MainFragment extends Fragment {
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
 
-            cargarRuta();
+            /*cargarRuta();*/
         } else {
             intValorCronometro = 0;
         }
@@ -214,7 +204,7 @@ public class MainFragment extends Fragment {
             textoCronometro.setText(segundosToHoras(intValorCronometro));
             new Mensaje(getActivity().getApplicationContext(), "Esyo en pause");
 
-            cargarRuta();
+            /*cargarRuta();*/
             //guardarEstadoDesafioNoPause();
         }
 
@@ -223,7 +213,6 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
                 DialogoRutinaSelector dialogo = new DialogoRutinaSelector();
                 dialogo.setArguments(bundle);
                 dialogo.show(getFragmentManager(), "categoriaPicker");
@@ -346,7 +335,6 @@ public class MainFragment extends Fragment {
         ButtonCrearRutinaFlash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 DialogoMultiSelect dialogo = new DialogoMultiSelect();
                 dialogo.show(getFragmentManager(), "multiSelect");
             }
@@ -482,7 +470,22 @@ public class MainFragment extends Fragment {
         }
 
         new Mensaje(getActivity().getApplicationContext(), "Rutina creada");
+        actualizarDatos(generarDatosRutina());
         reiniciarDatos();
+    }
+
+    private String generarDatosRutina() {
+        String returnData = "";
+        returnData = String.valueOf(newRutina.getRutinaId());
+        returnData = returnData + "-" + "imagen";
+        returnData = returnData + "-" + newRutina.getRutinaNombre();
+        returnData = returnData + "-" + "Desafios";
+        returnData = returnData + "-" + "0";
+        returnData = returnData + "-" + newRutina.getRutinaDescripcion();
+        returnData = returnData + "-" + newRutina.getRutinaInicio();
+        returnData = returnData + "-" + newRutina.getRutinaEstado();
+
+        return returnData;
     }
 
     private void crearDesafios() {
@@ -547,44 +550,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    /*private String validarCreacion() {
-        String validar = "";
-        int diasDescanso = 0;
-
-        for (int i = 0; i < valoresDesafios.length; i++) {
-            if (valoresDesafios[i].equals("")) {
-                validar = "Agenda incompleta";
-            } else if (valoresDesafios[i].equals("Descansar")) {
-                diasDescanso++;
-            }
-        }
-
-        if (diasDescanso == 7) {
-            validar = "Seleccione al menos 1 desafio";
-        }
-
-        try {
-            parsedInicio = format.parse(valores[0]);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Calendar cInicial = Calendar.getInstance();
-        cInicial.add(Calendar.DATE, -1);
-        Date dateInicio = new java.sql.Date(parsedInicio.getTime());
-        Date actual = cInicial.getTime();
-
-        if (dateInicio.getTime() < actual.getTime()) {
-            validar = "La fecha inicial debe ser despues de: " + format.format(actual.getTime());
-        }
-
-        if (EditTextNombreRutina.getText().toString().equals("")) {
-            validar = "Ingrese nombre";
-        }
-
-        return validar;
-    }*/
-
-    private void cargarRuta() {
+    /*private void cargarRuta() {
         googleMap.clear();
         options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
 
@@ -607,7 +573,7 @@ public class MainFragment extends Fragment {
             }
         }
         line = googleMap.addPolyline(options);
-    }
+    }*/
 
     private String cargarEstadoDesafio() {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -692,7 +658,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        /*mapView.onDestroy();*/
         Cronometro.setUpdateListener(null);
         //guardarEstadoDesafio("detenido");
     }
@@ -711,14 +677,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        /*mapView.onPause();*/
         estado = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        /*mapView.onResume();*/
         //Cronometro.setUpdateListener(this);
         estado = true;
     }
@@ -729,12 +695,12 @@ public class MainFragment extends Fragment {
         textoCronometro.setText(segundosToHoras(tiempo));
     }
 
-    public void mostrarCordenadas(double latitud, double longitud){
+    /*public void mostrarCordenadas(double latitud, double longitud){
         //new Mensaje(getActivity().getApplicationContext(), "Cordenadas: " + latitud + ", " + longitud);
         nuevaCordenada = new LatLng(latitud, longitud);
         options.add(nuevaCordenada);
         line = googleMap.addPolyline(options);
-    }
+    }*/
 
     public String segundosToHoras(int totalSegundos) {
         horas = totalSegundos / 3600;
@@ -759,12 +725,9 @@ public class MainFragment extends Fragment {
     }
 
     private void inicializarBaseDeDatos() {
-        //Prueba para crear desafios
         desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
         objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
-        //Fin de las pruebas
-
         desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
         resumenCRUD = new ResumenCRUD(getActivity().getApplicationContext());
         rutinaCRUD = new RutinaCRUD(getActivity().getApplicationContext());
@@ -774,7 +737,6 @@ public class MainFragment extends Fragment {
         listaDesafiosRutina = new ArrayList<>();
         todasLasRutinas = new ArrayList<>();
         todosLosDesafiosRutinasTemporal = new ArrayList<>();
-
         listaRutinasIniciadas = rutinaCRUD.buscarTodasLasRutinasIniciadas();
     }
 
@@ -845,7 +807,7 @@ public class MainFragment extends Fragment {
             String fechaDesafioTermino = format.format(listaRutinasIniciadas.get(0).getRutinaTermino());
             fechaActual = format.format(actual);
 
-            new Mensaje(getActivity().getApplicationContext(), "Rutina en curso");
+            //new Mensaje(getActivity().getApplicationContext(), "Rutina en curso");
             actualRutina = listaRutinasIniciadas.get(0);
             TextViewElegirRutina.setText("");
             TextViewElegirRutina.setEnabled(false);
@@ -1173,6 +1135,11 @@ public class MainFragment extends Fragment {
 
     public void diasSeleccionados(ArrayList<Integer> data) {
         diasSelecionados = data;
-        crearRutinaFlash();
+        if (!diasSelecionados.isEmpty()) {
+            crearRutinaFlash();
+        } else {
+            new Mensaje(getActivity().getApplicationContext(), "Selecciones al menos 1 dia");
+        }
+
     }
 }

@@ -4,6 +4,10 @@ package com.example.joel.cletapp.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -14,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityDesafioTerminado;
+import com.example.joel.cletapp.ActivityProgresoRutina;
 import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
@@ -33,7 +39,12 @@ import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.HeartRateMonitor;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,6 +103,7 @@ public class MainFragment extends Fragment {
     private TextView TextViewSeries, TextViewRepeticiones;
 
     private TextView TextViewElegirRutina;
+    private boolean estadoElegirRutina = true;
     private TextView TextViewElegirDesafioActual;
 
     private RutinaCRUD rutinaCRUD;
@@ -213,9 +225,18 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                DialogoRutinaSelector dialogo = new DialogoRutinaSelector();
-                dialogo.setArguments(bundle);
-                dialogo.show(getFragmentManager(), "categoriaPicker");
+                if (estadoElegirRutina == true) {
+                    DialogoRutinaSelector dialogo = new DialogoRutinaSelector();
+                    dialogo.setArguments(bundle);
+                    dialogo.show(getFragmentManager(), "categoriaPicker");
+                } else {
+                    //new Mensaje(getActivity().getApplicationContext(), "Hola mundo");
+                    //Mostrar el progreso actual de la rutina
+                    String idRutina = String.valueOf(actualRutina.getRutinaId());
+                    Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoRutina.class);
+                    newIntent.putExtra("idRutina", idRutina);
+                    startActivity(newIntent);
+                }
             }
         });
 
@@ -239,7 +260,8 @@ public class MainFragment extends Fragment {
                     ButtonDetenerRutina.setEnabled(true);
                     ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
-                    TextViewElegirRutina.setEnabled(false);
+                    //TextViewElegirRutina.setEnabled(false);
+                    estadoElegirRutina = false;
                     ButtonCrearRutinaFlash.setEnabled(false);
                     ButtonCrearRutinaFlash.setVisibility(View.INVISIBLE);
                     TextViewEstado.setText("Iniciada");
@@ -810,7 +832,8 @@ public class MainFragment extends Fragment {
             //new Mensaje(getActivity().getApplicationContext(), "Rutina en curso");
             actualRutina = listaRutinasIniciadas.get(0);
             TextViewElegirRutina.setText("");
-            TextViewElegirRutina.setEnabled(false);
+            //TextViewElegirRutina.setEnabled(false);
+            estadoElegirRutina = false;
             ButtonCrearRutinaFlash.setEnabled(false);
             ButtonCrearRutinaFlash.setVisibility(View.INVISIBLE);
 
@@ -1025,8 +1048,14 @@ public class MainFragment extends Fragment {
         //TextViewNotaDesafioActual.setText(desafioDescripcion);
         //TextViewFechaDesafioActual.setText(fecha);
         TextViewEstadoActual.setText(estado);
-        TextViewSeries.setText("Series: 0/" + series);
-        TextViewRepeticiones.setText("Repeticiones: 0/" + repeticiones);
+
+        if (series != 0) {
+            TextViewSeries.setText("Series: 0/" + series);
+            TextViewRepeticiones.setText("Repeticiones: 0/" + repeticiones);
+        } else {
+            TextViewSeries.setText(estado);
+            TextViewRepeticiones.setText("");
+        }
 
         if (estado.equals("Terminado")) {
             TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
@@ -1056,6 +1085,7 @@ public class MainFragment extends Fragment {
         cambiarVisibilidadRutina(View.INVISIBLE);
         TextViewElegirRutina.setText("Seleccionar rutina");
         TextViewElegirRutina.setEnabled(true);
+        estadoElegirRutina = true;
         ButtonCrearRutinaFlash.setEnabled(true);
         ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
         TextViewElegirDesafioActual.setText("Desafio actual");
@@ -1101,6 +1131,7 @@ public class MainFragment extends Fragment {
             TextViewElegirDesafioActual.setEnabled(false);
             TextViewElegirRutina.setText("Seleccionar rutina");
             TextViewElegirRutina.setEnabled(true);
+            estadoElegirRutina = true;
             ButtonCrearRutinaFlash.setEnabled(true);
             ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
             TextViewElegirDesafioActual.setText("Desafio actual");

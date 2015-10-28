@@ -17,14 +17,18 @@ import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
+import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
+import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.fragments.Cronometro;
 import com.example.joel.cletapp.fragments.MainFragment;
 
@@ -44,6 +48,9 @@ public class MainActivity extends ActionBarActivity implements Communicator{
     private DesafioObjetivoCRUD desafioObjetivoCRUD;
     private ObjetivoCRUD objetivoCRUD;
     private int seleccion;
+
+    private SerieCRUD serieCRUD;
+    private RepeticionesCRUD repeticionesCRUD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,9 @@ public class MainActivity extends ActionBarActivity implements Communicator{
         desafioCRUD = new DesafioCRUD(this);
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(this);
         objetivoCRUD = new ObjetivoCRUD(this);
+
+        serieCRUD = new SerieCRUD(this);
+        repeticionesCRUD = new RepeticionesCRUD(this);
 
         List<Desafio> listaDesafios = new ArrayList<Desafio>();
         listaDesafios = desafioCRUD.buscarTodosLosDesafios();
@@ -126,6 +136,16 @@ public class MainActivity extends ActionBarActivity implements Communicator{
 
                 DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, valores[i]);
                 desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
+
+                for (int h = 0; h<series[i]; h++){
+                    Serie serie = new Serie(0, desafio);
+                    serie = serieCRUD.insertarSerie(serie);
+
+                    for (int j = 0; j < repeticiones[i]; j++){
+                        Repeticiones addRepeticiones = new Repeticiones(0, serie, 100);
+                        repeticionesCRUD.insertarRepeticion(addRepeticiones);
+                    }
+                }
             }
         }
 

@@ -52,4 +52,5 @@
     <string name="local_service_started">localServiceStarted</string>
     <string name="local_service_label">Notificacion titulo</string>
     <string name="title_activity_activity_desafio_terminado">Resultados</string>
+    <string name="title_activity_activity_progreso_rutina">Progreso de mi rutina</string>
 </resources>

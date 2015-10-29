@@ -87,6 +87,20 @@ public class SerieCRUD {
         return serie;
     }
 
+    public List<Serie> buscarSeriePorIdDesafio(Desafio ID) throws ParseException {
+        List<Serie> seriesDesafio = new ArrayList<>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_SERIE, mAllColumns, Helper.SERIE_DESAFIO_ID + " ='" + ID.getDesafioId() + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            Serie serie = cursorToSerie(cursor);
+            seriesDesafio.add(serie);
+        }
+
+        cursor.close();
+
+        return seriesDesafio;
+    }
+
     private Serie cursorToSerie(Cursor cursor) throws ParseException {
         Serie serie = new Serie();
 

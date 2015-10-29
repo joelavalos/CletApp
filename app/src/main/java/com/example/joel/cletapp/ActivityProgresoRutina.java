@@ -17,10 +17,14 @@ import android.widget.TextView;
 
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
+import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
+import com.example.joel.cletapp.ClasesDataBase.Serie;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,6 +59,8 @@ public class ActivityProgresoRutina extends ActionBarActivity {
     private DesafioRutinaCRUD desafioRutinaCRUD;
     private DesafioObjetivo buscadoDesafioObjetivo;
     private DesafioObjetivoCRUD desafioObjetivoCRUD;
+    private SerieCRUD serieCRUD;
+    private RepeticionesCRUD repeticionesCRUD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +110,23 @@ public class ActivityProgresoRutina extends ActionBarActivity {
                 if (format.format(listaDesafiosRutina.get(j).getFecha()).equals(camposDesafios[i].split("     ")[0])) {
                     nombres[i] = listaDesafiosRutina.get(j).getDesafio().getDesafioNombre();
                     estadoDesafio[i] = String.valueOf(listaDesafiosRutina.get(j).getDesafio().getEstadoDesafio());
-                    series[i] = listaDesafiosRutina.get(j).getDesafio().getSeries();
-                    repeticiones[i] = listaDesafiosRutina.get(j).getDesafio().getRepeticiones();
+
+                    List<Serie> seriesDesafio = new ArrayList<>();
+                    List<Repeticiones> repeticionesDesafio = new ArrayList<>();
+                    int seriesTotal, repeticionesTotal = 0;
+                    try {
+                        seriesDesafio = serieCRUD.buscarSeriePorIdDesafio(listaDesafiosRutina.get(j).getDesafio());
+                        if (!seriesDesafio.isEmpty()){
+                            repeticionesDesafio = repeticionesCRUD.buscarRepeticionesPorIdSerie(seriesDesafio.get(0));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    seriesTotal = seriesDesafio.size();
+                    repeticionesTotal = repeticionesDesafio.size();
+
+                    series[i] = seriesTotal;
+                    repeticiones[i] = repeticionesTotal;
                     valoresDesafios[i] = listaDesafiosRutina.get(j).getDesafio().getDesafioId() + "-" + listaDesafiosRutina.get(j).getDesafio().getDesafioNombre();
                     try {
                         buscadoDesafioObjetivo = desafioObjetivoCRUD.buscarDesafioObjetivoPorIdDesafio(listaDesafiosRutina.get(j).getDesafio());
@@ -128,6 +149,8 @@ public class ActivityProgresoRutina extends ActionBarActivity {
         idRutina = Long.parseLong(intent.getStringExtra("idRutina"));
 
         rutinaCRUD = new RutinaCRUD(this);
+        serieCRUD = new SerieCRUD(this);
+        repeticionesCRUD = new RepeticionesCRUD(this);
 
         try {
             buscadoRutina = rutinaCRUD.buscarRutinaPorId(idRutina);

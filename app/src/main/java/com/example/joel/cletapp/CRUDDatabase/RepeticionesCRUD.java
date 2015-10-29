@@ -12,6 +12,8 @@ import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.Helper;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Joel on 28/10/2015.
@@ -70,6 +72,20 @@ public class RepeticionesCRUD {
         cursor.close();
 
         return newRepeticion;
+    }
+
+    public List<Repeticiones> buscarRepeticionesPorIdSerie(Serie ID) throws ParseException {
+        List<Repeticiones> repeticionesDesafio = new ArrayList<>();
+        Cursor cursor = mDatabase.query(Helper.TABLA_REPETICIONES, mAllColumns, Helper.REPETICIONES_SERIE_ID + " ='" + ID.getSerieId() + "'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            Repeticiones repeticiones = cursorToRepeticiones(cursor);
+            repeticionesDesafio.add(repeticiones);
+        }
+
+        cursor.close();
+
+        return repeticionesDesafio;
     }
 
     private Repeticiones cursorToRepeticiones(Cursor cursor) throws ParseException {

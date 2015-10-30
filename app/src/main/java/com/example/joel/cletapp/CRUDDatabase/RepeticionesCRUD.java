@@ -88,6 +88,26 @@ public class RepeticionesCRUD {
         return repeticionesDesafio;
     }
 
+    public Repeticiones actualizarDatosRepeticion(Repeticiones repeticiones) throws ParseException {
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(Helper.REPETICIONES_VALOR, repeticiones.getValor());
+
+        String[] whereArgs = {String.valueOf(repeticiones.getRepeticionId())};
+
+        int count = mDatabase.update(Helper.TABLA_REPETICIONES, newValues, Helper.REPETICIONES_ID + " =?", whereArgs);
+
+        Cursor cursor = mDatabase.query(Helper.TABLA_REPETICIONES, mAllColumns, Helper.REPETICIONES_ID + " ='" + repeticiones.getRepeticionId() + "'", null, null, null, null);
+        Repeticiones repeticionReturn = new Repeticiones();
+
+        while (cursor.moveToNext()) {
+            repeticionReturn = cursorToRepeticiones(cursor);
+        }
+        cursor.close();
+
+        return repeticionReturn;
+    }
+
     private Repeticiones cursorToRepeticiones(Cursor cursor) throws ParseException {
         Repeticiones repeticion = new Repeticiones();
 

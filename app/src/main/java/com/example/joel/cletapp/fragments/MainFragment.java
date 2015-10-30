@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityDesafioTerminado;
+import com.example.joel.cletapp.ActivityProgresoDesafio;
 import com.example.joel.cletapp.ActivityProgresoRutina;
 import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
@@ -386,7 +387,7 @@ public class MainFragment extends Fragment {
         TextViewElegirDesafioActual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idDesafio = String.valueOf(actualDesafio.getDesafioId());
+                /*String idDesafio = String.valueOf(actualDesafio.getDesafioId());
                 Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafioTerminado.class);
                 newIntent.putExtra("Desafio", idDesafio);
                 newIntent.putExtra("Duracion", segundosToHoras(35));
@@ -396,6 +397,13 @@ public class MainFragment extends Fragment {
                 newIntent.putExtra("Nombre", actualDesafio.getDesafioNombre());
                 newIntent.putExtra("Nota", actualDesafio.getDesafioDescripcion());
                 newIntent.putExtra("Fecha", format.format(actualDesafio.getTerminoDesafio()));
+                startActivity(newIntent);*/
+
+                String idDesafio = String.valueOf(actualDesafio.getDesafioId());
+                String valorDesafio = String.valueOf(Math.round(desafioObjetivo.getValor()));
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoDesafio.class);
+                newIntent.putExtra("Desafio", idDesafio);
+                newIntent.putExtra("valorDesafio", valorDesafio);
                 startActivity(newIntent);
             }
         });
@@ -1036,7 +1044,7 @@ public class MainFragment extends Fragment {
                 TextViewEstadoTerminado.setVisibility(View.VISIBLE);
                 cambiarVisibilidadDesafioActual(View.INVISIBLE);
             }
-
+            TextViewElegirDesafioActual.setEnabled(true);
             encontrado = false;
 
         } else {

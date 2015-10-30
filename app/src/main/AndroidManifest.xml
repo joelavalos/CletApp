@@ -111,6 +111,10 @@
             android:name=".ActivityProgresoRutina"
             android:label="@string/title_activity_activity_progreso_rutina" >
         </activity>
+        <activity
+            android:name=".ActivityProgresoDesafio"
+            android:label="@string/title_activity_activity_progreso_desafio" >
+        </activity>
     </application>
 
 </manifest>

@@ -43,6 +43,9 @@ public class Cronometro extends Service implements LocationListener {
     private static final long INTERVALO_ACTUALIZACION = 1000; // En ms
     public static MainFragment UPDATE_LISTENER;
     private int cronometro = 0;
+    private int cronometroRepeticion = 0;
+    private int cronometroDescansoSerie = 10;
+    private int cronometroDescansoRepeticion = 15;
     private int cronometroCordenadas = 0;
     private int series = 0;
     private int repeticiones = 0;
@@ -67,6 +70,8 @@ public class Cronometro extends Service implements LocationListener {
     public List<LatLng> cordenadas;
     private LatLng coordinate;
     private float distance = 0;
+    private float distanceSerie = 0;
+    private int numeroRepeticion = 0;
 
     private DecimalFormat df = new DecimalFormat("#.##");
 
@@ -177,6 +182,8 @@ public class Cronometro extends Service implements LocationListener {
                 e.printStackTrace();
             }
         }
+        //numeroRepeticion = repeticionesActualesTotal.size();
+        numeroRepeticion = 0;
     }
 
     private void iniciarCronometro() {
@@ -188,6 +195,7 @@ public class Cronometro extends Service implements LocationListener {
             public void run() {
                 cronometro += 1;
                 cronometroCordenadas += 1;
+                cronometroRepeticion += 1;
 
                 int mNotificationId = 9;
                 mBuilderForeground.setContentText(segundosToHorasCronometro(cronometro));
@@ -296,6 +304,9 @@ public class Cronometro extends Service implements LocationListener {
                 distance = distance + location.distanceTo(locationAntigua);
                 distance = Float.parseFloat(df.format(distance));
 
+                distanceSerie = distanceSerie + location.distanceTo(locationAntigua);
+                distanceSerie = Float.parseFloat(df.format(distanceSerie));
+
 
                 new Mensaje(getBaseContext(), "Totales: " + repeticionesActualesTotal.size());
 
@@ -304,10 +315,33 @@ public class Cronometro extends Service implements LocationListener {
 
                 locationAntigua.setLatitude(latitud);
                 locationAntigua.setLongitude(longitud);
+
+                if (cronometroRepeticion >= 60) {
+                    if (numeroRepeticion < repeticionesActuales.size()) {
+                        cronometroRepeticion = 0;
+                        actualizarDatosRepeticion(distanceSerie, repeticionesActualesTotal.get(numeroRepeticion));
+                        numeroRepeticion++;
+                        distanceSerie = 0;
+                    } else {
+                        new Mensaje(getBaseContext(), "Todo terminado");
+                    }
+                }
             }
 
             cronometroCordenadas = 0;
         }
+    }
+
+    private void actualizarDatosRepeticion(float distanceSerie, Repeticiones repeticiones) {
+        repeticiones.setValor(distanceSerie);
+        Repeticiones buscadoRepeticion = new Repeticiones();
+        try {
+            buscadoRepeticion = repeticionesCRUD.actualizarDatosRepeticion(repeticiones);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        new Mensaje(getBaseContext(), "Repeticion actualizada con: " + buscadoRepeticion.getValor());
     }
 
     @Override

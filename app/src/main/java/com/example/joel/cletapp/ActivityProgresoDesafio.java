@@ -2,7 +2,6 @@ package com.example.joel.cletapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -77,18 +76,16 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if (v == null){
+                if (v == null) {
                     v = view;
 
-                } else{
+                } else {
                     v.setBackgroundResource(0);
                     v = view;
                 }
                 view.setBackgroundResource(R.color.colorSeleccionado);
 
-
                 AdapterDesafioSerie newASD = (AdapterDesafioSerie) parent.getAdapter();
-                new Mensaje(getApplicationContext(), "" + newASD.getData(position));
                 try {
                     serieSeleccionada = serieCRUD.buscarSeriePorId(newASD.getData(position));
                 } catch (ParseException e) {
@@ -107,8 +104,8 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         try {
             listaRepeticiones = repeticionesCRUD.buscarRepeticionesPorIdSerie(serieSeleccionada);
 
-            for (int j = 0; j < listaRepeticiones.size(); j++){
-                nombreRepeticiones.add("Repeticion " + (j+1));
+            for (int j = 0; j < listaRepeticiones.size(); j++) {
+                nombreRepeticiones.add("Repeticion " + (j + 1));
                 distanciaObtenida.add(listaRepeticiones.get(j).getValor());
                 distanciaRequerida.add(valorDesafio);
                 evaluacionRepeticiones.add(listaRepeticiones.get(j).getValor() - valorDesafio);
@@ -316,11 +313,11 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
         holder.TextViewValorRequeridoDistanciaRepeticion.setText(String.valueOf(distanciaRequerida.get(position)));
         holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(valorEvaluacion.get(position)));
 
-        if (valorEvaluacion.get(position) < 0){
+        if (valorEvaluacion.get(position) < 0) {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorRojo));
-        } else if (valorEvaluacion.get(position) > 0){
+        } else if (valorEvaluacion.get(position) > 0) {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorVerde));
-        } else{
+        } else {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorNegro));
         }
 

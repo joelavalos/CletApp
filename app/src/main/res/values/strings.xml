@@ -55,4 +55,5 @@
     <string name="title_activity_activity_progreso_rutina">Progreso de mi rutina</string>
     <string name="title_activity_activity_progreso_desafio">ActivityProgresoDesafio</string>
     <string name="title_activity_activity_desafios_terminados">ActivityDesafiosTerminados</string>
+    <string name="title_activity_activity_rutinas_terminadas">ActivityRutinasTerminadas</string>
 </resources>

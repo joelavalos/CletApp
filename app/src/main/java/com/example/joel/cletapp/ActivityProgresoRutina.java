@@ -92,7 +92,6 @@ public class ActivityProgresoRutina extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AdapterDesafioProgreso adapterDesafioProgresoGet = (AdapterDesafioProgreso) parent.getAdapter();
-                new Mensaje(getApplicationContext(), adapterDesafioProgresoGet.getData(position) + "");
 
                 if (adapterDesafioProgresoGet.getData(position) != -1) {
                     String idDesafio = String.valueOf(adapterDesafioProgresoGet.getData(position));

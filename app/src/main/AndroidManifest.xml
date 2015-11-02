@@ -119,6 +119,10 @@
             android:name=".ActivityDesafiosTerminados"
             android:label="@string/title_activity_activity_desafios_terminados" >
         </activity>
+        <activity
+            android:name=".ActivityRutinasTerminadas"
+            android:label="@string/title_activity_activity_rutinas_terminadas" >
+        </activity>
     </application>
 
 </manifest>

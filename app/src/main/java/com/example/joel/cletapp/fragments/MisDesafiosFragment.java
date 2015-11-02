@@ -51,7 +51,7 @@ public class MisDesafiosFragment extends Fragment {
         ButtonDesafiosLogrados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafiosTerminados.class);
                 newIntent.putExtra("Estado", "TerminadoLogrado");
                 startActivity(newIntent);
             }
@@ -60,7 +60,7 @@ public class MisDesafiosFragment extends Fragment {
         ButtonDesafiosFallados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafiosTerminados.class);
                 newIntent.putExtra("Estado", "TerminadoNoLogrado");
                 startActivity(newIntent);
             }

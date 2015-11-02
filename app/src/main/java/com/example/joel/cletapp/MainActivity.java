@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements Communicator{
+public class MainActivity extends ActionBarActivity implements Communicator {
 
     private Toolbar toolbar; //Variable para manejar la ToolBar
     private NavigationDrawerFragment drawerFargment; //Variable para manejar el Navegation
@@ -110,8 +110,8 @@ public class MainActivity extends ActionBarActivity implements Communicator{
             float[] valores = {125, 145, 160, 170, 200};
             char[] estado = {'T', 'P', 'P', 'T', 'T'};
             boolean[] exito = {true, false, false, false, true};
-            int[] series = {1,2,3,4,5};
-            int[] repeticiones = {5,4,3,2,1};
+            int[] series = {1, 2, 3, 4, 5};
+            int[] repeticiones = {5, 4, 3, 2, 1};
 
             try {
                 parsedInicio = format.parse("01/01/2015");
@@ -137,12 +137,12 @@ public class MainActivity extends ActionBarActivity implements Communicator{
                 DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, valores[i]);
                 desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
 
-                for (int h = 0; h<series[i]; h++){
+                for (int h = 0; h < series[i]; h++) {
                     Serie serie = new Serie(0, desafio);
                     serie = serieCRUD.insertarSerie(serie);
 
-                    for (int j = 0; j < repeticiones[i]; j++){
-                        Repeticiones addRepeticiones = new Repeticiones(0, serie, 100);
+                    for (int j = 0; j < repeticiones[i]; j++) {
+                        Repeticiones addRepeticiones = new Repeticiones(0, serie, 0);
                         repeticionesCRUD.insertarRepeticion(addRepeticiones);
                     }
                 }

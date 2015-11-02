@@ -319,7 +319,7 @@ public class Cronometro extends Service implements LocationListener {
             }
 
             if (UPDATE_LISTENER != null) {
-                //UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+                UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
                 UPDATE_LISTENER.actualizarValorDesafio(distance);
             }
 

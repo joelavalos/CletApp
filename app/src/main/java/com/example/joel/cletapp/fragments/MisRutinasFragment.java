@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.joel.cletapp.ActivityRutinas;
+import com.example.joel.cletapp.ActivityRutinasTerminadas;
 import com.example.joel.cletapp.R;
 
 /**
@@ -37,7 +38,7 @@ public class MisRutinasFragment extends Fragment {
         ButtonRutinasFinalizadas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityRutinas.class);
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityRutinasTerminadas.class);
                 newIntent.putExtra("Estado", "Terminada");
                 startActivity(newIntent);
             }

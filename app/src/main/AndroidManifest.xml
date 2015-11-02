@@ -115,6 +115,10 @@
             android:name=".ActivityProgresoDesafio"
             android:label="@string/title_activity_activity_progreso_desafio" >
         </activity>
+        <activity
+            android:name=".ActivityDesafiosTerminados"
+            android:label="@string/title_activity_activity_desafios_terminados" >
+        </activity>
     </application>
 
 </manifest>

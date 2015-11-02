@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.joel.cletapp.ActivityDesafios;
+import com.example.joel.cletapp.ActivityDesafiosTerminados;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
@@ -41,7 +42,7 @@ public class MisDesafiosFragment extends Fragment {
         ButtonDesafiosTerminados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafios.class);
+                Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityDesafiosTerminados.class);
                 newIntent.putExtra("Estado", "Terminado");
                 startActivity(newIntent);
             }

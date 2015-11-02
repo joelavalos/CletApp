@@ -65,11 +65,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainFragment extends Fragment {
 
-    GoogleMap googleMap;
+    /*GoogleMap googleMap;
     MapView mapView;
     private LatLng nuevaCordenada;
     private PolylineOptions options;
-    private Polyline line;
+    private Polyline line;*/
 
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private boolean encontrado = false;
@@ -157,7 +157,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mapView = (MapView) root.findViewById(R.id.mi_mapa);
+        /*mapView = (MapView) root.findViewById(R.id.mi_mapa);
 
         mapView.onCreate(savedInstanceState);
         googleMap = mapView.getMap();
@@ -181,7 +181,7 @@ public class MainFragment extends Fragment {
         LatLng coordinate = new LatLng(lat, lng);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 20));
-        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
+        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);*/
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
@@ -210,7 +210,7 @@ public class MainFragment extends Fragment {
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
 
-            cargarRuta();
+            //cargarRuta();
         } else {
             intValorCronometro = 0;
         }
@@ -224,7 +224,7 @@ public class MainFragment extends Fragment {
             textoCronometro.setText(segundosToHoras(intValorCronometro));
             new Mensaje(getActivity().getApplicationContext(), "Esyo en pause");
 
-            cargarRuta();
+            //cargarRuta();
             //guardarEstadoDesafioNoPause();
         }
 
@@ -571,7 +571,7 @@ public class MainFragment extends Fragment {
             serie = serieCRUD.insertarSerie(serie);
 
             for (int j = 0; j < repeticiones; j++) {
-                Repeticiones addRepeticiones = new Repeticiones(0, serie, 100);
+                Repeticiones addRepeticiones = new Repeticiones(0, serie, 0);
                 repeticionesCRUD.insertarRepeticion(addRepeticiones);
             }
         }
@@ -607,7 +607,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void cargarRuta() {
+    /*private void cargarRuta() {
         googleMap.clear();
         options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
 
@@ -630,7 +630,7 @@ public class MainFragment extends Fragment {
             }
         }
         line = googleMap.addPolyline(options);
-    }
+    }*/
 
     private String cargarEstadoDesafio() {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -715,7 +715,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        //mapView.onDestroy();
         Cronometro.setUpdateListener(null);
         //guardarEstadoDesafio("detenido");
     }
@@ -734,14 +734,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        //mapView.onPause();
         estado = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        //mapView.onResume();
         //Cronometro.setUpdateListener(this);
         estado = true;
     }
@@ -752,12 +752,12 @@ public class MainFragment extends Fragment {
         textoCronometro.setText(segundosToHoras(tiempo));
     }
 
-    public void mostrarCordenadas(double latitud, double longitud){
+    /*public void mostrarCordenadas(double latitud, double longitud){
         //new Mensaje(getActivity().getApplicationContext(), "Cordenadas: " + latitud + ", " + longitud);
         nuevaCordenada = new LatLng(latitud, longitud);
         options.add(nuevaCordenada);
         line = googleMap.addPolyline(options);
-    }
+    }*/
 
     public void actualizarValorDesafio(float distancia){
         TextViewValorDesafioActual.setText(distancia + "/" + String.valueOf(Math.round(desafioObjetivo.getValor())));

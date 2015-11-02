@@ -298,34 +298,29 @@ public class Cronometro extends Service implements LocationListener {
             cordenadas.add(coordinate);
             guardarCordenadas(cordenadas);
 
-            if (UPDATE_LISTENER != null) {
-                UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+            distance = distance + location.distanceTo(locationAntigua);
+            distance = Float.parseFloat(df.format(distance));
 
-                distance = distance + location.distanceTo(locationAntigua);
-                distance = Float.parseFloat(df.format(distance));
+            distanceSerie = distanceSerie + location.distanceTo(locationAntigua);
+            distanceSerie = Float.parseFloat(df.format(distanceSerie));
 
-                distanceSerie = distanceSerie + location.distanceTo(locationAntigua);
-                distanceSerie = Float.parseFloat(df.format(distanceSerie));
+            locationAntigua.setLatitude(latitud);
+            locationAntigua.setLongitude(longitud);
 
-
-                new Mensaje(getBaseContext(), "Totales: " + repeticionesActualesTotal.size());
-
-
-                UPDATE_LISTENER.actualizarValorDesafio(distance);
-
-                locationAntigua.setLatitude(latitud);
-                locationAntigua.setLongitude(longitud);
-
-                if (cronometroRepeticion >= 60) {
-                    if (numeroRepeticion < repeticionesActuales.size()) {
-                        cronometroRepeticion = 0;
-                        actualizarDatosRepeticion(distanceSerie, repeticionesActualesTotal.get(numeroRepeticion));
-                        numeroRepeticion++;
-                        distanceSerie = 0;
-                    } else {
-                        new Mensaje(getBaseContext(), "Todo terminado");
-                    }
+            if (cronometroRepeticion >= 300) {
+                if (numeroRepeticion < repeticionesActualesTotal.size()) {
+                    cronometroRepeticion = 0;
+                    actualizarDatosRepeticion(distanceSerie, repeticionesActualesTotal.get(numeroRepeticion));
+                    numeroRepeticion++;
+                    distanceSerie = 0;
+                } else {
+                    new Mensaje(getBaseContext(), "Todo terminado");
                 }
+            }
+
+            if (UPDATE_LISTENER != null) {
+                //UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+                UPDATE_LISTENER.actualizarValorDesafio(distance);
             }
 
             cronometroCordenadas = 0;

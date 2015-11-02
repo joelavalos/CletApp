@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -50,6 +51,7 @@ public class ActivityProgresoRutina extends ActionBarActivity {
     private int[] repeticiones = {0, 0, 0, 0, 0, 0, 0};
     private String[] valoresDesafios = {"valor", "", "", "", "", "", ""};
     private String[] nombres = {"nombre", "", "", "", "", "", ""};
+    private Long[] idDesafios = {Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1), Long.valueOf(-1)};
     private String[] objetivos = {"objetivo", "", "", "", "", "", ""};
     private AdapterDesafioProgreso adapterDesafio;
     private List<DesafioRutina> listaDesafiosRutina;
@@ -84,6 +86,26 @@ public class ActivityProgresoRutina extends ActionBarActivity {
         SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.ic_done_black_24px);
         imageView.setImageDrawable(svg.createPictureDrawable());
         setContentView(imageView);*/
+
+
+        ListViewDesafiosRutina.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AdapterDesafioProgreso adapterDesafioProgresoGet = (AdapterDesafioProgreso) parent.getAdapter();
+                new Mensaje(getApplicationContext(), adapterDesafioProgresoGet.getData(position) + "");
+
+                if (adapterDesafioProgresoGet.getData(position) != -1) {
+                    String idDesafio = String.valueOf(adapterDesafioProgresoGet.getData(position));
+                    String valorDesafio = adapterDesafioProgresoGet.getDataValorObjetivo(position);
+                    Intent newIntent = new Intent(getApplicationContext(), ActivityProgresoDesafio.class);
+                    newIntent.putExtra("Desafio", idDesafio);
+                    newIntent.putExtra("valorDesafio", valorDesafio);
+                    startActivity(newIntent);
+                } else {
+
+                }
+            }
+        });
     }
 
     private void inicializarComponentes() {
@@ -110,13 +132,14 @@ public class ActivityProgresoRutina extends ActionBarActivity {
                 if (format.format(listaDesafiosRutina.get(j).getFecha()).equals(camposDesafios[i].split("     ")[0])) {
                     nombres[i] = listaDesafiosRutina.get(j).getDesafio().getDesafioNombre();
                     estadoDesafio[i] = String.valueOf(listaDesafiosRutina.get(j).getDesafio().getEstadoDesafio());
+                    idDesafios[i] = listaDesafiosRutina.get(j).getDesafio().getDesafioId();
 
                     List<Serie> seriesDesafio = new ArrayList<>();
                     List<Repeticiones> repeticionesDesafio = new ArrayList<>();
                     int seriesTotal, repeticionesTotal = 0;
                     try {
                         seriesDesafio = serieCRUD.buscarSeriePorIdDesafio(listaDesafiosRutina.get(j).getDesafio());
-                        if (!seriesDesafio.isEmpty()){
+                        if (!seriesDesafio.isEmpty()) {
                             repeticionesDesafio = repeticionesCRUD.buscarRepeticionesPorIdSerie(seriesDesafio.get(0));
                         }
                     } catch (ParseException e) {
@@ -136,12 +159,13 @@ public class ActivityProgresoRutina extends ActionBarActivity {
                     objetivos[i] = String.valueOf(Math.round(buscadoDesafioObjetivo.getValor())) + " m";
                     j = listaDesafiosRutina.size();
                 } else {
+                    idDesafios[i] = (long) -1;
                     nombres[i] = "Descansar";
                     valoresDesafios[i] = "Descansar";
                 }
             }
         }
-        adapterDesafio = new AdapterDesafioProgreso(this, camposDesafios, valoresDesafios, nombres, objetivos, estadoDesafio, series, repeticiones);
+        adapterDesafio = new AdapterDesafioProgreso(this, camposDesafios, valoresDesafios, nombres, objetivos, estadoDesafio, series, repeticiones, idDesafios);
         ListViewDesafiosRutina.setAdapter(adapterDesafio);
     }
 
@@ -241,8 +265,9 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
     String[] estadoDesafio;
     int[] series;
     int[] repeticiones;
+    Long[] idDesafios;
 
-    public AdapterDesafioProgreso(Context c, String[] listaCampos, String[] listaValores, String[] listaNombres, String[] listaObjetivos, String[] listaEstadoDesafio, int[] listaSeries, int[] listaRepeticiones) {
+    public AdapterDesafioProgreso(Context c, String[] listaCampos, String[] listaValores, String[] listaNombres, String[] listaObjetivos, String[] listaEstadoDesafio, int[] listaSeries, int[] listaRepeticiones, Long[] listaIdDesafios) {
         super(c, R.layout.single_desafio_rutina_row, R.id.TextViewNombreDesafioRutina, listaCampos);
         this.context = c;
         this.campos = listaCampos;
@@ -252,6 +277,7 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
         this.estadoDesafio = listaEstadoDesafio;
         this.series = listaSeries;
         this.repeticiones = listaRepeticiones;
+        this.idDesafios = listaIdDesafios;
     }
 
     @Override
@@ -259,9 +285,14 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
         return super.getItem(position);
     }
 
-    public String getData(int position) {
-        String data = valores[position] + " " + soloNombre[position];
+    public Long getData(int position) {
+        Long data = idDesafios[position];
 
+        return data;
+    }
+
+    public String getDataValorObjetivo(int position) {
+        String data = objetivo[position].split(" ")[0];
         return data;
     }
 

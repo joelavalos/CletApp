@@ -24,7 +24,6 @@ import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.MainActivity;
-import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -49,6 +48,8 @@ public class Cronometro extends Service implements LocationListener {
     private int cronometroCordenadas = 0;
     private int series = 0;
     private int repeticiones = 0;
+    private int serieActual = 1;
+    private int repActual = 1;
 
     private Handler handler;
     private Vibrator alertaTermino;
@@ -72,6 +73,7 @@ public class Cronometro extends Service implements LocationListener {
     private float distance = 0;
     private float distanceSerie = 0;
     private int numeroRepeticion = 0;
+    private List<Float> distanciasSerie;
 
     private DecimalFormat df = new DecimalFormat("#.##");
 
@@ -88,6 +90,12 @@ public class Cronometro extends Service implements LocationListener {
 
     public static void setUpdateListener(MainFragment poiService) {
         UPDATE_LISTENER = poiService;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        pararCronometro();
     }
 
     @Override
@@ -130,7 +138,7 @@ public class Cronometro extends Service implements LocationListener {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                UPDATE_LISTENER.actualizarCronometro(cronometro);
+                UPDATE_LISTENER.actualizarCronometro(cronometro, cronometroRepeticion);
             }
         };
     }
@@ -142,7 +150,8 @@ public class Cronometro extends Service implements LocationListener {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                UPDATE_LISTENER.actualizarCronometro(cronometro);
+                UPDATE_LISTENER.actualizarCronometro(cronometro, cronometroRepeticion);
+                UPDATE_LISTENER.actualizarSeriesRepeticiones(serieActual, repActual);
 
                 if (cronometro == tiempoLimite) {
                     crearNotificacion();
@@ -164,6 +173,7 @@ public class Cronometro extends Service implements LocationListener {
         seriesActuales = new ArrayList<>();
         repeticionesActuales = new ArrayList<>();
         repeticionesActualesTotal = new ArrayList<>();
+        distanciasSerie = new ArrayList<>();
 
         desafioActual = UPDATE_LISTENER.pasarDesafioActual();
         try {
@@ -188,6 +198,9 @@ public class Cronometro extends Service implements LocationListener {
 
     private void iniciarCronometro() {
         cronometro = UPDATE_LISTENER.intValorCronometro;
+        cronometroRepeticion = UPDATE_LISTENER.cronometroRepeticion;
+        repActual = UPDATE_LISTENER.cronoServiceRepeticion;
+        serieActual = UPDATE_LISTENER.cronoServiceSerie;
         series = UPDATE_LISTENER.seriesTotal;
         repeticiones = UPDATE_LISTENER.repeticionesTotal;
 
@@ -201,6 +214,29 @@ public class Cronometro extends Service implements LocationListener {
                 mBuilderForeground.setContentText(segundosToHorasCronometro(cronometro));
                 n = mBuilderForeground.build();
                 notifManager.notify(mNotificationId, n);
+
+                if (cronometroRepeticion >= 15) {
+                    if (numeroRepeticion < repeticionesActualesTotal.size()) {
+                        cronometroRepeticion = 0;
+                        actualizarDatosRepeticion(distanciasSerie, repeticionesActualesTotal.get(numeroRepeticion));
+                        numeroRepeticion++;
+                        repActual++;
+                        if (repActual > repeticiones) {
+                            if (serieActual < series) {
+                                repActual = 1;
+                                serieActual++;
+                            }
+                            if ((repActual > repeticiones) && (serieActual == series)) {
+                                repActual = repeticiones;
+                                serieActual = series;
+                            }
+                        }
+                        distanceSerie = 0;
+                    } else {
+                    }
+                    distanciasSerie.clear();
+                    guardarEstadoSerieRepeticion();
+                }
 
                 if (UPDATE_LISTENER != null) {
                     handler.sendEmptyMessage(0);
@@ -230,31 +266,68 @@ public class Cronometro extends Service implements LocationListener {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        pararCronometro();
+    public void onLocationChanged(Location location) {
+        if (cronometroCordenadas >= 10) {
+
+            latitud = location.getLatitude();
+            longitud = location.getLongitude();
+            LatLng coordinate = new LatLng(latitud, longitud);
+
+            cordenadas.add(coordinate);
+            guardarCordenadas(cordenadas);
+
+            float distanciaBuffer = location.distanceTo(locationAntigua);
+
+            distance = distance + distanciaBuffer;
+            distance = Float.parseFloat(df.format(distance));
+
+            distanciasSerie.add(Float.parseFloat(df.format(distanciaBuffer)));
+            distanceSerie = distanceSerie + distanciaBuffer;
+            distanceSerie = Float.parseFloat(df.format(distanceSerie));
+
+            locationAntigua.setLatitude(latitud);
+            locationAntigua.setLongitude(longitud);
+
+            if (UPDATE_LISTENER != null) {
+                UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+                UPDATE_LISTENER.actualizarValorDesafio(distance);
+            }
+            cronometroCordenadas = 0;
+        }
     }
 
-    private void crearNotificacion() {
-        resultIntent = new Intent(getBaseContext(), MainActivity.class);
-        resultIntent.putExtra("cronometroFinal", segundosToHorasCronometro(cronometro));
-        resultPendingIntent = PendingIntent.getActivity(getBaseContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private void actualizarDatosRepeticion(List<Float> distanceSerie, Repeticiones repeticiones) {
+        float distanciaTotalSerie = 0;
+        if (distanceSerie.isEmpty()) {
+        } else {
+            for (int i = 0; i < distanciasSerie.size(); i++) {
+                distanciaTotalSerie = distanciaTotalSerie + distanceSerie.get(i);
+            }
+        }
+        distanciaTotalSerie = Float.parseFloat(df.format(distanciaTotalSerie));
 
-        mBuilder = new NotificationCompat.Builder(getBaseContext())
-                .setSmallIcon(R.drawable.ic_directions_bike_white_24dp)
-                .setContentTitle("Desafio terminado")
-                .setContentText("Presiona para ver tus resultados")
-                .setContentIntent(resultPendingIntent)
-                .setColor(getResources().getColor(R.color.colorPrimary));
-
-        int mNotificationId2 = 001;
-        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotifyMgr.notify(mNotificationId2, mBuilder.setAutoCancel(true).build());
+        repeticiones.setValor(distanciaTotalSerie);
+        Repeticiones buscadoRepeticion = new Repeticiones();
+        try {
+            buscadoRepeticion = repeticionesCRUD.actualizarDatosRepeticion(repeticiones);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void pararCronometro() {
-        if (temporizador != null)
-            temporizador.cancel();
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     public String segundosToHorasCronometro(int totalSegundos) {
@@ -279,78 +352,36 @@ public class Cronometro extends Service implements LocationListener {
         return horasString + ":" + minutosString + ":" + segundosString;
     }
 
+    private void crearNotificacion() {
+        resultIntent = new Intent(getBaseContext(), MainActivity.class);
+        resultIntent.putExtra("cronometroFinal", segundosToHorasCronometro(cronometro));
+        resultPendingIntent = PendingIntent.getActivity(getBaseContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mBuilder = new NotificationCompat.Builder(getBaseContext())
+                .setSmallIcon(R.drawable.ic_directions_bike_white_24dp)
+                .setContentTitle("Desafio terminado")
+                .setContentText("Presiona para ver tus resultados")
+                .setContentIntent(resultPendingIntent)
+                .setColor(getResources().getColor(R.color.colorPrimary));
+
+        int mNotificationId2 = 001;
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(mNotificationId2, mBuilder.setAutoCancel(true).build());
+    }
+
+    private void pararCronometro() {
+        if (temporizador != null)
+            temporizador.cancel();
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        if (cronometroCordenadas >= 10) {
-
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000, 1, this);
-            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-
-            latitud = location.getLatitude();
-            longitud = location.getLongitude();
-            LatLng coordinate = new LatLng(latitud, longitud);
-
-            cordenadas.add(coordinate);
-            guardarCordenadas(cordenadas);
-
-            distance = distance + location.distanceTo(locationAntigua);
-            distance = Float.parseFloat(df.format(distance));
-
-            distanceSerie = distanceSerie + location.distanceTo(locationAntigua);
-            distanceSerie = Float.parseFloat(df.format(distanceSerie));
-
-            locationAntigua.setLatitude(latitud);
-            locationAntigua.setLongitude(longitud);
-
-            if (cronometroRepeticion >= 300) {
-                if (numeroRepeticion < repeticionesActualesTotal.size()) {
-                    cronometroRepeticion = 0;
-                    actualizarDatosRepeticion(distanceSerie, repeticionesActualesTotal.get(numeroRepeticion));
-                    numeroRepeticion++;
-                    distanceSerie = 0;
-                } else {
-                    new Mensaje(getBaseContext(), "Todo terminado");
-                }
-            }
-
-            if (UPDATE_LISTENER != null) {
-                UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
-                UPDATE_LISTENER.actualizarValorDesafio(distance);
-            }
-
-            cronometroCordenadas = 0;
-        }
-    }
-
-    private void actualizarDatosRepeticion(float distanceSerie, Repeticiones repeticiones) {
-        repeticiones.setValor(distanceSerie);
-        Repeticiones buscadoRepeticion = new Repeticiones();
-        try {
-            buscadoRepeticion = repeticionesCRUD.actualizarDatosRepeticion(repeticiones);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        new Mensaje(getBaseContext(), "Repeticion actualizada con: " + buscadoRepeticion.getValor());
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
+    private void guardarEstadoSerieRepeticion() {
+        SharedPreferences prefs = getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        prefs.edit().putInt("serieActual", serieActual).commit();
+        prefs.edit().putInt("repeticionActual", repActual).commit();
     }
 }

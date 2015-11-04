@@ -47,6 +47,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -96,6 +97,11 @@ public class MainFragment extends Fragment {
     //Datos para el servicio
     public boolean pauseDesafioActivado = false;
     public int intValorCronometro = 0;
+    public int cronometroRepeticion = 0;
+
+    //Valores serie y repeticion en recuperacion
+    public int cronoServiceSerie = 1;
+    public int cronoServiceRepeticion = 1;
 
     private ImageView ImageViewImagenDesafio2, ImageViewImagenDesafioActual;
     private TextView TextViewNombreDesafio, TextViewNombreDesafioActual;
@@ -164,7 +170,7 @@ public class MainFragment extends Fragment {
         googleMap.setMyLocationEnabled(true);
 
         View btnMyLocation = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(80,80); // size of button in dp
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(80, 80); // size of button in dp
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -175,11 +181,18 @@ public class MainFragment extends Fragment {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         String provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-        LatLng coordinate = new LatLng(lat, lng);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 20));
+        double lat;
+        double lng;
+
+        if (location != null) {
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+            LatLng latLngTest = new LatLng(lat, lng);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngTest, 20));
+            googleMap.addMarker(new MarkerOptions().position(latLngTest).title("Start"));
+        }
+
         options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
@@ -212,6 +225,7 @@ public class MainFragment extends Fragment {
             cargarRuta();
         } else {
             intValorCronometro = 0;
+            cronometroRepeticion = 0;
         }
 
         if (cargarEstadoDesafioPause().equals("pause")) {
@@ -220,8 +234,11 @@ public class MainFragment extends Fragment {
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setVisibility(View.VISIBLE);
             intValorCronometro = cargarValorEstadoDesafioPause();
+            cronometroRepeticion = cargarValorEstadoDesafioPauseCronometroSerie();
+            cronoServiceSerie = cargarValorCronometroSerie();
+            cronoServiceRepeticion = cargarValorCronometroRepeticion();
             textoCronometro.setText(segundosToHoras(intValorCronometro));
-            new Mensaje(getActivity().getApplicationContext(), "Esyo en pause");
+            new Mensaje(getActivity().getApplicationContext(), "Estoy en pause");
 
             cargarRuta();
             //guardarEstadoDesafioNoPause();
@@ -379,7 +396,7 @@ public class MainFragment extends Fragment {
                 pararCronometro();
                 guardarEstadoDesafioDetenido();
                 guardarEstadoDesafioNoPause();
-                actualizarCronometro(0);
+                actualizarCronometro(0,0);
             }
         });
 
@@ -408,6 +425,16 @@ public class MainFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private int cargarValorCronometroSerie() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        return prefs.getInt("serieActual", 0);
+    }
+
+    private int cargarValorCronometroRepeticion() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        return prefs.getInt("repeticionActual", 0);
     }
 
     public Desafio pasarDesafioActual() {
@@ -625,13 +652,12 @@ public class MainFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
         String misCordenadas = prefs.getString("misCordenadas", "nada");
 
-        if (misCordenadas.equals("nada")){
-        }
-        else{
+        if (misCordenadas.equals("nada")) {
+        } else {
             String cordenadas[] = misCordenadas.split("X");
             new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);
 
-            for (int i = 0; i < cordenadas.length; i++){
+            for (int i = 0; i < cordenadas.length; i++) {
                 String stringLatLong = cordenadas[i];
                 double lat = Double.parseDouble(cordenadas[i].split("=")[0]);
                 double longi = Double.parseDouble(cordenadas[i].split("=")[1]);
@@ -671,7 +697,12 @@ public class MainFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("estadoDesafioPause", "pause");
         editor.putInt("valorDesafioPause", intValorCronometro);
+        editor.putInt("valorDesafioPauseCronometroSerie", cronometroRepeticion);
         editor.commit();
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        prefs.edit().putInt("serieActual", cronoServiceSerie).commit();
+        prefs.edit().putInt("repeticionActual", cronoServiceRepeticion).commit();
     }
 
     private void guardarEstadoDesafioNoPause() {
@@ -695,6 +726,14 @@ public class MainFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         int defaultValue = 0;
         int estadoDesafioRecuperado = sharedPref.getInt("valorDesafioPause", defaultValue);
+
+        return estadoDesafioRecuperado;
+    }
+
+    private int cargarValorEstadoDesafioPauseCronometroSerie() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int defaultValue = 0;
+        int estadoDesafioRecuperado = sharedPref.getInt("valorDesafioPauseCronometroSerie", defaultValue);
 
         return estadoDesafioRecuperado;
     }
@@ -757,13 +796,20 @@ public class MainFragment extends Fragment {
         estado = true;
     }
 
-    public void actualizarCronometro(int tiempo) {
+    public void actualizarCronometro(int tiempo, int tiempoSerie) {
         intValorCronometro = tiempo;
-        Log.v("CletApp", tiempo + "");
+        cronometroRepeticion = tiempoSerie;
         textoCronometro.setText(segundosToHoras(tiempo));
     }
 
-    public void mostrarCordenadas(double latitud, double longitud){
+    public void actualizarSeriesRepeticiones(int seriesCrono, int repeticionesCrono) {
+        cronoServiceSerie = seriesCrono;
+        cronoServiceRepeticion = repeticionesCrono;
+        TextViewSeries.setText("Series: " + String.valueOf(seriesCrono) + "/" + String.valueOf(seriesTotal));
+        TextViewRepeticiones.setText("Repeticiones: " + String.valueOf(repeticionesCrono) + "/" + String.valueOf(repeticionesTotal));
+    }
+
+    public void mostrarCordenadas(double latitud, double longitud) {
         //new Mensaje(getActivity().getApplicationContext(), "Cordenadas: " + latitud + ", " + longitud);
         nuevaCordenada = new LatLng(latitud, longitud);
         options.add(nuevaCordenada);
@@ -1225,7 +1271,7 @@ public class MainFragment extends Fragment {
             }
 
             String idRutina = String.valueOf(actualRutina.getRutinaId());
-            Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityRutinaOpciones.class);
+            Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoRutina.class);
             newIntent.putExtra("idRutina", idRutina);
             startActivity(newIntent);
         } else {

@@ -151,13 +151,14 @@ public class Cronometro extends Service implements LocationListener {
             @Override
             public void handleMessage(Message msg) {
                 UPDATE_LISTENER.actualizarCronometro(cronometro, cronometroRepeticion);
-                UPDATE_LISTENER.actualizarSeriesRepeticiones(serieActual, repActual);
+                UPDATE_LISTENER.actualizarSeriesRepeticiones(serieActual, repActual, numeroRepeticion);
 
                 if (cronometro == tiempoLimite) {
                     crearNotificacion();
                     UPDATE_LISTENER.completarDesafio();
                     alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     alertaTermino.vibrate(1000);
+                    guardarRepeticionReinicio();
                     stopSelf();
                 }
             }
@@ -173,7 +174,7 @@ public class Cronometro extends Service implements LocationListener {
         seriesActuales = new ArrayList<>();
         repeticionesActuales = new ArrayList<>();
         repeticionesActualesTotal = new ArrayList<>();
-        distanciasSerie = new ArrayList<>();
+        //distanciasSerie = new ArrayList<>();
 
         desafioActual = UPDATE_LISTENER.pasarDesafioActual();
         try {
@@ -193,7 +194,7 @@ public class Cronometro extends Service implements LocationListener {
             }
         }
         //numeroRepeticion = repeticionesActualesTotal.size();
-        numeroRepeticion = 0;
+        //numeroRepeticion = 0;
     }
 
     private void iniciarCronometro() {
@@ -203,6 +204,9 @@ public class Cronometro extends Service implements LocationListener {
         serieActual = UPDATE_LISTENER.cronoServiceSerie;
         series = UPDATE_LISTENER.seriesTotal;
         repeticiones = UPDATE_LISTENER.repeticionesTotal;
+        distance = UPDATE_LISTENER.cronoServiceDistanciaTotal;
+        distanciasSerie = UPDATE_LISTENER.cronoServiceDistanciaSerie;
+        numeroRepeticion = UPDATE_LISTENER.cronoServiceNumeroRepeticion;
 
         temporizador.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -233,6 +237,7 @@ public class Cronometro extends Service implements LocationListener {
                         }
                         distanceSerie = 0;
                     } else {
+
                     }
                     distanciasSerie.clear();
                     guardarEstadoSerieRepeticion();
@@ -280,8 +285,10 @@ public class Cronometro extends Service implements LocationListener {
 
             distance = distance + distanciaBuffer;
             distance = Float.parseFloat(df.format(distance));
+            guardarDistanciaTotal(distance);
 
             distanciasSerie.add(Float.parseFloat(df.format(distanciaBuffer)));
+            guardarDistanciaSerie(distanciasSerie);
             distanceSerie = distanceSerie + distanciaBuffer;
             distanceSerie = Float.parseFloat(df.format(distanceSerie));
 
@@ -295,6 +302,7 @@ public class Cronometro extends Service implements LocationListener {
             cronometroCordenadas = 0;
         }
     }
+
 
     private void actualizarDatosRepeticion(List<Float> distanceSerie, Repeticiones repeticiones) {
         float distanciaTotalSerie = 0;
@@ -383,5 +391,29 @@ public class Cronometro extends Service implements LocationListener {
         SharedPreferences prefs = getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
         prefs.edit().putInt("serieActual", serieActual).commit();
         prefs.edit().putInt("repeticionActual", repActual).commit();
+        prefs.edit().putInt("numeroRepeticionActual", numeroRepeticion).commit();
+    }
+
+    private void guardarDistanciaTotal(float distance) {
+        SharedPreferences prefs = getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
+        prefs.edit().putFloat("distanciaTotalService", distance).commit();
+    }
+
+    private void guardarDistanciaSerie(List<Float> listaDistanciasSerie) {
+        String guardar = "";
+        for (int i = 0; i < listaDistanciasSerie.size(); i++) {
+            if (guardar.equals("")) {
+                guardar = listaDistanciasSerie.get(i).toString();
+            } else {
+                guardar = guardar + "X" + listaDistanciasSerie.get(i).toString();
+            }
+        }
+        SharedPreferences prefs = getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
+        prefs.edit().putString("distanciaTotalSerie", guardar).commit();
+    }
+
+    private void guardarRepeticionReinicio() {
+        SharedPreferences prefs = getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        prefs.edit().putInt("numeroRepeticionActual", 0).commit();
     }
 }

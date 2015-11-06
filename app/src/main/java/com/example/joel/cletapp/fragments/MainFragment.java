@@ -102,6 +102,11 @@ public class MainFragment extends Fragment {
     //Valores serie y repeticion en recuperacion
     public int cronoServiceSerie = 1;
     public int cronoServiceRepeticion = 1;
+    public int cronoServiceNumeroRepeticion = 0;
+
+    //Para guardar la distanciaTotal y de la serie
+    public float cronoServiceDistanciaTotal = 0;
+    public List<Float> cronoServiceDistanciaSerie = new ArrayList<>();
 
     private ImageView ImageViewImagenDesafio2, ImageViewImagenDesafioActual;
     private TextView TextViewNombreDesafio, TextViewNombreDesafioActual;
@@ -226,6 +231,9 @@ public class MainFragment extends Fragment {
         } else {
             intValorCronometro = 0;
             cronometroRepeticion = 0;
+            //cronometroRepeticion = 1;
+            cronoServiceSerie = 1;
+            cronoServiceDistanciaSerie = new ArrayList<>();
         }
 
         if (cargarEstadoDesafioPause().equals("pause")) {
@@ -233,10 +241,15 @@ public class MainFragment extends Fragment {
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setVisibility(View.VISIBLE);
+
             intValorCronometro = cargarValorEstadoDesafioPause();
+            cronoServiceDistanciaSerie = cargarValorDistanciaSerie();
+            cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
             cronometroRepeticion = cargarValorEstadoDesafioPauseCronometroSerie();
             cronoServiceSerie = cargarValorCronometroSerie();
             cronoServiceRepeticion = cargarValorCronometroRepeticion();
+            cronoServiceNumeroRepeticion = cargarValorCronometroNumeroRepeticion();
+            actualizarSeriesRepeticiones(cronoServiceSerie, cronoServiceRepeticion, cronoServiceNumeroRepeticion);
             textoCronometro.setText(segundosToHoras(intValorCronometro));
             new Mensaje(getActivity().getApplicationContext(), "Estoy en pause");
 
@@ -365,6 +378,18 @@ public class MainFragment extends Fragment {
                     ButtonDetenerDesafio.setVisibility(View.VISIBLE);
                     ButtonDetenerRutina.setEnabled(false);
 
+                    //intValorCronometro = cargarValorEstadoDesafioPause();
+                    //cronoServiceDistanciaSerie = cargarValorDistanciaSerie();
+                    //cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
+                    //cronometroRepeticion = cargarValorEstadoDesafioPauseCronometroSerie();
+                    //cronoServiceSerie = cargarValorCronometroSerie();
+                    //cronoServiceRepeticion = cargarValorCronometroRepeticion();
+                    //actualizarSeriesRepeticiones(cronoServiceSerie, cronoServiceRepeticion);
+                    cronoServiceNumeroRepeticion = cargarValorCronometroNumeroRepeticion();
+                    cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
+                    new Mensaje(getActivity().getApplicationContext(), "Serie: " + cronoServiceSerie + " Rep: " + cronoServiceRepeticion);
+                    //textoCronometro.setText(segundosToHoras(intValorCronometro));
+
                     iniciarCronometro();
                     new Mensaje(getActivity().getApplicationContext(), "Iniciado cronometro");
                     guardarEstadoDesafioIniciado();
@@ -374,6 +399,7 @@ public class MainFragment extends Fragment {
                     ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                     pauseDesafioActivado = true;
                     guardarEstadoDesafioPause();
+                    //guardarDistanciaTotalService(cronoServiceDistanciaTotal);
                 }
             }
         });
@@ -396,7 +422,17 @@ public class MainFragment extends Fragment {
                 pararCronometro();
                 guardarEstadoDesafioDetenido();
                 guardarEstadoDesafioNoPause();
-                actualizarCronometro(0,0);
+                guardarRepeticionReinicio();
+                actualizarCronometro(0, 0);
+                cronoServiceDistanciaSerie = new ArrayList<Float>();
+                cronoServiceDistanciaTotal = 0;
+                guardarDistanciaTotalService(cronoServiceDistanciaTotal);
+                cronometroRepeticion = 0;
+                cronoServiceSerie = 1;
+                cronoServiceRepeticion = 1;
+                //TextViewValorDesafioActual
+                TextViewValorDesafioActual.setText(String.valueOf(Math.round(desafioObjetivo.getValor())));
+                actualizarSeriesRepeticionesDefault(0,0);
             }
         });
 
@@ -427,14 +463,47 @@ public class MainFragment extends Fragment {
         return root;
     }
 
+    private void guardarRepeticionReinicio() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        prefs.edit().putInt("numeroRepeticionActual", 0).commit();
+    }
+
+
+    private int cargarValorCronometroNumeroRepeticion() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        return prefs.getInt("numeroRepeticionActual", 0);
+    }
+
+    private List<Float> cargarValorDistanciaSerie() {
+        List<Float> distanciaSerieLista = new ArrayList<>();
+        SharedPreferences prefs = getActivity().getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
+        String distanciaSeries = prefs.getString("distanciaTotalSerie", "nada");
+        String valoresDistanciaSerie[] = distanciaSeries.split("X");
+
+        for (int i = 0; i < valoresDistanciaSerie.length; i++) {
+            distanciaSerieLista.add(Float.parseFloat(valoresDistanciaSerie[i]));
+        }
+        return distanciaSerieLista;
+    }
+
+    private float cargarValorDistanciaTotal() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
+        return prefs.getFloat("distanciaTotalService", 0);
+    }
+
+    private void guardarDistanciaTotalService(float distance) {
+        SharedPreferences prefs = getActivity().getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
+        prefs.edit().putFloat("distanciaTotalService", distance).commit();
+    }
+
     private int cargarValorCronometroSerie() {
         SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
-        return prefs.getInt("serieActual", 0);
+        return prefs.getInt("serieActual", 1);
     }
 
     private int cargarValorCronometroRepeticion() {
         SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
-        return prefs.getInt("repeticionActual", 0);
+        return prefs.getInt("repeticionActual", 1);
     }
 
     public Desafio pasarDesafioActual() {
@@ -698,11 +767,12 @@ public class MainFragment extends Fragment {
         editor.putString("estadoDesafioPause", "pause");
         editor.putInt("valorDesafioPause", intValorCronometro);
         editor.putInt("valorDesafioPauseCronometroSerie", cronometroRepeticion);
+        //editor.putInt("valorDesafioPauseCronometroSerie", cronometroRepeticion);
         editor.commit();
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
+        /*SharedPreferences prefs = getActivity().getSharedPreferences("serieRepeticion", Context.MODE_PRIVATE);
         prefs.edit().putInt("serieActual", cronoServiceSerie).commit();
-        prefs.edit().putInt("repeticionActual", cronoServiceRepeticion).commit();
+        prefs.edit().putInt("repeticionActual", cronoServiceRepeticion).commit();*/
     }
 
     private void guardarEstadoDesafioNoPause() {
@@ -802,9 +872,15 @@ public class MainFragment extends Fragment {
         textoCronometro.setText(segundosToHoras(tiempo));
     }
 
-    public void actualizarSeriesRepeticiones(int seriesCrono, int repeticionesCrono) {
+    public void actualizarSeriesRepeticiones(int seriesCrono, int repeticionesCrono, int numeroRepeticionCrono) {
         cronoServiceSerie = seriesCrono;
+        cronoServiceNumeroRepeticion = numeroRepeticionCrono;
         cronoServiceRepeticion = repeticionesCrono;
+        TextViewSeries.setText("Series: " + String.valueOf(seriesCrono) + "/" + String.valueOf(seriesTotal));
+        TextViewRepeticiones.setText("Repeticiones: " + String.valueOf(repeticionesCrono) + "/" + String.valueOf(repeticionesTotal));
+    }
+
+    public void actualizarSeriesRepeticionesDefault(int seriesCrono, int repeticionesCrono) {
         TextViewSeries.setText("Series: " + String.valueOf(seriesCrono) + "/" + String.valueOf(seriesTotal));
         TextViewRepeticiones.setText("Repeticiones: " + String.valueOf(repeticionesCrono) + "/" + String.valueOf(repeticionesTotal));
     }

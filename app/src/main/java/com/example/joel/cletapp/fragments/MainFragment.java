@@ -97,6 +97,7 @@ public class MainFragment extends Fragment {
     //Datos para el servicio
     public boolean pauseDesafioActivado = false;
     public int intValorCronometro = 0;
+    public int cronoServiceValorActualDescansoRepeticion = 0;
     public int cronometroRepeticion = 0;
 
     //Valores serie y repeticion en recuperacion
@@ -231,6 +232,7 @@ public class MainFragment extends Fragment {
         } else {
             intValorCronometro = 0;
             cronometroRepeticion = 0;
+            cronoServiceValorActualDescansoRepeticion = 0;
             //cronometroRepeticion = 1;
             cronoServiceSerie = 1;
             cronoServiceDistanciaSerie = new ArrayList<>();
@@ -243,6 +245,7 @@ public class MainFragment extends Fragment {
             ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
             intValorCronometro = cargarValorEstadoDesafioPause();
+            cronoServiceValorActualDescansoRepeticion = cargarValorEstadoDesafioPauseDescanso();
             cronoServiceDistanciaSerie = cargarValorDistanciaSerie();
             cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
             cronometroRepeticion = cargarValorEstadoDesafioPauseCronometroSerie();
@@ -423,7 +426,7 @@ public class MainFragment extends Fragment {
                 guardarEstadoDesafioDetenido();
                 guardarEstadoDesafioNoPause();
                 guardarRepeticionReinicio();
-                actualizarCronometro(0, 0);
+                actualizarCronometro(0, 0, 0);
                 cronoServiceDistanciaSerie = new ArrayList<Float>();
                 cronoServiceDistanciaTotal = 0;
                 guardarDistanciaTotalService(cronoServiceDistanciaTotal);
@@ -432,7 +435,7 @@ public class MainFragment extends Fragment {
                 cronoServiceRepeticion = 1;
                 //TextViewValorDesafioActual
                 TextViewValorDesafioActual.setText(String.valueOf(Math.round(desafioObjetivo.getValor())));
-                actualizarSeriesRepeticionesDefault(0,0);
+                actualizarSeriesRepeticionesDefault(0, 0);
             }
         });
 
@@ -766,6 +769,7 @@ public class MainFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("estadoDesafioPause", "pause");
         editor.putInt("valorDesafioPause", intValorCronometro);
+        editor.putInt("valorDesafioPauseDescanso", cronoServiceValorActualDescansoRepeticion);
         editor.putInt("valorDesafioPauseCronometroSerie", cronometroRepeticion);
         //editor.putInt("valorDesafioPauseCronometroSerie", cronometroRepeticion);
         editor.commit();
@@ -796,6 +800,14 @@ public class MainFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         int defaultValue = 0;
         int estadoDesafioRecuperado = sharedPref.getInt("valorDesafioPause", defaultValue);
+
+        return estadoDesafioRecuperado;
+    }
+
+    private int cargarValorEstadoDesafioPauseDescanso() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int defaultValue = 0;
+        int estadoDesafioRecuperado = sharedPref.getInt("valorDesafioPauseDescanso", defaultValue);
 
         return estadoDesafioRecuperado;
     }
@@ -866,10 +878,21 @@ public class MainFragment extends Fragment {
         estado = true;
     }
 
-    public void actualizarCronometro(int tiempo, int tiempoSerie) {
+    public void actualizarCronometro(int tiempo, int tiempoSerie, int tiempoCronometroDescanso) {
         intValorCronometro = tiempo;
         cronometroRepeticion = tiempoSerie;
+        cronoServiceValorActualDescansoRepeticion = tiempoCronometroDescanso;
         textoCronometro.setText(segundosToHoras(tiempo));
+    }
+
+    public void actualizarColorCronometro(int valorColor) {
+        if (valorColor == 1) {
+            textoCronometro.setTextColor(getResources().getColor(R.color.colorVerde));
+        } else if (valorColor == 2) {
+            textoCronometro.setTextColor(getResources().getColor(R.color.colorRojo));
+        } else {
+            textoCronometro.setTextColor(getResources().getColor(R.color.colorAzul));
+        }
     }
 
     public void actualizarSeriesRepeticiones(int seriesCrono, int repeticionesCrono, int numeroRepeticionCrono) {

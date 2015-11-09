@@ -67,7 +67,9 @@ public class Cronometro extends Service implements LocationListener {
     private NotificationManager notifManager; // notifManager IS GLOBAL
     private NotificationCompat.Builder mBuilder;
     private NotificationCompat.Builder mBuilderForeground;
-    private int tiempoLimite = 10800;
+    private int tiempoLimite = 1800;
+    public static int tiempoLimiteTotal = 0;
+    private int tiempoLimiteRepeticiones = 0;
 
     private double longitud, latitud;
     private LocationManager locationManager;
@@ -98,8 +100,9 @@ public class Cronometro extends Service implements LocationListener {
     private boolean pendienteSerieTerminada = false;
     private boolean inicioSerie = false;
 
-    public static void setUpdateListener(MainFragment poiService) {
+    public static void setUpdateListener(MainFragment poiService, int valorTiempoLimite) {
         UPDATE_LISTENER = poiService;
+        tiempoLimiteTotal = valorTiempoLimite;
     }
 
     @Override
@@ -138,12 +141,23 @@ public class Cronometro extends Service implements LocationListener {
         if (gpsActivo) {
             locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000 * 1/*1 minuto*/, 1/*Metros*/, this);
             location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-            locationAntigua = new Location("puntoViejo");
-            locationAntigua.setLatitude(location.getLatitude());
-            locationAntigua.setLongitude(location.getLongitude());
 
-            latitud = location.getLatitude();
-            longitud = location.getLongitude();
+            if (location != null) {
+                locationAntigua = new Location("puntoViejo");
+                locationAntigua.setLatitude(location.getLatitude());
+                locationAntigua.setLongitude(location.getLongitude());
+
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+            } else {
+
+                locationAntigua = new Location("puntoViejo");
+                locationAntigua.setLatitude(0);
+                locationAntigua.setLongitude(0);
+
+                latitud = 0;
+                longitud = 0;
+            }
         }
 
         startForeground(mNotificationId, n);
@@ -176,7 +190,7 @@ public class Cronometro extends Service implements LocationListener {
                     UPDATE_LISTENER.actualizarColorCronometro(0);
                 }
 
-                if (cronometro == tiempoLimite) {
+                if (cronometro >= tiempoLimiteTotal) {
                     crearNotificacion();
                     UPDATE_LISTENER.completarDesafio();
                     alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -193,11 +207,9 @@ public class Cronometro extends Service implements LocationListener {
         desafioCRUD = new DesafioCRUD(getBaseContext());
         serieCRUD = new SerieCRUD(getBaseContext());
         repeticionesCRUD = new RepeticionesCRUD(getBaseContext());
-
         seriesActuales = new ArrayList<>();
         repeticionesActuales = new ArrayList<>();
         repeticionesActualesTotal = new ArrayList<>();
-        //distanciasSerie = new ArrayList<>();
 
         desafioActual = UPDATE_LISTENER.pasarDesafioActual();
         try {
@@ -216,6 +228,11 @@ public class Cronometro extends Service implements LocationListener {
                 e.printStackTrace();
             }
         }
+        tiempoLimiteRepeticiones = tiempoLimite / repeticionesActualesTotal.size();
+        int asd = cronometroDescansoRepeticion * (repeticionesActualesTotal.size() - 1);
+        int asdA = cronometroDescansoSerie * (2 - 1);
+        int xcv = asd * asdA;
+        //tiempoLimiteTotal = tiempoLimite + xcv;
         //numeroRepeticion = repeticionesActualesTotal.size();
         //numeroRepeticion = 0;
     }
@@ -235,6 +252,7 @@ public class Cronometro extends Service implements LocationListener {
         distanciasSerie = UPDATE_LISTENER.cronoServiceDistanciaSerie;
         numeroRepeticion = UPDATE_LISTENER.cronoServiceNumeroRepeticion;
         cronometroValorActualDescansoRepeticion = UPDATE_LISTENER.cronoServiceValorActualDescansoRepeticion;
+
         final MediaPlayer repeticionTerminada = MediaPlayer.create(getBaseContext(), R.drawable.repeticion_terminada);
 
         temporizador.scheduleAtFixedRate(new TimerTask() {
@@ -282,7 +300,7 @@ public class Cronometro extends Service implements LocationListener {
                     }
 
                 } else {
-                    if (cronometroRepeticion >= 15) {
+                    if (cronometroRepeticion >= tiempoLimiteRepeticiones) {
                         if (numeroRepeticion < repeticionesActualesTotal.size()) {
                             cronometroRepeticion = 0;
                             actualizarDatosRepeticion(distanciasSerie, repeticionesActualesTotal.get(numeroRepeticion));
@@ -325,7 +343,7 @@ public class Cronometro extends Service implements LocationListener {
                 if (UPDATE_LISTENER != null) {
                     handler.sendEmptyMessage(0);
                 } else {
-                    if (cronometro == tiempoLimite) {
+                    if (cronometro >= tiempoLimiteTotal) {
                         crearNotificacion();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
@@ -356,31 +374,36 @@ public class Cronometro extends Service implements LocationListener {
         } else {
             if (cronometroCordenadas >= 10) {
 
-                latitud = location.getLatitude();
-                longitud = location.getLongitude();
-                LatLng coordinate = new LatLng(latitud, longitud);
+                if (location != null) {
+                    latitud = location.getLatitude();
+                    longitud = location.getLongitude();
+                    LatLng coordinate = new LatLng(latitud, longitud);
 
-                cordenadas.add(coordinate);
-                guardarCordenadas(cordenadas);
+                    cordenadas.add(coordinate);
+                    guardarCordenadas(cordenadas);
 
-                float distanciaBuffer = location.distanceTo(locationAntigua);
+                    float distanciaBuffer = location.distanceTo(locationAntigua);
 
-                distance = distance + distanciaBuffer;
-                distance = Float.parseFloat(df.format(distance));
-                guardarDistanciaTotal(distance);
+                    distance = distance + distanciaBuffer;
+                    distance = Float.parseFloat(df.format(distance));
+                    guardarDistanciaTotal(distance);
 
-                distanciasSerie.add(Float.parseFloat(df.format(distanciaBuffer)));
-                guardarDistanciaSerie(distanciasSerie);
-                distanceSerie = distanceSerie + distanciaBuffer;
-                distanceSerie = Float.parseFloat(df.format(distanceSerie));
+                    distanciasSerie.add(Float.parseFloat(df.format(distanciaBuffer)));
+                    guardarDistanciaSerie(distanciasSerie);
+                    distanceSerie = distanceSerie + distanciaBuffer;
+                    distanceSerie = Float.parseFloat(df.format(distanceSerie));
 
-                locationAntigua.setLatitude(latitud);
-                locationAntigua.setLongitude(longitud);
+                    locationAntigua.setLatitude(latitud);
+                    locationAntigua.setLongitude(longitud);
 
-                if (UPDATE_LISTENER != null) {
-                    UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
-                    UPDATE_LISTENER.actualizarValorDesafio(distance);
+                    if (UPDATE_LISTENER != null) {
+                        UPDATE_LISTENER.mostrarCordenadas(latitud, longitud);
+                        UPDATE_LISTENER.actualizarValorDesafio(distance);
+                    }
+                } else {
+
                 }
+
                 cronometroCordenadas = 0;
             }
         }

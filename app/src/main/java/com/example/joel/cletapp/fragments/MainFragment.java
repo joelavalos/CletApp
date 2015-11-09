@@ -8,11 +8,9 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,6 +162,8 @@ public class MainFragment extends Fragment {
     private List<String> nuevosDesafios;
     public int seriesTotal, repeticionesTotal = 0;
     //Fin de pruebas
+
+    private int tiempoLimiteTotal = 1870;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -365,7 +365,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        Cronometro.setUpdateListener(this);
+        Cronometro.setUpdateListener(this, tiempoLimiteTotal);
         //cordenadasRuta = Cronometro.getCordenadas();
 
         ButtonIniciarDesafio.setOnClickListener(new View.OnClickListener() {
@@ -393,11 +393,8 @@ public class MainFragment extends Fragment {
                     cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
                     new Mensaje(getActivity().getApplicationContext(), "Serie: " + cronoServiceSerie + " Rep: " + cronoServiceRepeticion);
                     //textoCronometro.setText(segundosToHoras(intValorCronometro));
-
-                    iniciarCronometro();
-                    new Mensaje(getActivity().getApplicationContext(), "Iniciado cronometro");
                     guardarEstadoDesafioIniciado();
-
+                    iniciarCronometro();
                 } else {
                     ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                     ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
@@ -849,14 +846,14 @@ public class MainFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        Cronometro.setUpdateListener(null);
+        Cronometro.setUpdateListener(null, tiempoLimiteTotal);
         //guardarEstadoDesafio("detenido");
     }
 
     private void iniciarCronometro() {
         Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
-        Log.v("CletApp", "Servicio iniciado");
         getActivity().startService(service);
+        new Mensaje(getActivity().getApplicationContext(), "No dramas al iniciar");
     }
 
     private void pararCronometro() {

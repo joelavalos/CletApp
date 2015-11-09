@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -48,6 +49,7 @@ public class Cronometro extends Service implements LocationListener {
     private int cronometroDescansoRepeticion = 10;
     private int cronometroValorActualDescansoSerie = 0;
     private int cronometroValorActualDescansoRepeticion = 0;
+    private int valorMaxcronometroValorActualDescansoRepeticion = 0;
 
     private int cronometroCordenadas = 0;
     private int series = 0;
@@ -92,6 +94,10 @@ public class Cronometro extends Service implements LocationListener {
     private SerieCRUD serieCRUD;
     private RepeticionesCRUD repeticionesCRUD;
 
+    private boolean pendienteDescansar = false;
+    private boolean pendienteSerieTerminada = false;
+    private boolean inicioSerie = false;
+
     public static void setUpdateListener(MainFragment poiService) {
         UPDATE_LISTENER = poiService;
     }
@@ -99,6 +105,9 @@ public class Cronometro extends Service implements LocationListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        final MediaPlayer desafioTerminado = MediaPlayer.create(getBaseContext(), R.drawable.desafio_terminado);
+        desafioTerminado.setVolume(15.0f, 15.0f);
+        desafioTerminado.start();
         pararCronometro();
     }
 
@@ -212,6 +221,10 @@ public class Cronometro extends Service implements LocationListener {
     }
 
     private void iniciarCronometro() {
+        final MediaPlayer desafioIniciado = MediaPlayer.create(getBaseContext(), R.drawable.desafio_iniciado);
+        desafioIniciado.setVolume(15.0f, 15.0f);
+        desafioIniciado.start();
+
         cronometro = UPDATE_LISTENER.intValorCronometro;
         cronometroRepeticion = UPDATE_LISTENER.cronometroRepeticion;
         repActual = UPDATE_LISTENER.cronoServiceRepeticion;
@@ -222,6 +235,7 @@ public class Cronometro extends Service implements LocationListener {
         distanciasSerie = UPDATE_LISTENER.cronoServiceDistanciaSerie;
         numeroRepeticion = UPDATE_LISTENER.cronoServiceNumeroRepeticion;
         cronometroValorActualDescansoRepeticion = UPDATE_LISTENER.cronoServiceValorActualDescansoRepeticion;
+        final MediaPlayer repeticionTerminada = MediaPlayer.create(getBaseContext(), R.drawable.repeticion_terminada);
 
         temporizador.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -234,12 +248,37 @@ public class Cronometro extends Service implements LocationListener {
                 n = mBuilderForeground.build();
                 notifManager.notify(mNotificationId, n);
 
+                final MediaPlayer descansa = MediaPlayer.create(getBaseContext(), R.drawable.descansa);
+
                 if (cronometroValorActualDescansoRepeticion > 0) {
                     //Pasar el tiempo
                     cronometroValorActualDescansoRepeticion--;
+                    if (pendienteDescansar == true && cronometroValorActualDescansoRepeticion == valorMaxcronometroValorActualDescansoRepeticion - 2) {
+                        descansa.setVolume(15.0f, 15.0f);
+                        descansa.start();
+                        pendienteDescansar = false;
+                    }
+
+                    if (pendienteSerieTerminada == true && cronometroValorActualDescansoRepeticion == valorMaxcronometroValorActualDescansoRepeticion - 5) {
+                        final MediaPlayer serieTerminada = MediaPlayer.create(getBaseContext(), R.drawable.serie_terminada);
+                        serieTerminada.setVolume(15.0f, 15.0f);
+                        serieTerminada.start();
+                        pendienteSerieTerminada = false;
+                    }
+
                     if (cronometroValorActualDescansoRepeticion == 0) {
                         cronometroRepeticion = 0;
                         cronometroCordenadas = 0;
+                        if (serieActual > 1 && inicioSerie == true) {
+                            final MediaPlayer repeticionIniciada = MediaPlayer.create(getBaseContext(), R.drawable.serie_iniciada);
+                            repeticionIniciada.setVolume(15.0f, 15.0f);
+                            repeticionIniciada.start();
+                            inicioSerie = false;
+                        } else {
+                            final MediaPlayer repeticionIniciada = MediaPlayer.create(getBaseContext(), R.drawable.repeticion_iniciada);
+                            repeticionIniciada.setVolume(15.0f, 15.0f);
+                            repeticionIniciada.start();
+                        }
                     }
 
                 } else {
@@ -250,16 +289,24 @@ public class Cronometro extends Service implements LocationListener {
                             numeroRepeticion++;
 
                             cronometroValorActualDescansoRepeticion = cronometroDescansoRepeticion;
+                            valorMaxcronometroValorActualDescansoRepeticion = cronometroValorActualDescansoRepeticion;
                             alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             alertaTermino.vibrate(1000);
 
                             repActual++;
+                            repeticionTerminada.setVolume(15.0f, 15.0f);
+                            repeticionTerminada.start();
+                            pendienteDescansar = true;
 
                             if (repActual > repeticiones) {
                                 if (serieActual < series) {
                                     repActual = 1;
                                     serieActual++;
+
+                                    pendienteSerieTerminada = true;
+                                    inicioSerie = true;
                                     cronometroValorActualDescansoRepeticion = cronometroDescansoRepeticion + cronometroDescansoSerie;
+                                    valorMaxcronometroValorActualDescansoRepeticion = cronometroValorActualDescansoRepeticion;
                                 }
                                 if ((repActual > repeticiones) && (serieActual == series)) {
                                     repActual = repeticiones;

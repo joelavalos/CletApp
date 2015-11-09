@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -861,6 +862,9 @@ public class MainFragment extends Fragment {
     private void pararCronometro() {
         Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
         getActivity().stopService(service);
+       /* final MediaPlayer testSound = MediaPlayer.create(getActivity().getApplicationContext(), R.drawable.desafio_terminado);
+        testSound.setVolume(15.0f, 15.0f);
+        testSound.start();*/
     }
 
     @Override

@@ -172,6 +172,7 @@ public class Cronometro extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //Arreglado
         iniciarBaseDeDatos();
         iniciarCronometro();
         handler = new Handler() {

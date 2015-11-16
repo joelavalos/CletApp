@@ -172,31 +172,33 @@ public class Cronometro extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        iniciarCronometro();
         iniciarBaseDeDatos();
+        iniciarCronometro();
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                UPDATE_LISTENER.actualizarCronometro(cronometro, cronometroRepeticion, cronometroValorActualDescansoRepeticion);
-                UPDATE_LISTENER.actualizarSeriesRepeticiones(serieActual, repActual, numeroRepeticion);
+                if (UPDATE_LISTENER != null) {
+                    UPDATE_LISTENER.actualizarCronometro(cronometro, cronometroRepeticion, cronometroValorActualDescansoRepeticion);
+                    UPDATE_LISTENER.actualizarSeriesRepeticiones(serieActual, repActual, numeroRepeticion);
 
-                if (cronometroValorActualDescansoRepeticion > 0) {
-                    UPDATE_LISTENER.actualizarColorCronometro(1);
-                }
-                if (cronometroValorActualDescansoRepeticion > cronometroDescansoSerie) {
-                    UPDATE_LISTENER.actualizarColorCronometro(2);
-                }
-                if (cronometroValorActualDescansoRepeticion == 0) {
-                    UPDATE_LISTENER.actualizarColorCronometro(0);
-                }
+                    if (cronometroValorActualDescansoRepeticion > 0) {
+                        UPDATE_LISTENER.actualizarColorCronometro(1);
+                    }
+                    if (cronometroValorActualDescansoRepeticion > cronometroDescansoSerie) {
+                        UPDATE_LISTENER.actualizarColorCronometro(2);
+                    }
+                    if (cronometroValorActualDescansoRepeticion == 0) {
+                        UPDATE_LISTENER.actualizarColorCronometro(0);
+                    }
 
-                if (cronometro >= tiempoLimiteTotal) {
-                    crearNotificacion();
-                    UPDATE_LISTENER.completarDesafio();
-                    alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    alertaTermino.vibrate(1000);
-                    guardarRepeticionReinicio();
-                    stopSelf();
+                    if (cronometro >= tiempoLimiteTotal) {
+                        crearNotificacion();
+                        UPDATE_LISTENER.completarDesafio();
+                        alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        alertaTermino.vibrate(1000);
+                        guardarRepeticionReinicio();
+                        stopSelf();
+                    }
                 }
             }
         };
@@ -232,9 +234,6 @@ public class Cronometro extends Service implements LocationListener {
         int asd = cronometroDescansoRepeticion * (repeticionesActualesTotal.size() - 1);
         int asdA = cronometroDescansoSerie * (2 - 1);
         int xcv = asd * asdA;
-        //tiempoLimiteTotal = tiempoLimite + xcv;
-        //numeroRepeticion = repeticionesActualesTotal.size();
-        //numeroRepeticion = 0;
     }
 
     private void iniciarCronometro() {
@@ -301,6 +300,7 @@ public class Cronometro extends Service implements LocationListener {
 
                 } else {
                     if (cronometroRepeticion >= tiempoLimiteRepeticiones) {
+
                         if (numeroRepeticion < repeticionesActualesTotal.size()) {
                             cronometroRepeticion = 0;
                             actualizarDatosRepeticion(distanciasSerie, repeticionesActualesTotal.get(numeroRepeticion));
@@ -308,6 +308,7 @@ public class Cronometro extends Service implements LocationListener {
 
                             cronometroValorActualDescansoRepeticion = cronometroDescansoRepeticion;
                             valorMaxcronometroValorActualDescansoRepeticion = cronometroValorActualDescansoRepeticion;
+
                             alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             alertaTermino.vibrate(1000);
 
@@ -333,8 +334,8 @@ public class Cronometro extends Service implements LocationListener {
                             }
                             distanceSerie = 0;
                         } else {
-
                         }
+
                         distanciasSerie.clear();
                         guardarEstadoSerieRepeticion();
                     }

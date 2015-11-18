@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -396,6 +397,10 @@ public class MainFragment extends Fragment {
                     guardarEstadoDesafioIniciado();
                     iniciarCronometro();
                 } else {
+                    final MediaPlayer desafioPausado = MediaPlayer.create(getActivity().getApplicationContext(), R.drawable.desafio_pausado);
+                    desafioPausado.setVolume(15.0f, 15.0f);
+                    desafioPausado.start();
+
                     ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                     ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                     pauseDesafioActivado = true;
@@ -416,6 +421,10 @@ public class MainFragment extends Fragment {
         ButtonDetenerDesafio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final MediaPlayer desafioTerminado = MediaPlayer.create(getActivity().getApplicationContext(), R.drawable.desafio_terminado);
+                desafioTerminado.setVolume(15.0f, 15.0f);
+                desafioTerminado.start();
+
                 ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                 ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                 ButtonDetenerDesafio.setVisibility(View.INVISIBLE);

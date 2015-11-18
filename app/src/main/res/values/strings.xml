@@ -53,7 +53,14 @@
     <string name="local_service_label">Notificacion titulo</string>
     <string name="title_activity_activity_desafio_terminado">Resultados</string>
     <string name="title_activity_activity_progreso_rutina">Progreso de mi rutina</string>
-    <string name="title_activity_activity_progreso_desafio">ActivityProgresoDesafio</string>
+    <string name="title_activity_activity_progreso_desafio">Progreso de mi desafio</string>
     <string name="title_activity_activity_desafios_terminados">ActivityDesafiosTerminados</string>
     <string name="title_activity_activity_rutinas_terminadas">ActivityRutinasTerminadas</string>
+
+    <string name="descRutina">La rutina de entrenamiento es la estructura del trabajo que se realizara sobre la bicicleta. Para obtener resultados ideales se debe realizar una rutina cada 1 Microciclo (1 semana).
+    Las rutinas pueden ser creadas de forma manual desde el menu Rutinas de entrenamiento o bien de forma automatica desde el menu Entrenamiento. Las rutinas evolucionaran de acuerdo a los resultados obtenidos
+    en rutinas anteriores.</string>
+
+    <string name="descDesafio">Consiste en la actividad realizada durante un tiempo requerido. Un desafio consiste en un numero de series compuestas por repeticiones que deben ser completadas dentro de un tiempo defindo.
+    Un desafio se consdiera exitoso cuando se cumple con la distancia requerida en cada repeticion, caso contrario se considera fallido. Los resultados obtenidos en el desafio sirven para determinar la exigencia de las futuras rutinas de entrenamiento</string>
 </resources>

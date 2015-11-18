@@ -8,13 +8,35 @@
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <TextView
-        android:id="@+id/TextViewGlosario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ImageViewFotoEntrada"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
         android:layout_below="@+id/app_bar"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/TextViewNombreEntrada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ImageViewFotoEntrada"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:text="Esto es la definicion de la entrada del glosario" />
+        android:text="Nombre"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorNegro" />
+
+    <TextView
+        android:id="@+id/TextViewDescripccionEntrada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewNombreEntrada"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Insertar descripccion aqui"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>

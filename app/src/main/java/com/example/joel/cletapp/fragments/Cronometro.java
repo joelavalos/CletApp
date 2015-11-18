@@ -108,9 +108,9 @@ public class Cronometro extends Service implements LocationListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        final MediaPlayer desafioTerminado = MediaPlayer.create(getBaseContext(), R.drawable.desafio_terminado);
-        desafioTerminado.setVolume(15.0f, 15.0f);
-        desafioTerminado.start();
+        //final MediaPlayer desafioTerminado = MediaPlayer.create(getBaseContext(), R.drawable.desafio_terminado);
+        //desafioTerminado.setVolume(15.0f, 15.0f);
+        //desafioTerminado.start();
         pararCronometro();
     }
 
@@ -356,19 +356,6 @@ public class Cronometro extends Service implements LocationListener {
         }, 0, INTERVALO_ACTUALIZACION);
     }
 
-    private void guardarCordenadas(List<LatLng> guardarCordenadas) {
-        String guardar = "";
-        for (int i = 0; i < guardarCordenadas.size(); i++) {
-            if (guardar.equals("")) {
-                guardar = guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
-            } else {
-                guardar = guardar + "X" + guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
-            }
-        }
-        SharedPreferences prefs = getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
-        prefs.edit().putString("misCordenadas", guardar).commit();
-    }
-
     @Override
     public void onLocationChanged(Location location) {
         if (cronometroValorActualDescansoRepeticion > 0) {
@@ -411,6 +398,18 @@ public class Cronometro extends Service implements LocationListener {
         }
     }
 
+    private void guardarCordenadas(List<LatLng> guardarCordenadas) {
+        String guardar = "";
+        for (int i = 0; i < guardarCordenadas.size(); i++) {
+            if (guardar.equals("")) {
+                guardar = guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            } else {
+                guardar = guardar + "X" + guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            }
+        }
+        SharedPreferences prefs = getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
+        prefs.edit().putString("misCordenadas", guardar).commit();
+    }
 
     private void actualizarDatosRepeticion(List<Float> distanceSerie, Repeticiones repeticiones) {
         float distanciaTotalSerie = 0;

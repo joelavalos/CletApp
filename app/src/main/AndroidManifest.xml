@@ -109,11 +109,13 @@
         </activity>
         <activity
             android:name=".ActivityProgresoRutina"
-            android:label="@string/title_activity_activity_progreso_rutina" >
+            android:label="@string/title_activity_activity_progreso_rutina"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ActivityProgresoDesafio"
-            android:label="@string/title_activity_activity_progreso_desafio" >
+            android:label="@string/title_activity_activity_progreso_desafio"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ActivityDesafiosTerminados"

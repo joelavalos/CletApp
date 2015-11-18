@@ -1,29 +1,30 @@
 package com.example.joel.cletapp;
 
-import android.content.Context;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.LatLng;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class ActivityGlosario extends ActionBarActivity {
 
     private Toolbar toolbar; //Variable para manejar la ToolBar
+
+    private ImageView ImageViewFotoEntrada;
+    private TextView TextViewNombreEntrada;
+    private TextView TextViewDescripccionEntrada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glosario);
+
+        inicializarComponentes();
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -37,6 +38,24 @@ public class ActivityGlosario extends ActionBarActivity {
                 onBackPressed();
             }
         });
+
+        Intent newIntent = getIntent();
+        if (newIntent.getStringExtra("EntradaGlosario").equals("Rutina")) {
+            TextViewNombreEntrada.setText(newIntent.getStringExtra("EntradaGlosario"));
+            TextViewDescripccionEntrada.setText(R.string.descRutina);
+            ImageViewFotoEntrada.setImageResource(R.drawable.glosario_rutina2);
+
+        } else if (newIntent.getStringExtra("EntradaGlosario").equals("Desafio")) {
+            TextViewNombreEntrada.setText(newIntent.getStringExtra("EntradaGlosario"));
+            TextViewDescripccionEntrada.setText(R.string.descDesafio);
+            ImageViewFotoEntrada.setImageResource(R.drawable.glosario_rutina2);
+        }
+    }
+
+    private void inicializarComponentes() {
+        ImageViewFotoEntrada = (ImageView) findViewById(R.id.ImageViewFotoEntrada);
+        TextViewNombreEntrada = (TextView) findViewById(R.id.TextViewNombreEntrada);
+        TextViewDescripccionEntrada = (TextView) findViewById(R.id.TextViewDescripccionEntrada);
     }
 
     @Override

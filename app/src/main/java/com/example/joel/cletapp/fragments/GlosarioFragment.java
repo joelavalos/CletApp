@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityGlosario;
+import com.example.joel.cletapp.ActivityProgresoRutina;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
@@ -23,7 +24,7 @@ import com.example.joel.cletapp.R;
  */
 public class GlosarioFragment extends Fragment {
     private ListView LisViewGlosario;
-    private String[] entradas = {"Entrenador", "Rutina", "Desafio", "Ciclismo", "Ciclista", "Velocidad", "Cadencia", "Resistencia", "Calorias"};
+    private String[] entradas = {"Rutina", "Desafio"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,9 +42,8 @@ public class GlosarioFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selected = ((TextView) view.findViewById(R.id.TextViewEntradaGlosario)).getText().toString();
-                Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), selected);
-
                 Intent nuevoItent = new Intent(getActivity().getApplicationContext(), ActivityGlosario.class);
+                nuevoItent.putExtra("EntradaGlosario", selected);
                 startActivity(nuevoItent);
             }
         });

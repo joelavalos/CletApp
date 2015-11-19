@@ -22,6 +22,7 @@ import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -294,6 +295,11 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
         return null;
     }
 
+    public float convertirMetrosToKilometros(float metros) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        return Float.parseFloat(df.format(metros / 1000));
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -309,9 +315,27 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
         }
 
         holder.TextViewNombreRepeticion.setText(numeroRepeticion.get(position));
-        holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(distanciaRepeticion.get(position)) + " de ");
-        holder.TextViewValorRequeridoDistanciaRepeticion.setText(String.valueOf(distanciaRequerida.get(position)));
-        holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(valorEvaluacion.get(position)));
+
+        if (distanciaRepeticion.get(position) >= 1000) {
+            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(distanciaRepeticion.get(position))) + " Km" + " de ");
+        } else {
+            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(distanciaRepeticion.get(position)) + " m" + " de ");
+        }
+
+
+        if (distanciaRequerida.get(position) >= 1000) {
+            holder.TextViewValorRequeridoDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(distanciaRequerida.get(position))) + " Km");
+        } else {
+            holder.TextViewValorRequeridoDistanciaRepeticion.setText(String.valueOf(distanciaRequerida.get(position)) + " m");
+        }
+
+        if (valorEvaluacion.get(position) >= 1000) {
+            holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(valorEvaluacion.get(position))) + " Km");
+        } else if (valorEvaluacion.get(position) <= -1000) {
+            holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(valorEvaluacion.get(position))) + " Km");
+        } else {
+            holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(valorEvaluacion.get(position)) + " m");
+        }
 
         if (valorEvaluacion.get(position) < 0) {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorRojo));

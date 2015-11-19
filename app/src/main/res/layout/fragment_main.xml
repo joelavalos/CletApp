@@ -152,9 +152,9 @@
         android:layout_alignLeft="@+id/TextViewNombreDesafioActual"
         android:layout_alignRight="@+id/TextViewNombreDesafioActual"
         android:layout_below="@+id/TextViewNombreDesafioActual"
-        android:gravity="center"
+        android:gravity="right"
         android:text="25 m"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#000000" />
 
     <TextView

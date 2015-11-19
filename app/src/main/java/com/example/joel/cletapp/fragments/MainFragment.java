@@ -51,6 +51,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -241,6 +242,7 @@ public class MainFragment extends Fragment {
         }
 
         if (cargarEstadoDesafioPause().equals("pause")) {
+            new Mensaje(getActivity().getApplicationContext(), "Estoy en pause");
             ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
@@ -248,15 +250,16 @@ public class MainFragment extends Fragment {
 
             intValorCronometro = cargarValorEstadoDesafioPause();
             cronoServiceValorActualDescansoRepeticion = cargarValorEstadoDesafioPauseDescanso();
-            cronoServiceDistanciaSerie = cargarValorDistanciaSerie();
+
+            cronoServiceDistanciaSerie = cargarValorDistanciaSerie(); //Tiene algo que hace crashear
             cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
+
             cronometroRepeticion = cargarValorEstadoDesafioPauseCronometroSerie();
             cronoServiceSerie = cargarValorCronometroSerie();
             cronoServiceRepeticion = cargarValorCronometroRepeticion();
             cronoServiceNumeroRepeticion = cargarValorCronometroNumeroRepeticion();
             actualizarSeriesRepeticiones(cronoServiceSerie, cronoServiceRepeticion, cronoServiceNumeroRepeticion);
             textoCronometro.setText(segundosToHoras(intValorCronometro));
-            new Mensaje(getActivity().getApplicationContext(), "Estoy en pause");
 
             cargarRuta();
             //guardarEstadoDesafioNoPause();
@@ -441,7 +444,7 @@ public class MainFragment extends Fragment {
                 cronoServiceSerie = 1;
                 cronoServiceRepeticion = 1;
                 //TextViewValorDesafioActual
-                TextViewValorDesafioActual.setText(String.valueOf(Math.round(desafioObjetivo.getValor())));
+                TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
                 actualizarSeriesRepeticionesDefault(0, 0);
             }
         });
@@ -485,14 +488,21 @@ public class MainFragment extends Fragment {
     }
 
     private List<Float> cargarValorDistanciaSerie() {
-        List<Float> distanciaSerieLista = new ArrayList<>();
+        List<Float> distanciaSerieLista;
         SharedPreferences prefs = getActivity().getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
         String distanciaSeries = prefs.getString("distanciaTotalSerie", "nada");
-        String valoresDistanciaSerie[] = distanciaSeries.split("X");
 
-        for (int i = 0; i < valoresDistanciaSerie.length; i++) {
-            distanciaSerieLista.add(Float.parseFloat(valoresDistanciaSerie[i]));
+        if (distanciaSeries.equals("nada")) {
+            distanciaSerieLista = new ArrayList<>();
+        } else {
+            distanciaSerieLista = new ArrayList<>();
+            String valoresDistanciaSerie[] = distanciaSeries.split("X");
+
+            for (int i = 0; i < valoresDistanciaSerie.length; i++) {
+                distanciaSerieLista.add(Float.parseFloat(valoresDistanciaSerie[i]));
+            }
         }
+
         return distanciaSerieLista;
     }
 
@@ -926,7 +936,17 @@ public class MainFragment extends Fragment {
     }
 
     public void actualizarValorDesafio(float distancia) {
-        TextViewValorDesafioActual.setText(distancia + "/" + String.valueOf(Math.round(desafioObjetivo.getValor())));
+        if (distancia >= 1000) {
+            TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(distancia)) + " Km" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+        } else {
+            TextViewValorDesafioActual.setText(String.valueOf(distancia) + " m" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+        }
+
+    }
+
+    public float convertirMetrosToKilometros(float metros) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        return Float.parseFloat(df.format(metros / 1000));
     }
 
     public String segundosToHoras(int totalSegundos) {
@@ -1267,7 +1287,12 @@ public class MainFragment extends Fragment {
         ImageViewImagenDesafioActual.setImageResource(ic_grade_black_48dp);
         TextViewNombreDesafioActual.setText(desafioNombre);
         //TextViewCategoriaDesafioActual.setText(objetivoNombre);
-        TextViewValorDesafioActual.setText(valorDesafio);
+        if (valorDesafio.equals("")) {
+            TextViewValorDesafioActual.setText(String.valueOf(valorDesafio));
+        } else {
+            TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(Float.parseFloat(valorDesafio))) + " Km");
+        }
+
         //TextViewNotaDesafioActual.setText(desafioDescripcion);
         //TextViewFechaDesafioActual.setText(fecha);
         TextViewEstadoActual.setText(estado);

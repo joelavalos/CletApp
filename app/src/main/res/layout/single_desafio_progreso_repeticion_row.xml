@@ -29,7 +29,7 @@
         android:layout_toRightOf="@+id/TextViewCampoDistanciaRepeticion"
         android:text="150 m de "
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorNegro" />
+        android:textColor="@color/colorGris2" />
 
     <TextView
         android:id="@+id/TextViewValorRequeridoDistanciaRepeticion"
@@ -39,7 +39,7 @@
         android:layout_toRightOf="@+id/TextViewValorDistanciaRepeticion"
         android:text="1800 m"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorNegro" />
+        android:textColor="@color/colorGris2" />
 
     <TextView
         android:id="@+id/TextViewValorEvaluacionDistanciaRepeticion"

@@ -72,6 +72,11 @@ public class SerieCRUD {
         return newSerie;
     }
 
+    public int eliminarSerie(Serie serie) {
+        int id = mDatabase.delete(Helper.TABLA_SERIE, Helper.SERIE_ID + " ='" + serie.getSerieId() + "'", null);
+        return id;
+    }
+
     public Serie buscarSeriePorId(long ID) throws ParseException {
         Cursor cursor = mDatabase.query(Helper.TABLA_SERIE, mAllColumns, Helper.SERIE_ID + " ='" + ID + "'", null, null, null, null);
         List<String> stringBuffer = new ArrayList<String>();

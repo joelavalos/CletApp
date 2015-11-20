@@ -3,7 +3,6 @@ package com.example.joel.cletapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -21,13 +20,18 @@ import android.widget.TextView;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
+import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
+import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
+import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.fragments.DialogoCategoriaSelector;
 import com.example.joel.cletapp.fragments.DialogoConfirmacion;
-import com.example.joel.cletapp.fragments.DialogoDatePickerDesafioFragment;
 import com.example.joel.cletapp.fragments.DialogoValorObjetivo;
+import com.example.joel.cletapp.fragments.DialogoValorRepeticiones;
+import com.example.joel.cletapp.fragments.DialogoValorSerie;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,8 +53,8 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
     private Button ButtonEliminarDesafio;
     private GridView GridViewDatosDesafio;
 
-    private String[] campos = {"Fecha de inicio", "Fecha final", "Categoria", "Valor"};
-    private String[] valores = {format.format(c.getTime()), format.format(c.getTime()), "", "0 m"};
+    private String[] campos = {"Categoria", "Valor", "Series", "Repeticiones"};
+    private String[] valores = {"", "0 m", "1", "1"};
     private Date parsedInicio = null;
     private Date parsedFinal = null;
     private ArrayList<String> categorias;
@@ -63,6 +67,12 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
     private ObjetivoCRUD objetivoCRUD;
     private Objetivo buscadoObjetivo;
     private AdapterCrearDesafio adapterCrearDesafio;
+
+    private List<Serie> seriesActuales;
+    private SerieCRUD serieCRUD;
+    private List<Repeticiones> repeticionesActuales;
+    private RepeticionesCRUD repeticionesCRUD;
+    private List<Repeticiones> repeticionesActualesTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,27 +108,27 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
                     switch (position) {
                         case 0:
-                            DialogFragment pickerInicio = new DialogoDatePickerDesafioFragment();
-                            pickerInicio.setArguments(bundle);
-                            pickerInicio.show(getSupportFragmentManager(), "datePicker");
-                            break;
-
-                        case 1:
-                            DialogFragment pickerFinal = new DialogoDatePickerDesafioFragment();
-                            pickerFinal.setArguments(bundle);
-                            pickerFinal.show(getSupportFragmentManager(), "datePicker2");
-                            break;
-
-                        case 2:
                             DialogoCategoriaSelector dialogo = new DialogoCategoriaSelector();
                             dialogo.setArguments(bundle);
                             dialogo.show(getSupportFragmentManager(), "categoriaPicker");
                             break;
 
-                        case 3:
+                        case 1:
                             DialogoValorObjetivo dialogoValorObjetivo = new DialogoValorObjetivo();
                             dialogoValorObjetivo.setArguments(bundle);
                             dialogoValorObjetivo.show(getSupportFragmentManager(), "valorDialog");
+                            break;
+
+                        case 2:
+                            DialogoValorSerie dialogoValorSerie = new DialogoValorSerie();
+                            dialogoValorSerie.setArguments(bundle);
+                            dialogoValorSerie.show(getSupportFragmentManager(), "serieDialog");
+                            break;
+
+                        case 3:
+                            DialogoValorRepeticiones dialogoValorRepeticion = new DialogoValorRepeticiones();
+                            dialogoValorRepeticion.setArguments(bundle);
+                            dialogoValorRepeticion.show(getSupportFragmentManager(), "repeticionDialog");
                             break;
                     }
                 }
@@ -157,6 +167,12 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
     private void inicializarBaseDeDatos(Intent intent) {
         idDesafio = Long.parseLong(intent.getStringExtra("Desafio"));
 
+        seriesActuales = new ArrayList<>();
+        serieCRUD = new SerieCRUD(getBaseContext());
+        repeticionesActuales = new ArrayList<>();
+        repeticionesCRUD = new RepeticionesCRUD(getBaseContext());
+        repeticionesActualesTotal = new ArrayList<>();
+
         desafioCRUD = new DesafioCRUD(this);
         try {
             buscadoDesafio = desafioCRUD.buscarDesafioPorId(idDesafio);
@@ -193,10 +209,31 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
         EditTextNombreDesafio.setText(buscadoDesafio.getDesafioNombre());
         EditTextNotaDesafio.setText(buscadoDesafio.getDesafioDescripcion());
 
-        valores[0] = format.format(buscadoDesafio.getInicioDesafio().getTime());
-        valores[1] = format.format(buscadoDesafio.getTerminoDesafio().getTime());
-        valores[2] = buscadoDesafioObjetivo.getObjetivo().getObjetivoNombre();
-        valores[3] = String.valueOf(Math.round(buscadoDesafioObjetivo.getValor())) + " m";
+        //valores[0] = format.format(buscadoDesafio.getInicioDesafio().getTime());
+        //valores[1] = format.format(buscadoDesafio.getTerminoDesafio().getTime());
+        valores[0] = buscadoDesafioObjetivo.getObjetivo().getObjetivoNombre();
+        valores[1] = String.valueOf(Math.round(buscadoDesafioObjetivo.getValor())) + " m";
+
+        try {
+            seriesActuales = serieCRUD.buscarSeriePorIdDesafio(buscadoDesafio);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (int j = 0; j < seriesActuales.size(); j++) {
+            try {
+                repeticionesActuales = repeticionesCRUD.buscarRepeticionesPorIdSerie(seriesActuales.get(j));
+                for (int i = 0; i < repeticionesActuales.size(); i++) {
+                    repeticionesActualesTotal.add(repeticionesActuales.get(i));
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Obtener series y repeticiones
+        valores[2] = String.valueOf(seriesActuales.size());
+        valores[3] = String.valueOf(repeticionesActualesTotal.size() / seriesActuales.size());
 
         adapterCrearDesafio = new AdapterCrearDesafio(this, campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
@@ -262,11 +299,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
                 new Mensaje(this, validarCreacion());
             } else {
                 try {
-                    buscadoObjetivo = objetivoCRUD.buscarObjetivoPorNombre(valores[2]);
+                    buscadoObjetivo = objetivoCRUD.buscarObjetivoPorNombre(valores[0]);
                     buscadoDesafio.setDesafioNombre(EditTextNombreDesafio.getText().toString());
                     buscadoDesafio.setDesafioDescripcion(EditTextNotaDesafio.getText().toString());
-                    buscadoDesafio.setInicioDesafio(new java.sql.Date(format.parse(valores[0]).getTime()));
-                    buscadoDesafio.setTerminoDesafio(new java.sql.Date(format.parse(valores[1]).getTime()));
+                    buscadoDesafio.setInicioDesafio(new java.sql.Date(format.parse(format.format(c.getTime())).getTime()));
+                    buscadoDesafio.setTerminoDesafio(new java.sql.Date(format.parse(format.format(c.getTime())).getTime()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -278,18 +315,39 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
                 buscadoDesafioObjetivo.setDesafio(buscadoDesafio);
                 buscadoDesafioObjetivo.setObjetivo(buscadoObjetivo);
-                buscadoDesafioObjetivo.setValor(Float.parseFloat(valores[3].split(" ")[0]));
+                buscadoDesafioObjetivo.setValor(Float.parseFloat(valores[1].split(" ")[0]));
 
                 try {
                     buscadoDesafioObjetivo = desafioObjetivoCRUD.actualizarDatosDesafioObjetivo(buscadoDesafioObjetivo);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
+                //Hay que borrer las series y repeticiones antiguas
+                for (int j = 0; j < seriesActuales.size(); j++) {
+                    serieCRUD.eliminarSerie(seriesActuales.get(j));
+                }
+                //
+
+                crearSeriesRepeticiones(buscadoDesafio, Integer.parseInt(valores[2]), Integer.parseInt(valores[3]));
+
                 new Mensaje(this, "Desafio actualizado");
                 onBackPressed();
             }
         } else {
 
+        }
+    }
+
+    private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
+        for (int h = 0; h < series; h++) {
+            Serie serie = new Serie(0, desafio);
+            serie = serieCRUD.insertarSerie(serie);
+
+            for (int j = 0; j < repeticiones; j++) {
+                Repeticiones addRepeticiones = new Repeticiones(0, serie, 0);
+                repeticionesCRUD.insertarRepeticion(addRepeticiones);
+            }
         }
     }
 
@@ -326,24 +384,39 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
     private String validarCreacion() {
         String validar = "";
 
-        try {
-            parsedInicio = format.parse(valores[0]);
-            parsedFinal = format.parse(valores[1]);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (valores[2].equals(".")) {
+            validar = "Valor incorrecto";
+        } else {
+            if (Integer.valueOf(valores[2]) > 5) {
+                validar = "Maximo 5 series";
+            }
+
+            if (Integer.valueOf(valores[2]) < 1) {
+                validar = "Minimo 1 serie";
+            }
         }
 
-        Date dateInicio = new java.sql.Date(parsedInicio.getTime());
-        Date dateFin = new java.sql.Date(parsedFinal.getTime());
+        if (valores[3].equals(".")) {
+            validar = "Valor incorrecto";
+        } else {
+            if (Integer.valueOf(valores[3]) > 5) {
+                validar = "Maximo 5 repeticiones";
+            }
 
-        if (dateInicio.getTime() >= dateFin.getTime()) {
-            validar = "La fecha final debe ser despues de: " + valores[0];
+            if (Integer.valueOf(valores[3]) < 1) {
+                validar = "Minimo 1 repeticion";
+            }
         }
 
-        if (valores[3].equals("0 m")) {
-            validar = "Ingrese distancia";
+        if (valores[1].equals(". m")) {
+            validar = "Valor incorrecto";
+        } else {
+            if (valores[1].equals("0 m")) {
+                validar = "Ingrese distancia";
+            }
         }
-        if (valores[2].equals("")) {
+
+        if (valores[0].equals("")) {
             validar = "Seleccione categoria";
         }
         if (EditTextNombreDesafio.getText().toString().equals("")) {

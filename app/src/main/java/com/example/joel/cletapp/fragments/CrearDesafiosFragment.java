@@ -3,7 +3,6 @@ package com.example.joel.cletapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +17,13 @@ import android.widget.TextView;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
+import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
+import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
+import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
@@ -37,8 +40,8 @@ import java.util.List;
 public class CrearDesafiosFragment extends Fragment {
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-    private String[] campos = {"Fecha de inicio", "Fecha final", "Categoria", "Valor"};
-    private String[] valores = {format.format(c.getTime()), format.format(c.getTime()), "", "0 m"};
+    private String[] campos = {"Categoria", "Valor", "Series", "Repeticiones"};
+    private String[] valores = {"", "0 m", "1", "1"};
     private AdapterCrearDesafio adapterCrearDesafio;
     private ArrayList<String> categorias;
 
@@ -53,6 +56,9 @@ public class CrearDesafiosFragment extends Fragment {
 
     private Date parsedInicio = null;
     private Date parsedFinal = null;
+
+    private SerieCRUD serieCRUD;
+    private RepeticionesCRUD repeticionesCRUD;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,27 +78,27 @@ public class CrearDesafiosFragment extends Fragment {
 
                 switch (position) {
                     case 0:
-                        DialogFragment pickerInicio = new DialogoDatePickerDesafioFragment();
-                        pickerInicio.setArguments(bundle);
-                        pickerInicio.show(getFragmentManager(), "datePicker");
-                        break;
-
-                    case 1:
-                        DialogFragment pickerFinal = new DialogoDatePickerDesafioFragment();
-                        pickerFinal.setArguments(bundle);
-                        pickerFinal.show(getFragmentManager(), "datePicker2");
-                        break;
-
-                    case 2:
                         DialogoCategoriaSelector dialogo = new DialogoCategoriaSelector();
                         dialogo.setArguments(bundle);
                         dialogo.show(getFragmentManager(), "categoriaPicker");
                         break;
 
-                    case 3:
+                    case 1:
                         DialogoValorObjetivo dialogoValorObjetivo = new DialogoValorObjetivo();
                         dialogoValorObjetivo.setArguments(bundle);
                         dialogoValorObjetivo.show(getFragmentManager(), "valorDialog");
+                        break;
+
+                    case 2:
+                        DialogoValorSerie dialogoValorSerie = new DialogoValorSerie();
+                        dialogoValorSerie.setArguments(bundle);
+                        dialogoValorSerie.show(getFragmentManager(), "serieDialog");
+                        break;
+
+                    case 3:
+                        DialogoValorRepeticiones dialogoValorRepeticion = new DialogoValorRepeticiones();
+                        dialogoValorRepeticion.setArguments(bundle);
+                        dialogoValorRepeticion.show(getFragmentManager(), "repeticionDialog");
                         break;
                 }
             }
@@ -102,20 +108,20 @@ public class CrearDesafiosFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!validarCreacion().equals("")) {
-                    Mensaje mensajeNoSePudoCrear = new Mensaje(getActivity().getApplicationContext(), validarCreacion());
+                    new Mensaje(getActivity().getApplicationContext(), validarCreacion());
                 } else {
 
                     //Se busca el objetivo
                     Objetivo objetivo = null;
                     try {
-                        objetivo = objetivoCRUD.buscarObjetivoPorNombre(valores[2]);
+                        objetivo = objetivoCRUD.buscarObjetivoPorNombre(valores[0]);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
                     try {
-                        parsedInicio = format.parse(valores[0]);
-                        parsedFinal = format.parse(valores[1]);
+                        parsedInicio = format.parse(format.format(c.getTime()));
+                        parsedFinal = format.parse(format.format(c.getTime()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -132,8 +138,10 @@ public class CrearDesafiosFragment extends Fragment {
                             1);
                     desafio = desafioCRUD.insertarDesafio(desafio);
 
-                    DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(valores[3].split(" ")[0]));
+                    DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(valores[1].split(" ")[0]));
                     desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
+
+                    crearSeriesRepeticiones(desafio, Integer.parseInt(valores[2]), Integer.parseInt(valores[3]));
 
                     Mensaje mensajeCreado = new Mensaje(getActivity().getApplicationContext(), "Desafio creado");
 
@@ -143,6 +151,18 @@ public class CrearDesafiosFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
+        for (int h = 0; h < series; h++) {
+            Serie serie = new Serie(0, desafio);
+            serie = serieCRUD.insertarSerie(serie);
+
+            for (int j = 0; j < repeticiones; j++) {
+                Repeticiones addRepeticiones = new Repeticiones(0, serie, 0);
+                repeticionesCRUD.insertarRepeticion(addRepeticiones);
+            }
+        }
     }
 
     private void inicializarComponentes(View root) {
@@ -158,6 +178,8 @@ public class CrearDesafiosFragment extends Fragment {
         objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
         desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
         desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
+        serieCRUD = new SerieCRUD(getActivity().getApplicationContext());
+        repeticionesCRUD = new RepeticionesCRUD(getActivity().getApplicationContext());
 
         categorias = new ArrayList<>();
         List<Objetivo> listObjetivo;
@@ -171,10 +193,12 @@ public class CrearDesafiosFragment extends Fragment {
     private void reiniciarDatos() {
         EditTextNombreDesafio.setText("");
         EditTextNotaDesafio.setText("");
-        valores[0] = format.format(c.getTime());
-        valores[1] = format.format(c.getTime());
-        valores[2] = "";
-        valores[3] = "0 m";
+        //valores[0] = format.format(c.getTime());
+        //valores[1] = format.format(c.getTime());
+        valores[0] = "";
+        valores[1] = "0 m";
+        valores[2] = "1";
+        valores[3] = "1";
         adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
     }
@@ -182,32 +206,39 @@ public class CrearDesafiosFragment extends Fragment {
     private String validarCreacion() {
         String validar = "";
 
-        try {
-            parsedInicio = format.parse(valores[0]);
-            parsedFinal = format.parse(valores[1]);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (valores[2].equals(".")) {
+            validar = "Valor incorrecto";
+        } else {
+            if (Integer.valueOf(valores[2]) > 5) {
+                validar = "Maximo 5 series";
+            }
+
+            if (Integer.valueOf(valores[2]) < 1) {
+                validar = "Minimo 1 serie";
+            }
         }
 
-        Date dateInicio = new java.sql.Date(parsedInicio.getTime());
-        Date dateFin = new java.sql.Date(parsedFinal.getTime());
+        if (valores[3].equals(".")) {
+            validar = "Valor incorrecto";
+        } else {
+            if (Integer.valueOf(valores[3]) > 5) {
+                validar = "Maximo 5 repeticiones";
+            }
 
-        Calendar cInicial = Calendar.getInstance();
-        cInicial.add(Calendar.DATE, -1);
-        Date actual = cInicial.getTime();
-
-        if (dateInicio.getTime() < actual.getTime()) {
-            validar = "La fecha inicial debe ser despues de: " + format.format(actual.getTime());
+            if (Integer.valueOf(valores[3]) < 1) {
+                validar = "Minimo 1 repeticion";
+            }
         }
 
-        if (dateInicio.getTime() >= dateFin.getTime()) {
-            validar = "La fecha final debe ser despues de: " + valores[0];
+        if (valores[1].equals(". m")) {
+            validar = "Valor incorrecto";
+        } else {
+            if (valores[1].equals("0 m")) {
+                validar = "Ingrese distancia";
+            }
         }
 
-        if (valores[3].equals("0 m")) {
-            validar = "Ingrese distancia";
-        }
-        if (valores[2].equals("")) {
+        if (valores[0].equals("")) {
             validar = "Seleccione categoria";
         }
         if (EditTextNombreDesafio.getText().toString().equals("")) {

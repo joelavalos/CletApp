@@ -229,7 +229,7 @@ public class MainFragment extends Fragment {
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setEnabled(false);
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
-            new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
+            //new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
 
             cargarRuta();
         } else {
@@ -242,7 +242,7 @@ public class MainFragment extends Fragment {
         }
 
         if (cargarEstadoDesafioPause().equals("pause")) {
-            new Mensaje(getActivity().getApplicationContext(), "Estoy en pause");
+            //new Mensaje(getActivity().getApplicationContext(), "Estoy en pause");
             ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
@@ -395,7 +395,7 @@ public class MainFragment extends Fragment {
                     //actualizarSeriesRepeticiones(cronoServiceSerie, cronoServiceRepeticion);
                     cronoServiceNumeroRepeticion = cargarValorCronometroNumeroRepeticion();
                     cronoServiceDistanciaTotal = cargarValorDistanciaTotal();
-                    new Mensaje(getActivity().getApplicationContext(), "Serie: " + cronoServiceSerie + " Rep: " + cronoServiceRepeticion);
+                    //new Mensaje(getActivity().getApplicationContext(), "Serie: " + cronoServiceSerie + " Rep: " + cronoServiceRepeticion);
                     //textoCronometro.setText(segundosToHoras(intValorCronometro));
                     guardarEstadoDesafioIniciado();
                     iniciarCronometro();
@@ -744,7 +744,7 @@ public class MainFragment extends Fragment {
         if (misCordenadas.equals("nada")) {
         } else {
             String cordenadas[] = misCordenadas.split("X");
-            new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);
+            //new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);
 
             for (int i = 0; i < cordenadas.length; i++) {
                 String stringLatLong = cordenadas[i];
@@ -872,7 +872,7 @@ public class MainFragment extends Fragment {
     private void iniciarCronometro() {
         Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
         getActivity().startService(service);
-        new Mensaje(getActivity().getApplicationContext(), "No dramas al iniciar");
+        //new Mensaje(getActivity().getApplicationContext(), "No dramas al iniciar");
     }
 
     private void pararCronometro() {
@@ -1157,7 +1157,7 @@ public class MainFragment extends Fragment {
         if (encontrado == false) {
             for (int i = 0; i < listaDesafiosRutina.size(); i++) {
                 if (actual.before(listaDesafiosRutina.get(i).getFecha()) && nextDesafio == false) {
-                    new Mensaje(getActivity().getApplicationContext(), "Aca toy");
+                    //new Mensaje(getActivity().getApplicationContext(), "Aca toy");
                     fechaDesafio = format.format(listaDesafiosRutina.get(i).getFecha());
                     nextDesafio = true;
                 }

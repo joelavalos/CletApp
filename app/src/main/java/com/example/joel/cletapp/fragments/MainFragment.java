@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityProgresoDesafio;
@@ -43,11 +39,9 @@ import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.HeartRateMonitor;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -79,6 +73,7 @@ public class MainFragment extends Fragment {
     private String fechaActual = "";
 
     private Button ButtonFrecuencioa;
+    private Button ButtonSeleccionarRuta;
     private ImageButton ButtonIniciarRutina;
     private ImageButton ButtonDetenerRutina;
     private ImageButton ButtonIniciarDesafio;
@@ -171,7 +166,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mapView = (MapView) root.findViewById(R.id.mi_mapa);
+        /*mapView = (MapView) root.findViewById(R.id.mi_mapa);
 
         mapView.onCreate(savedInstanceState);
         googleMap = mapView.getMap();
@@ -202,7 +197,7 @@ public class MainFragment extends Fragment {
             googleMap.addMarker(new MarkerOptions().position(latLngTest).title("Start"));
         }
 
-        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
+        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);*/
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
@@ -470,6 +465,21 @@ public class MainFragment extends Fragment {
                 newIntent.putExtra("Desafio", idDesafio);
                 newIntent.putExtra("valorDesafio", valorDesafio);
                 startActivity(newIntent);
+            }
+        });
+
+        ButtonSeleccionarRuta.setOnClickListener(new View.OnClickListener() {
+            Bundle bundle = new Bundle();
+
+            @Override
+            public void onClick(View v) {
+                bundle.putString("Accion", "SeleccionarRuta");
+                bundle.putString("Mensaje", "Descripccion");
+                bundle.putString("Titulo", "Seleccione ruta");
+
+                DialogoRutaSelector dialogo = new DialogoRutaSelector();
+                dialogo.setArguments(bundle);
+                dialogo.show(getFragmentManager(), "rutaPicker");
             }
         });
 
@@ -864,7 +874,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        //mapView.onDestroy();
         Cronometro.setUpdateListener(null, tiempoLimiteTotal);
         //guardarEstadoDesafio("detenido");
     }
@@ -886,14 +896,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        //mapView.onPause();
         estado = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        //mapView.onResume();
         //Cronometro.setUpdateListener(this);
         estado = true;
     }
@@ -993,6 +1003,7 @@ public class MainFragment extends Fragment {
         diasSelecionados = new ArrayList<>();
         nuevosDesafios = new ArrayList<>();
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
+        ButtonSeleccionarRuta = (Button) root.findViewById(R.id.ButtonSeleccionarRuta);
         ButtonIniciarRutina = (ImageButton) root.findViewById(R.id.ButtonIniciarRutina);
         ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
         ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);
@@ -1419,6 +1430,9 @@ public class MainFragment extends Fragment {
         } else {
             new Mensaje(getActivity().getApplicationContext(), "Selecciones al menos 1 dia");
         }
+    }
 
+    public void actualizarRuta(String data) {
+        new Mensaje(getActivity().getApplicationContext(), data);
     }
 }

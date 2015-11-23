@@ -11,4 +11,5 @@ public interface Communicator {
     public void Reiniciar(String data);
     public void TerminarRutina(String data);
     public void DiasSeleccionados(ArrayList<Integer> data);
+    public void SeleccionarRuta(String data);
 }

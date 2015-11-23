@@ -266,6 +266,13 @@ public class MainActivity extends ActionBarActivity implements Communicator {
     }
 
     @Override
+    public void SeleccionarRuta(String data) {
+        FragmentManager manager = this.getSupportFragmentManager();
+        MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+        asd.actualizarRuta(data);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         //guardarEstadoDesafioDetenido();

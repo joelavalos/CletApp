@@ -147,6 +147,17 @@ public class Helper extends SQLiteOpenHelper {
             + " FOREIGN KEY (" + REPETICIONES_SERIE_ID + ") REFERENCES " + TABLA_SERIE + " (" + SERIE_ID + ") ON DELETE CASCADE);";
     public static final String DROP_TABLA_REPETICIONES = "DROP TABLE IF EXISTS " + TABLA_REPETICIONES + ";";
 
+    //Tabla Repeticiones (Relacion one to many)
+    public static final String TABLA_RUTA = "tabla_ruta";
+    public static final String RUTA_ID = "ID";
+    public static final String RUTA_NOMBRE = "NOMBRE";
+    public static final String RUTA_CORDENADAS = "CORDENADAS";
+    public static final String CREATE_TABLA_RUTA = "CREATE TABLE " + TABLA_RUTA + " ("
+            + RUTA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + RUTA_NOMBRE + " VARCHAR NOT NULL, "
+            + RUTA_CORDENADAS + " VARCHAR NOT NULL);";
+    public static final String DROP_TABLA_RUTA = "DROP TABLE IF EXISTS " + TABLA_RUTA + ";";
+
     private Context context;
 
     public Helper(Context context) {
@@ -168,6 +179,7 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_DESAFIOSRUTINA);
             db.execSQL(CREATE_TABLA_SERIE);
             db.execSQL(CREATE_TABLA_REPETICIONES);
+            db.execSQL(CREATE_TABLA_RUTA);
             //Mensaje asd = new Mensaje(context, "OnCreate called");
         } catch (SQLException e) {
             //Mensaje asd = new Mensaje(context, e + "");
@@ -187,6 +199,7 @@ public class Helper extends SQLiteOpenHelper {
             db.execSQL(DROP_TABLE_DESAFIOSRUTINA);
             db.execSQL(DROP_TABLE_SERIE);
             db.execSQL(DROP_TABLA_REPETICIONES);
+            db.execSQL(DROP_TABLA_RUTA);
             //Mensaje asd = new Mensaje(context, "OnUpgrade called");
             onCreate(db);
         } catch (SQLException e) {

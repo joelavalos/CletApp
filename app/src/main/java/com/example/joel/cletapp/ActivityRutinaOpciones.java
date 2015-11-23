@@ -470,6 +470,11 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
     public void DiasSeleccionados(ArrayList<Integer> data) {
 
     }
+
+    @Override
+    public void SeleccionarRuta(String data) {
+
+    }
 }
 
 class AdapterCrearRutinaRow {

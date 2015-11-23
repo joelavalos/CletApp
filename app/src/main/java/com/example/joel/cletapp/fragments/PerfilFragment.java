@@ -275,6 +275,11 @@ public class PerfilFragment extends Fragment implements Communicator {
     public void DiasSeleccionados(ArrayList<Integer> data) {
 
     }
+
+    @Override
+    public void SeleccionarRuta(String data) {
+
+    }
 }
 
 class AdapterPerfilRow {

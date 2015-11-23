@@ -381,6 +381,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
     }
 
+    @Override
+    public void SeleccionarRuta(String data) {
+
+    }
+
     private String validarCreacion() {
         String validar = "";
 

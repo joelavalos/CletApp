@@ -20,9 +20,11 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RutaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
+import com.example.joel.cletapp.ClasesDataBase.Ruta;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.MainActivity;
 import com.example.joel.cletapp.R;
@@ -198,12 +200,31 @@ public class Cronometro extends Service implements LocationListener {
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
                         guardarRepeticionReinicio();
+                        guardarCordenadasBaseDatos();
                         stopSelf();
                     }
                 }
             }
         };
         return START_REDELIVER_INTENT;
+    }
+
+    private void guardarCordenadasBaseDatos() {
+
+        if (!generarStringCoordenadas(cordenadas).equals("")){
+            RutaCRUD rutaCRUD = new RutaCRUD(getBaseContext());
+            Ruta nuevaRuta = new Ruta();
+            nuevaRuta.setRutaNombre("Ruta generica");
+            nuevaRuta.setRutaCordenadas(generarStringCoordenadas(cordenadas));
+            nuevaRuta = rutaCRUD.insertarRuta(nuevaRuta);
+
+            nuevaRuta.setRutaNombre("Ruta " + nuevaRuta.getRutaId());
+            try {
+                rutaCRUD.actualizarRuta(nuevaRuta);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void iniciarBaseDeDatos() {
@@ -349,6 +370,7 @@ public class Cronometro extends Service implements LocationListener {
                         crearNotificacion();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
+                        guardarCordenadasBaseDatos();
                         stopSelf();
                     }
                 }
@@ -409,6 +431,18 @@ public class Cronometro extends Service implements LocationListener {
         }
         SharedPreferences prefs = getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
         prefs.edit().putString("misCordenadas", guardar).commit();
+    }
+
+    private String generarStringCoordenadas(List<LatLng> guardarCordenadas){
+        String guardar = "";
+        for (int i = 0; i < guardarCordenadas.size(); i++) {
+            if (guardar.equals("")) {
+                guardar = guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            } else {
+                guardar = guardar + "X" + guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            }
+        }
+        return guardar;
     }
 
     private void actualizarDatosRepeticion(List<Float> distanceSerie, Repeticiones repeticiones) {

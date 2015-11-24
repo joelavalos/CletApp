@@ -19,6 +19,7 @@ import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RutaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
@@ -27,6 +28,7 @@ import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
+import com.example.joel.cletapp.ClasesDataBase.Ruta;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.fragments.Cronometro;
@@ -191,6 +193,23 @@ public class MainActivity extends ActionBarActivity implements Communicator {
             DesafioRutinaCRUD desafioRutinaCRUD = new DesafioRutinaCRUD(this);
             DesafioRutina newDesafioRutina = new DesafioRutina(0, newRutina, newDesafio, new java.sql.Date(parsedInicio.getTime()));
             newDesafioRutina = desafioRutinaCRUD.insertarDesafioRutina(newDesafioRutina);
+        }
+
+        RutaCRUD rutaCRUD = new RutaCRUD(this);
+
+        if (rutaCRUD.buscarTodasLasRutas().isEmpty()){
+            Ruta nuevaRuta = new Ruta();
+            nuevaRuta.setRutaNombre("Ruta Chile");
+            nuevaRuta.setRutaCordenadas("-39.313839609651154=-71.05658075000002X-9.314918990829637=-74.99041654999996X-40.43339967139981=-63.59892055");
+            rutaCRUD.insertarRuta(nuevaRuta);
+            nuevaRuta = new Ruta();
+            nuevaRuta.setRutaNombre("Ruta viaje");
+            nuevaRuta.setRutaCordenadas("-29.60880770194574=133.24786600000004X-39.313839609651154=-71.05658075000002X46.433078443460715=2.20882574999996");
+            rutaCRUD.insertarRuta(nuevaRuta);
+            nuevaRuta = new Ruta();
+            nuevaRuta.setRutaNombre("Ruta trabajo");
+            nuevaRuta.setRutaCordenadas("37.945467316675405=104.13611175000005X-16.395887034238665=-63.5493965");
+            rutaCRUD.insertarRuta(nuevaRuta);
         }
     }
 

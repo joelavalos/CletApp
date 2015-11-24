@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityProgresoDesafio;
@@ -39,9 +43,11 @@ import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.HeartRateMonitor;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -166,7 +172,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        /*mapView = (MapView) root.findViewById(R.id.mi_mapa);
+        mapView = (MapView) root.findViewById(R.id.mi_mapa);
 
         mapView.onCreate(savedInstanceState);
         googleMap = mapView.getMap();
@@ -197,7 +203,7 @@ public class MainFragment extends Fragment {
             googleMap.addMarker(new MarkerOptions().position(latLngTest).title("Start"));
         }
 
-        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);*/
+        options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
@@ -768,6 +774,28 @@ public class MainFragment extends Fragment {
         line = googleMap.addPolyline(options);
     }
 
+    private void cargarRutaSeleccionada(String stringCoordenadas) {
+        googleMap.clear();
+        options = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
+
+        if (stringCoordenadas.equals("")) {
+            new Mensaje(getActivity().getApplicationContext(), "Seleccione una ruta");
+        } else {
+            String cordenadas[] = stringCoordenadas.split("X");
+            //new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);
+
+            for (int i = 0; i < cordenadas.length; i++) {
+                String stringLatLong = cordenadas[i];
+                double lat = Double.parseDouble(cordenadas[i].split("=")[0]);
+                double longi = Double.parseDouble(cordenadas[i].split("=")[1]);
+                nuevaCordenada = new LatLng(lat, longi);
+                options.add(nuevaCordenada);
+                //new Mensaje(getActivity().getApplicationContext(), "Lat.equals(" + lat+")" + " Long.equals("+longi+")");
+            }
+        }
+        line = googleMap.addPolyline(options);
+    }
+
     private String cargarEstadoDesafio() {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String defaultValue = "nada";
@@ -874,7 +902,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //mapView.onDestroy();
+        mapView.onDestroy();
         Cronometro.setUpdateListener(null, tiempoLimiteTotal);
         //guardarEstadoDesafio("detenido");
     }
@@ -896,14 +924,14 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        //mapView.onPause();
+        mapView.onPause();
         estado = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //mapView.onResume();
+        mapView.onResume();
         //Cronometro.setUpdateListener(this);
         estado = true;
     }
@@ -1433,6 +1461,8 @@ public class MainFragment extends Fragment {
     }
 
     public void actualizarRuta(String data) {
-        new Mensaje(getActivity().getApplicationContext(), data);
+        //new Mensaje(getActivity().getApplicationContext(), data);
+        cargarRutaSeleccionada(data);
+        //cargarRuta();
     }
 }

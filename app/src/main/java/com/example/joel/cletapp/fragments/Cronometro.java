@@ -200,7 +200,6 @@ public class Cronometro extends Service implements LocationListener {
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
                         guardarRepeticionReinicio();
-                        guardarCordenadasBaseDatos();
                         stopSelf();
                     }
                 }
@@ -363,6 +362,13 @@ public class Cronometro extends Service implements LocationListener {
                     }
                 }
 
+                if (cronometro >= tiempoLimiteTotal) {
+                    guardarCordenadasBaseDatos();
+                    if (temporizador != null){
+                        temporizador.cancel();
+                    }
+                }
+
                 if (UPDATE_LISTENER != null) {
                     handler.sendEmptyMessage(0);
                 } else {
@@ -370,7 +376,6 @@ public class Cronometro extends Service implements LocationListener {
                         crearNotificacion();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
-                        guardarCordenadasBaseDatos();
                         stopSelf();
                     }
                 }

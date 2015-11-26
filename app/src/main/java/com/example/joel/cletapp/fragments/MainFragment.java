@@ -70,7 +70,9 @@ public class MainFragment extends Fragment {
     MapView mapView;
     private LatLng nuevaCordenada;
     private PolylineOptions options;
+    private PolylineOptions optionsSeleccionada;
     private Polyline line;
+    private Polyline lineSeleccionada;
 
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private boolean encontrado = false;
@@ -94,6 +96,7 @@ public class MainFragment extends Fragment {
     private String segundosString;
     private String minutosString;
     private String horasString;
+    private String rutaBaseDeDatos = "";
     public boolean estado = true;
 
     //Datos para el servicio
@@ -230,10 +233,12 @@ public class MainFragment extends Fragment {
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setEnabled(false);
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
-            //new Mensaje(getActivity().getApplicationContext(), "Esyo iniciado");
+            ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
 
             cargarRuta();
+
         } else {
+            ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
             intValorCronometro = 0;
             cronometroRepeticion = 0;
             cronoServiceValorActualDescansoRepeticion = 0;
@@ -386,6 +391,15 @@ public class MainFragment extends Fragment {
                     ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_pause_white_24dp);
                     ButtonDetenerDesafio.setVisibility(View.VISIBLE);
                     ButtonDetenerRutina.setEnabled(false);
+                    ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
+
+                    if (!rutaBaseDeDatos.equals("")) {
+                        SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
+                        prefs.edit().putString("coordenadasBaseDeDatos", rutaBaseDeDatos).commit();
+                    } else {
+                        SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
+                        prefs.edit().putString("coordenadasBaseDeDatos", "nada").commit();
+                    }
 
                     //intValorCronometro = cargarValorEstadoDesafioPause();
                     //cronoServiceDistanciaSerie = cargarValorDistanciaSerie();
@@ -428,6 +442,10 @@ public class MainFragment extends Fragment {
                 final MediaPlayer desafioTerminado = MediaPlayer.create(getActivity().getApplicationContext(), R.drawable.desafio_terminado);
                 desafioTerminado.setVolume(15.0f, 15.0f);
                 desafioTerminado.start();
+                ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
+
+                SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
+                prefs.edit().putString("coordenadasBaseDeDatos", "nada").commit();
 
                 ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                 ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
@@ -772,11 +790,17 @@ public class MainFragment extends Fragment {
             }
         }
         line = googleMap.addPolyline(options);
+
+        String prueba = cargarRutaBaseDeDatos();
+        if (!prueba.equals("nada")) {
+            cargarRutaSeleccionadaSinLimpiar(prueba);
+        }
+
     }
 
     private void cargarRutaSeleccionada(String stringCoordenadas) {
         googleMap.clear();
-        options = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
+        optionsSeleccionada = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
 
         if (stringCoordenadas.equals("")) {
             new Mensaje(getActivity().getApplicationContext(), "Seleccione una ruta");
@@ -789,11 +813,31 @@ public class MainFragment extends Fragment {
                 double lat = Double.parseDouble(cordenadas[i].split("=")[0]);
                 double longi = Double.parseDouble(cordenadas[i].split("=")[1]);
                 nuevaCordenada = new LatLng(lat, longi);
-                options.add(nuevaCordenada);
+                optionsSeleccionada.add(nuevaCordenada);
                 //new Mensaje(getActivity().getApplicationContext(), "Lat.equals(" + lat+")" + " Long.equals("+longi+")");
             }
         }
-        line = googleMap.addPolyline(options);
+        lineSeleccionada = googleMap.addPolyline(optionsSeleccionada);
+    }
+
+    private void cargarRutaSeleccionadaSinLimpiar(String stringCoordenadas) {
+        optionsSeleccionada = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
+
+        if (stringCoordenadas.equals("")) {
+        } else {
+            String cordenadas[] = stringCoordenadas.split("X");
+            //new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);
+
+            for (int i = 0; i < cordenadas.length; i++) {
+                String stringLatLong = cordenadas[i];
+                double lat = Double.parseDouble(cordenadas[i].split("=")[0]);
+                double longi = Double.parseDouble(cordenadas[i].split("=")[1]);
+                nuevaCordenada = new LatLng(lat, longi);
+                optionsSeleccionada.add(nuevaCordenada);
+                //new Mensaje(getActivity().getApplicationContext(), "Lat.equals(" + lat+")" + " Long.equals("+longi+")");
+            }
+        }
+        lineSeleccionada = googleMap.addPolyline(optionsSeleccionada);
     }
 
     private String cargarEstadoDesafio() {
@@ -802,6 +846,14 @@ public class MainFragment extends Fragment {
         String estadoDesafioRecuperado = sharedPref.getString("estadoDesafio", defaultValue);
 
         return estadoDesafioRecuperado;
+    }
+
+    private String cargarRutaBaseDeDatos() {
+        SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
+        String defaultValue = "nada";
+        String rutaBaseDeDatos = prefs.getString("coordenadasBaseDeDatos", defaultValue);
+
+        return rutaBaseDeDatos;
     }
 
     private void guardarEstadoDesafioIniciado() {
@@ -1461,8 +1513,7 @@ public class MainFragment extends Fragment {
     }
 
     public void actualizarRuta(String data) {
-        //new Mensaje(getActivity().getApplicationContext(), data);
         cargarRutaSeleccionada(data);
-        //cargarRuta();
+        rutaBaseDeDatos = data;
     }
 }

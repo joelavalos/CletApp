@@ -199,8 +199,8 @@ public class MainActivity extends ActionBarActivity implements Communicator {
 
         if (rutaCRUD.buscarTodasLasRutas().isEmpty()){
             Ruta nuevaRuta = new Ruta();
-            nuevaRuta.setRutaNombre("Ruta Chile");
-            nuevaRuta.setRutaCordenadas("-39.313839609651154=-71.05658075000002X-9.314918990829637=-74.99041654999996X-40.43339967139981=-63.59892055");
+            nuevaRuta.setRutaNombre("Ruta casa");
+            nuevaRuta.setRutaCordenadas("-33.54179451052759=-70.55631310000001X-33.54192417381435=-70.55499613537368X-33.53943371046656=-70.55632114662704");
             rutaCRUD.insertarRuta(nuevaRuta);
             nuevaRuta = new Ruta();
             nuevaRuta.setRutaNombre("Ruta viaje");

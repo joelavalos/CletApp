@@ -22,7 +22,7 @@ public class DialogoRutaSelector extends DialogFragment {
     private ArrayList<String> rutasCoordenadas = new ArrayList<>();
     private int rutaSeleccion;
     private String titulo;
-    private String nombreRutaSelccionada;
+    private String nombreRutaSelccionada = "";
     private RutaCRUD rutaCRUD;
 
 

@@ -16,12 +16,13 @@ public class Desafio implements Serializable {
     private boolean exitoDesafio;
     private int series;
     private int repeticiones;
+    private int cronometro;
 
     public Desafio() {
         this.desafioId = -1;
     }
 
-    public Desafio(long desafioId, String desafioNombre, String desafioDescripcion, Date inicioDesafio, Date terminoDesafio, char estadoDesafio, boolean exitoDesafio, int series, int repeticiones) {
+    public Desafio(long desafioId, String desafioNombre, String desafioDescripcion, Date inicioDesafio, Date terminoDesafio, char estadoDesafio, boolean exitoDesafio, int series, int repeticiones, int cronometro) {
         this.desafioId = desafioId;
         this.desafioNombre = desafioNombre;
         this.desafioDescripcion = desafioDescripcion;
@@ -31,6 +32,7 @@ public class Desafio implements Serializable {
         this.exitoDesafio = exitoDesafio;
         this.series = series;
         this.repeticiones = repeticiones;
+        this.cronometro = cronometro;
     }
 
     public long getDesafioId() {
@@ -103,5 +105,13 @@ public class Desafio implements Serializable {
 
     public void setRepeticiones(int repeticiones) {
         this.repeticiones = repeticiones;
+    }
+
+    public int getCronometro() {
+        return cronometro;
+    }
+
+    public void setCronometro(int cronometro) {
+        this.cronometro = cronometro;
     }
 }

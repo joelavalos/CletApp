@@ -135,7 +135,8 @@ public class CrearDesafiosFragment extends Fragment {
                             'P',
                             false,
                             1,
-                            1);
+                            1,
+                            1870);
                     desafio = desafioCRUD.insertarDesafio(desafio);
 
                     DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(valores[1].split(" ")[0]));

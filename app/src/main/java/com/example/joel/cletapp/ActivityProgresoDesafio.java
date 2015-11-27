@@ -30,6 +30,7 @@ import java.util.List;
 
 public class ActivityProgresoDesafio extends ActionBarActivity {
     private Toolbar toolbar; //Variable para manejar la ToolBar
+    private DecimalFormat df = new DecimalFormat("#.##");
 
     private Long idDesafio;
     private List<String> nombresSeries;
@@ -55,6 +56,21 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
 
     private int valorDesafio = 0;
     private View v = null;
+
+    private TextView TextViewDistanciaValor;
+    private TextView TextViewDuracionValor;
+    private TextView TextViewCaloriasValor;
+
+    private List<Serie> todasLasSeries;
+    private List<Repeticiones> todasLasRepeticiones;
+    private List<Repeticiones> todasLasRepeticionesDeLaSerie;
+    private float distanciaTotal = 0;
+
+    private double constanteIntensidadMedia = 0.049;
+    private double constanteIntensidadAlta = 0.071;
+    private double constante2 = 2.2;
+    private double peso = 100;
+    private double minutos = 90;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +137,9 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
 
     private void inicializarComponentes() {
         TextViewNombreDesafio = (TextView) findViewById(R.id.TextViewNombreDesafio);
+        TextViewDistanciaValor = (TextView) findViewById(R.id.TextViewDistanciaValor);
+        TextViewDuracionValor = (TextView) findViewById(R.id.TextViewDuracionValor);
+        TextViewCaloriasValor = (TextView) findViewById(R.id.TextViewCaloriasValor);
         ListViewSeriesDesafios = (ListView) findViewById(R.id.ListViewSeriesDesafios);
         ListViewRepeticionesSeries = (ListView) findViewById(R.id.ListViewRepeticionesSeries);
 
@@ -149,6 +168,11 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
 
         adapterDesafioSerie = new AdapterDesafioSerie(this, nombresSeries, idSeries);
         ListViewSeriesDesafios.setAdapter(adapterDesafioSerie);
+
+        TextViewDistanciaValor.setText(distanciaTotal + " m");
+        TextViewDuracionValor.setText(segundosToHorasCronometro(desafioActual.getCronometro()));
+        minutos = desafioActual.getCronometro()/60;
+        TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia*constante2*peso*minutos)) + " Kcal");
     }
 
     private void inicializarBaseDeDatos(Intent intent) {
@@ -158,12 +182,26 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         serieCRUD = new SerieCRUD(this);
         desafioCRUD = new DesafioCRUD(this);
         repeticionesCRUD = new RepeticionesCRUD(this);
+        todasLasSeries = new ArrayList<>();
+        todasLasRepeticiones = new ArrayList<>();
+        todasLasRepeticionesDeLaSerie = new ArrayList<>();
 
         try {
             desafioActual = desafioCRUD.buscarDesafioPorId(idDesafio);
+            todasLasSeries = serieCRUD.buscarSeriePorIdDesafio(desafioActual);
+
+            for (int i = 0; i < todasLasSeries.size(); i++){
+                todasLasRepeticionesDeLaSerie = repeticionesCRUD.buscarRepeticionesPorIdSerie(todasLasSeries.get(i));
+                for (int j = 0; j < todasLasRepeticionesDeLaSerie.size(); j++){
+                    todasLasRepeticiones.add(todasLasRepeticionesDeLaSerie.get(j));
+                    distanciaTotal = distanciaTotal + todasLasRepeticionesDeLaSerie.get(j).getValor();
+                }
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        new Mensaje(getBaseContext(), distanciaTotal+"");
     }
 
     private void inicializarToolbar() {
@@ -194,6 +232,28 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public String segundosToHorasCronometro(int totalSegundos) {
+        int horas = totalSegundos / 3600;
+        String horasString = String.valueOf(horas);
+        if (horasString.length() == 1) {
+            horasString = "0" + horasString;
+        }
+
+        int minutos = (totalSegundos - (3600 * horas)) / 60;
+        String minutosString = String.valueOf(minutos);
+        if (minutosString.length() == 1) {
+            minutosString = "0" + minutosString;
+        }
+
+        int segundos = totalSegundos - ((horas * 3600) + (minutos * 60));
+        String segundosString = String.valueOf(segundos);
+        if (segundosString.length() == 1) {
+            segundosString = "0" + segundosString;
+        }
+
+        return horasString + ":" + minutosString + ":" + segundosString;
     }
 }
 

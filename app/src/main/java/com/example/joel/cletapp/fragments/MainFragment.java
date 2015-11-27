@@ -708,7 +708,8 @@ public class MainFragment extends Fragment {
                 'P',
                 false,
                 2,
-                3);
+                3,
+                1870);
         desafio = desafioCRUD.insertarDesafio(desafio);
         desafio.setDesafioNombre("Desafio " + desafio.getDesafioId());
         try {

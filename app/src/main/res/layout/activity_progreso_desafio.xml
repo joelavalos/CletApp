@@ -31,11 +31,115 @@
         android:text="Nombre del desafio"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <ImageView
+        android:id="@+id/ImageViewCircularDuracion"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/TextViewCampoNombreRutina"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/image_circular_resumen"
+        android:elevation="4dp"
+        android:src="@drawable/hdpi_ic_timer_white_24dp" />
+
+    <TextView
+        android:id="@+id/TextViewDuracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewCircularDuracion"
+        android:layout_toRightOf="@+id/ImageViewCircularDuracion"
+        android:text="Duracion"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/TextViewDuracionValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewDuracion"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/ImageViewCircularDuracion"
+        android:text="00:00:30"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorNegro" />
+
+    <Space
+        android:id="@+id/SpaceEspacio1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewCircularDuracion"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/ImageViewCircularDistancia"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/TextViewCampoNombreRutina"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/SpaceEspacio1"
+        android:background="@drawable/image_circular_resumen"
+        android:elevation="4dp"
+        android:src="@drawable/ic_directions_bike_white_24dp" />
+
+    <TextView
+        android:id="@+id/TextViewDistancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewCircularDistancia"
+        android:layout_toRightOf="@+id/ImageViewCircularDistancia"
+        android:text="Distancia total"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/TextViewDistanciaValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewDistancia"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/ImageViewCircularDistancia"
+        android:text="854 m"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorNegro" />
+
+    <ImageView
+        android:id="@+id/ImageViewCircularCalorias"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/ImageViewCircularDuracion"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/image_circular_resumen"
+        android:elevation="4dp"
+        android:src="@drawable/hdpi_ic_whatshot_white_24dp" />
+
+    <TextView
+        android:id="@+id/TextViewCalorias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewCircularCalorias"
+        android:layout_toRightOf="@+id/ImageViewCircularCalorias"
+        android:text="Calorias"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/TextViewCaloriasValor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewCalorias"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/ImageViewCircularCalorias"
+        android:text="0 Kcal"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorNegro" />
+
     <ListView
         android:id="@+id/ListViewSeriesDesafios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_below="@+id/ImageViewCircularCalorias"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:paddingRight="16dp">

@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ActivityProgresoDesafio extends ActionBarActivity {
     private Toolbar toolbar; //Variable para manejar la ToolBar
-    private DecimalFormat df = new DecimalFormat("#.##");
+    private DecimalFormat df = new DecimalFormat("#.#");
 
     private Long idDesafio;
     private List<String> nombresSeries;
@@ -169,10 +169,21 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         adapterDesafioSerie = new AdapterDesafioSerie(this, nombresSeries, idSeries);
         ListViewSeriesDesafios.setAdapter(adapterDesafioSerie);
 
-        TextViewDistanciaValor.setText(distanciaTotal + " m");
+
+        if (distanciaTotal >= 1000) {
+            TextViewDistanciaValor.setText(convertirMetrosToKilometros(distanciaTotal) + " Km");
+        } else {
+            TextViewDistanciaValor.setText(df.format(distanciaTotal) + " m");
+        }
+
         TextViewDuracionValor.setText(segundosToHorasCronometro(desafioActual.getCronometro()));
-        minutos = desafioActual.getCronometro()/60;
-        TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia*constante2*peso*minutos)) + " Kcal");
+        minutos = desafioActual.getCronometro() / 60;
+        TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
+    }
+
+    public float convertirMetrosToKilometros(float metros) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        return Float.parseFloat(df.format(metros / 1000));
     }
 
     private void inicializarBaseDeDatos(Intent intent) {
@@ -190,9 +201,9 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
             desafioActual = desafioCRUD.buscarDesafioPorId(idDesafio);
             todasLasSeries = serieCRUD.buscarSeriePorIdDesafio(desafioActual);
 
-            for (int i = 0; i < todasLasSeries.size(); i++){
+            for (int i = 0; i < todasLasSeries.size(); i++) {
                 todasLasRepeticionesDeLaSerie = repeticionesCRUD.buscarRepeticionesPorIdSerie(todasLasSeries.get(i));
-                for (int j = 0; j < todasLasRepeticionesDeLaSerie.size(); j++){
+                for (int j = 0; j < todasLasRepeticionesDeLaSerie.size(); j++) {
                     todasLasRepeticiones.add(todasLasRepeticionesDeLaSerie.get(j));
                     distanciaTotal = distanciaTotal + todasLasRepeticionesDeLaSerie.get(j).getValor();
                 }
@@ -201,7 +212,7 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        new Mensaje(getBaseContext(), distanciaTotal+"");
+        new Mensaje(getBaseContext(), distanciaTotal + "");
     }
 
     private void inicializarToolbar() {

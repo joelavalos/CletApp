@@ -225,6 +225,18 @@ public class MainFragment extends Fragment {
             completarDesafio();
         }
 
+        //Esta parte es nueva
+        SharedPreferences prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
+        int cronometroFinalDesafio = prefs.getInt("tiempoFinalCronometro", -1);
+
+        if (!(cronometroFinalDesafio == -1)){
+            completarDesafio();
+            prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
+            prefs.edit().putInt("tiempoFinalCronometro", -1).commit();
+        }
+
+        //Esta parte es nueva
+
         if (cargarEstadoDesafio().equals("iniciado")) {
             ButtonIniciarDesafio.setEnabled(true);
             ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_pause_white_24dp);
@@ -709,7 +721,7 @@ public class MainFragment extends Fragment {
                 false,
                 2,
                 3,
-                1870);
+                0);
         desafio = desafioCRUD.insertarDesafio(desafio);
         desafio.setDesafioNombre("Desafio " + desafio.getDesafioId());
         try {

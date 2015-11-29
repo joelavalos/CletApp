@@ -133,7 +133,7 @@ public class MainActivity extends ActionBarActivity implements Communicator {
                         exito[i],
                         series[i],
                         repeticiones[i],
-                        1870);
+                        0);
 
                 desafio = desafioCRUD.insertarDesafio(desafio);
 

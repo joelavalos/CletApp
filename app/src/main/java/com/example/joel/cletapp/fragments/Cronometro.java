@@ -364,6 +364,12 @@ public class Cronometro extends Service implements LocationListener {
 
                 if (cronometro >= tiempoLimiteTotal) {
                     guardarCordenadasBaseDatos();
+                    desafioActual.setCronometro(cronometro);
+                    try {
+                        desafioCRUD.actualizarDatosDesafio(desafioActual);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     if (temporizador != null){
                         temporizador.cancel();
                     }
@@ -373,6 +379,9 @@ public class Cronometro extends Service implements LocationListener {
                     handler.sendEmptyMessage(0);
                 } else {
                     if (cronometro >= tiempoLimiteTotal) {
+                        SharedPreferences prefs = getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
+                        prefs.edit().putInt("tiempoFinalCronometro", cronometro).commit();
+
                         crearNotificacion();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);

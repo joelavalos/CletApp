@@ -123,7 +123,7 @@ public class DesafioCRUD {
         newValues.put(Helper.DESAFIO_INICIO, df.format(desafio.getInicioDesafio()));
         newValues.put(Helper.DESAFIO_TERMINO, df.format(desafio.getTerminoDesafio()));
         newValues.put(Helper.DESAFIO_ESTADO, String.valueOf(desafio.getEstadoDesafio()));
-        newValues.put(Helper.DESAFIO_EXITO, Boolean.parseBoolean(String.valueOf(desafio.getExitoDesafio())));
+        newValues.put(Helper.DESAFIO_EXITO, desafio.getExitoDesafio());
         newValues.put(Helper.DESAFIO_SERIES, desafio.getSeries());
         newValues.put(Helper.DESAFIO_EXITO, desafio.getRepeticiones());
         newValues.put(Helper.DESAFIO_CRONOMETRO, desafio.getCronometro());

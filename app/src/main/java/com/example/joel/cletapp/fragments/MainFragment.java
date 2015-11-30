@@ -933,6 +933,9 @@ public class MainFragment extends Fragment {
     public void completarDesafio() {
         actualDesafio.setEstadoDesafio('T');
         actualDesafio.setExitoDesafio(1);
+        Date d = Calendar.getInstance().getTime();
+        actualDesafio.setTerminoDesafio(new java.sql.Date(d.getTime()));
+
         try {
             desafioCRUD.actualizarDatosDesafio(actualDesafio);
             TextViewEstadoActual.setText("Terminado");
@@ -950,6 +953,10 @@ public class MainFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
+        prefs.edit().putString("coordenadasBaseDeDatos", "nada").commit();
+
         new Mensaje(getActivity().getApplicationContext(), "Desafio terminado");
         guardarEstadoDesafioDetenido();
     }
@@ -1468,8 +1475,13 @@ public class MainFragment extends Fragment {
         }
 
         if (data.equals("Aceptar")) {
-            String idRutina = String.valueOf(listaRutinasIniciadas.get(0).getRutinaId());
+            /*String idRutina = String.valueOf(listaRutinasIniciadas.get(0).getRutinaId());
             Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityRutinaOpciones.class);
+            newIntent.putExtra("idRutina", idRutina);
+            startActivity(newIntent);*/
+
+            String idRutina = String.valueOf(actualRutina.getRutinaId());
+            Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoRutina.class);
             newIntent.putExtra("idRutina", idRutina);
             startActivity(newIntent);
         } else {

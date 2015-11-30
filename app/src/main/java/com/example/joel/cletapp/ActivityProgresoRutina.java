@@ -313,8 +313,10 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
         holder.valorCampo.setText(soloNombre[position]);
         if (soloNombre[position].equals("Descansar")) {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));
+            holder.imagenCampo.setImageResource(R.drawable.hdpi_ic_beach_access_black_24dp);
         } else {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorNegro));
+            holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
         }
         //row.setBackgroundResource(R.color.colorVerde);
         if (series[position] == 0) {
@@ -327,7 +329,7 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
             holder.objetivoCampo.setText(objetivo[position]);
         }
 
-        holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
+        //holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
 
         if (estadoDesafio[position].equals("T")) {
             holder.imagenEstado.setImageResource(R.drawable.tick);

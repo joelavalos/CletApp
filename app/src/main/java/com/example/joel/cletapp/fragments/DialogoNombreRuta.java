@@ -26,12 +26,13 @@ public class DialogoNombreRuta extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View viewDialogo = inflater.inflate(R.layout.input_dialog, null);
+        View viewDialogo = inflater.inflate(R.layout.input_dialog_ruta, null);
         comm = (Communicator) getActivity();
         EditTextValorCampo = (EditText) viewDialogo.findViewById(R.id.EditTextValorCampo);
         EditTextValorCampo.setText("");
+        EditTextValorCampo.setHint("Nombre");
 
-        builder.setTitle("Nombre de tu ruta")
+        builder.setTitle("Nombre de la ruta")
                 .setView(viewDialogo)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

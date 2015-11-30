@@ -120,16 +120,18 @@ public class ActivityDesafios extends ActionBarActivity {
             imagenes.add(R.drawable.ic_grade_black_48dp);
             nombreDesafios.add(listDesafiosPendientes.get(i).getDesafioNombre());
             notaDesafios.add(listDesafiosPendientes.get(i).getDesafioDescripcion());
-            fechaDesafios.add("Desde: " + format.format(listDesafiosPendientes.get(i).getInicioDesafio()) + " hasta: " + format.format(listDesafiosPendientes.get(i).getTerminoDesafio()));
+            //fechaDesafios.add("Desde: " + format.format(listDesafiosPendientes.get(i).getInicioDesafio()) + " hasta: " + format.format(listDesafiosPendientes.get(i).getTerminoDesafio()));
 
             if (listDesafiosPendientes.get(i).getEstadoDesafio() == 'P') {
                 estadoDesafios.add("Pendiente");
+                fechaDesafios.add("Terminado: Pendiente");
             } else {
                 if (listDesafiosPendientes.get(i).getExitoDesafio() == 1) {
                     estadoDesafios.add("Logrado");
                 } else {
                     estadoDesafios.add("No logrado");
                 }
+                fechaDesafios.add("Terminado: " + format.format(listDesafiosPendientes.get(i).getTerminoDesafio()));
             }
 
             try {

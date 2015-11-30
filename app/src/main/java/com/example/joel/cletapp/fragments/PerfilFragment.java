@@ -280,6 +280,11 @@ public class PerfilFragment extends Fragment implements Communicator {
     public void SeleccionarRuta(String data) {
 
     }
+
+    @Override
+    public void GuardarRuta(String data) {
+
+    }
 }
 
 class AdapterPerfilRow {

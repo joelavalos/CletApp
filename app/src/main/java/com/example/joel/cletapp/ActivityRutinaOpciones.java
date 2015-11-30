@@ -475,6 +475,11 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
     public void SeleccionarRuta(String data) {
 
     }
+
+    @Override
+    public void GuardarRuta(String data) {
+
+    }
 }
 
 class AdapterCrearRutinaRow {

@@ -363,7 +363,10 @@ public class Cronometro extends Service implements LocationListener {
                 }
 
                 if (cronometro >= tiempoLimiteTotal) {
-                    guardarCordenadasBaseDatos();
+                    SharedPreferences prefs = getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
+                    prefs.edit().putInt("tiempoFinalCronometro", cronometro).commit();
+                    //guardarCordenadasBaseDatos();
+                    guardarCordenadasFinales(cordenadas);
                     desafioActual.setCronometro(cronometro);
                     try {
                         desafioCRUD.actualizarDatosDesafio(desafioActual);
@@ -379,9 +382,6 @@ public class Cronometro extends Service implements LocationListener {
                     handler.sendEmptyMessage(0);
                 } else {
                     if (cronometro >= tiempoLimiteTotal) {
-                        SharedPreferences prefs = getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
-                        prefs.edit().putInt("tiempoFinalCronometro", cronometro).commit();
-
                         crearNotificacion();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
@@ -445,6 +445,19 @@ public class Cronometro extends Service implements LocationListener {
         }
         SharedPreferences prefs = getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
         prefs.edit().putString("misCordenadas", guardar).commit();
+    }
+
+    private void guardarCordenadasFinales(List<LatLng> guardarCordenadas) {
+        String guardar = "";
+        for (int i = 0; i < guardarCordenadas.size(); i++) {
+            if (guardar.equals("")) {
+                guardar = guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            } else {
+                guardar = guardar + "X" + guardarCordenadas.get(i).latitude + "=" + guardarCordenadas.get(i).longitude;
+            }
+        }
+        SharedPreferences prefs = getSharedPreferences("cordenadasFinales", Context.MODE_PRIVATE);
+        prefs.edit().putString("misCordenadasFinales", guardar).commit();
     }
 
     private String generarStringCoordenadas(List<LatLng> guardarCordenadas){

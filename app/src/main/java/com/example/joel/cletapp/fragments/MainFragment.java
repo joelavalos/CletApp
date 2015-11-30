@@ -30,6 +30,7 @@ import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RutaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
@@ -38,6 +39,7 @@ import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
+import com.example.joel.cletapp.ClasesDataBase.Ruta;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.HeartRateMonitor;
@@ -224,18 +226,6 @@ public class MainFragment extends Fragment {
             guardarEstadoDesafioDetenido();
             completarDesafio();
         }
-
-        //Esta parte es nueva
-        SharedPreferences prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
-        int cronometroFinalDesafio = prefs.getInt("tiempoFinalCronometro", -1);
-
-        if (!(cronometroFinalDesafio == -1)){
-            completarDesafio();
-            prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
-            prefs.edit().putInt("tiempoFinalCronometro", -1).commit();
-        }
-
-        //Esta parte es nueva
 
         if (cargarEstadoDesafio().equals("iniciado")) {
             ButtonIniciarDesafio.setEnabled(true);
@@ -999,6 +989,21 @@ public class MainFragment extends Fragment {
         mapView.onResume();
         //Cronometro.setUpdateListener(this);
         estado = true;
+
+        //Esta parte es nueva
+        SharedPreferences prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
+        int cronometroFinalDesafio = prefs.getInt("tiempoFinalCronometro", -1);
+
+        if (!(cronometroFinalDesafio == -1)){
+            completarDesafio();
+            prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
+            prefs.edit().putInt("tiempoFinalCronometro", -1).commit();
+
+            DialogoNombreRuta dialogo = new DialogoNombreRuta();
+            dialogo.show(getFragmentManager(), "nombreRutaPicker");
+        }
+
+        //Esta parte es nueva
     }
 
     public void actualizarCronometro(int tiempo, int tiempoSerie, int tiempoCronometroDescanso) {
@@ -1528,5 +1533,26 @@ public class MainFragment extends Fragment {
     public void actualizarRuta(String data) {
         cargarRutaSeleccionada(data);
         rutaBaseDeDatos = data;
+    }
+
+    public void guardarRuta(String data){
+        new Mensaje(getActivity().getApplicationContext(), data);
+        guardarCordenadasBaseDatos(data);
+    }
+
+    private void guardarCordenadasBaseDatos(String nombreRuta) {
+        SharedPreferences prefs = getActivity().getSharedPreferences("cordenadasFinales", Context.MODE_PRIVATE);
+        String cordenadasFinales = prefs.getString("misCordenadasFinales", "nada");
+
+        if (!cordenadasFinales.equals("nada")){
+            RutaCRUD rutaCRUD = new RutaCRUD(getActivity().getApplicationContext());
+            Ruta nuevaRuta = new Ruta();
+            nuevaRuta.setRutaNombre(nombreRuta);
+            nuevaRuta.setRutaCordenadas(cordenadasFinales);
+            nuevaRuta = rutaCRUD.insertarRuta(nuevaRuta);
+        }
+
+        prefs = getActivity().getSharedPreferences("cordenadasFinales", Context.MODE_PRIVATE);
+        prefs.edit().putString("misCordenadasFinales", "nada").commit();
     }
 }

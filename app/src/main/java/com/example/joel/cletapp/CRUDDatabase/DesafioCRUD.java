@@ -125,7 +125,7 @@ public class DesafioCRUD {
         newValues.put(Helper.DESAFIO_ESTADO, String.valueOf(desafio.getEstadoDesafio()));
         newValues.put(Helper.DESAFIO_EXITO, desafio.getExitoDesafio());
         newValues.put(Helper.DESAFIO_SERIES, desafio.getSeries());
-        newValues.put(Helper.DESAFIO_EXITO, desafio.getRepeticiones());
+        newValues.put(Helper.DESAFIO_REPETICIONES, desafio.getRepeticiones());
         newValues.put(Helper.DESAFIO_CRONOMETRO, desafio.getCronometro());
 
         String[] whereArgs = {String.valueOf(desafio.getDesafioId())};
@@ -251,11 +251,14 @@ public class DesafioCRUD {
         desafio.setInicioDesafio(new java.sql.Date(format.parse(cursor.getString(3)).getTime()));
         desafio.setTerminoDesafio(new java.sql.Date(format.parse(cursor.getString(4)).getTime()));
         desafio.setEstadoDesafio(cursor.getString(5).charAt(0));
-        if (cursor.getString(6).equals("1")) {
+        desafio.setExitoDesafio(cursor.getInt(6));
+
+        /*if (cursor.getString(6).equals("1")) {
             desafio.setExitoDesafio(true);
         } else {
             desafio.setExitoDesafio(false);
-        }
+        }*/
+
         desafio.setSeries(cursor.getInt(7));
         desafio.setRepeticiones(cursor.getInt(8));
         desafio.setCronometro(cursor.getInt(9));

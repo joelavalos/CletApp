@@ -111,7 +111,7 @@ public class MainActivity extends ActionBarActivity implements Communicator {
             String[] notas = {"Nota 1", "Nota prueba 2", "Sin nota", "Quiero bajar de peso", "Ja Ja Ja"};
             float[] valores = {125, 145, 160, 170, 200};
             char[] estado = {'T', 'P', 'P', 'T', 'T'};
-            boolean[] exito = {true, false, false, false, true};
+            int[] exito = {1, 0, 0, 0, 1};
             int[] series = {1, 2, 3, 4, 5};
             int[] repeticiones = {5, 4, 3, 2, 1};
 

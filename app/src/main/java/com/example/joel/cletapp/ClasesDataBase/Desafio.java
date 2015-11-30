@@ -13,7 +13,7 @@ public class Desafio implements Serializable {
     private Date inicioDesafio;
     private Date terminoDesafio;
     private char estadoDesafio;
-    private boolean exitoDesafio;
+    private int exitoDesafio;
     private int series;
     private int repeticiones;
     private int cronometro;
@@ -22,7 +22,7 @@ public class Desafio implements Serializable {
         this.desafioId = -1;
     }
 
-    public Desafio(long desafioId, String desafioNombre, String desafioDescripcion, Date inicioDesafio, Date terminoDesafio, char estadoDesafio, boolean exitoDesafio, int series, int repeticiones, int cronometro) {
+    public Desafio(long desafioId, String desafioNombre, String desafioDescripcion, Date inicioDesafio, Date terminoDesafio, char estadoDesafio, int exitoDesafio, int series, int repeticiones, int cronometro) {
         this.desafioId = desafioId;
         this.desafioNombre = desafioNombre;
         this.desafioDescripcion = desafioDescripcion;
@@ -83,11 +83,11 @@ public class Desafio implements Serializable {
         this.estadoDesafio = estadoDesafio;
     }
 
-    public boolean getExitoDesafio() {
+    public int getExitoDesafio() {
         return exitoDesafio;
     }
 
-    public void setExitoDesafio(boolean exitoDesafio) {
+    public void setExitoDesafio(int exitoDesafio) {
         this.exitoDesafio = exitoDesafio;
     }
 

@@ -89,6 +89,7 @@ public class ActivityDesafiosTerminados extends ActionBarActivity {
                 String idDesafio = (String) parent.getAdapter().getItem(position);
                 String valorDesafio = adapterListaDesafiosTerminadoGet.getValorDesafio(position);
                 Intent newIntent = new Intent(getApplicationContext(), ActivityProgresoDesafio.class);
+
                 newIntent.putExtra("Desafio", idDesafio);
                 newIntent.putExtra("valorDesafio", valorDesafio);
                 startActivity(newIntent);
@@ -130,7 +131,7 @@ public class ActivityDesafiosTerminados extends ActionBarActivity {
             if (listDesafiosPendientes.get(i).getEstadoDesafio() == 'P') {
                 estadoDesafios.add("Pendiente");
             } else {
-                if (listDesafiosPendientes.get(i).getExitoDesafio()) {
+                if (listDesafiosPendientes.get(i).getExitoDesafio() == 1) {
                     estadoDesafios.add("Logrado");
                 } else {
                     estadoDesafios.add("No logrado");

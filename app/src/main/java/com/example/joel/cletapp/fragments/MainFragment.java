@@ -718,7 +718,7 @@ public class MainFragment extends Fragment {
                 new java.sql.Date(parsedInicio.getTime()),
                 new java.sql.Date(parsedFinal.getTime()),
                 'P',
-                false,
+                0,
                 2,
                 3,
                 0);
@@ -942,7 +942,7 @@ public class MainFragment extends Fragment {
 
     public void completarDesafio() {
         actualDesafio.setEstadoDesafio('T');
-        actualDesafio.setExitoDesafio(true);
+        actualDesafio.setExitoDesafio(1);
         try {
             desafioCRUD.actualizarDatosDesafio(actualDesafio);
             TextViewEstadoActual.setText("Terminado");
@@ -1350,7 +1350,7 @@ public class MainFragment extends Fragment {
             if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() == 'I') {
                 if (listaDesafiosRutina.get(i).getFecha().before(actualRev)) {
                     listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
-                    listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(false);
+                    listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
                     try {
                         desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
                     } catch (ParseException e) {
@@ -1453,7 +1453,7 @@ public class MainFragment extends Fragment {
 
         for (int i = 0; i < listaDesafiosRutina.size(); i++) {
             listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
-            listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(true);
+            listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(1);
 
             try {
                 desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
@@ -1499,7 +1499,7 @@ public class MainFragment extends Fragment {
 
             for (int i = 0; i < listaDesafiosRutina.size(); i++) {
                 listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
-                listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(false);
+                listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
 
                 try {
                     desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());

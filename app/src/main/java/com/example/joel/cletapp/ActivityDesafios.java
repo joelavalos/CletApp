@@ -125,7 +125,7 @@ public class ActivityDesafios extends ActionBarActivity {
             if (listDesafiosPendientes.get(i).getEstadoDesafio() == 'P') {
                 estadoDesafios.add("Pendiente");
             } else {
-                if (listDesafiosPendientes.get(i).getExitoDesafio()) {
+                if (listDesafiosPendientes.get(i).getExitoDesafio() == 1) {
                     estadoDesafios.add("Logrado");
                 } else {
                     estadoDesafios.add("No logrado");

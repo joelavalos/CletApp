@@ -133,7 +133,7 @@ public class CrearDesafiosFragment extends Fragment {
                             new java.sql.Date(parsedInicio.getTime()),
                             new java.sql.Date(parsedFinal.getTime()),
                             'P',
-                            false,
+                            0,
                             1,
                             1,
                             1870);

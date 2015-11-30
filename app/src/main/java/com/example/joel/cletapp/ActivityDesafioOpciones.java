@@ -248,7 +248,7 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
             EditTextNombreDesafio.setTextColor(getResources().getColor(R.color.colorNegro));
             EditTextNotaDesafio.setTextColor(getResources().getColor(R.color.colorNegro));
 
-            if (buscadoDesafio.getExitoDesafio() == true) {
+            if (buscadoDesafio.getExitoDesafio() == 1) {
                 TextViewEstadoDesafio.setText("Logrado");
                 TextViewEstadoDesafio.setTextColor(getResources().getColor(R.color.colorVerde));
             } else {

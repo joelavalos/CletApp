@@ -50,7 +50,7 @@ public class Helper extends SQLiteOpenHelper {
             + DESAFIO_INICIO + " DATE NOT NULL, "
             + DESAFIO_TERMINO + " FLOAT NOT NULL, "
             + DESAFIO_ESTADO + " FLOAT NOT NULL, "
-            + DESAFIO_EXITO + " CHARACTER(1) NOT NULL, "
+            + DESAFIO_EXITO + " INTEGER NOT NULL, "
             + DESAFIO_SERIES + " INTEGER NOT NULL, "
             + DESAFIO_REPETICIONES + " INTEGER NOT NULL, "
             + DESAFIO_CRONOMETRO + " INTEGER);";

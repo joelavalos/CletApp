@@ -721,12 +721,20 @@ public class MainFragment extends Fragment {
         }
         nuevosDesafios.add(desafio.getDesafioId() + "-" + desafio.getDesafioNombre());
 
-        DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat("1800"));
+        int valorObjetivo = determinarValorObjetivo();;
+
+        DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(String.valueOf(valorObjetivo)));
         desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
 
         //Se crean las series y repeticiones para el desafio, primer argunmento el desafio, segundo las series y tercero las repeticiones
         crearSeriesRepeticiones(desafio, 2, 3);
 
+    }
+
+    private int determinarValorObjetivo() {
+        //el codigo para deteminar el valor del objetivo basado en la rutina anterior
+        return 1800;
+        //el codigo para deteminar el valor del objetivo basado en la rutina anterior
     }
 
     private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
@@ -1051,10 +1059,11 @@ public class MainFragment extends Fragment {
     }
 
     public void actualizarValorDesafio(float distancia) {
+        DecimalFormat df = new DecimalFormat("#.#");
         if (distancia >= 1000) {
             TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(distancia)) + " Km" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
         } else {
-            TextViewValorDesafioActual.setText(String.valueOf(distancia) + " m" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+            TextViewValorDesafioActual.setText(String.valueOf(df.format(distancia)) + " m" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
         }
 
     }

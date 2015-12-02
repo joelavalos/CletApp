@@ -15,9 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.CRUDDatabase.CiclistaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
+import com.example.joel.cletapp.ClasesDataBase.Ciclista;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
@@ -53,6 +55,8 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
     private RepeticionesCRUD repeticionesCRUD;
     private DesafioCRUD desafioCRUD;
     private Desafio desafioActual;
+    private Ciclista ciclista;
+    private CiclistaCRUD ciclistaCRUD;
 
     private int valorDesafio = 0;
     private View v = null;
@@ -178,7 +182,21 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
 
         TextViewDuracionValor.setText(segundosToHorasCronometro(desafioActual.getCronometro()));
         minutos = desafioActual.getCronometro() / 60;
-        TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
+
+        try {
+            ciclista = ciclistaCRUD.buscarCiclistaPorRut("0");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        peso = ciclista.getCiclistaPeso();
+
+        if (peso == 0) {
+            TextViewCaloriasValor.setText("Completar perfil");
+        } else {
+            new Mensaje(getApplicationContext(), "Estoy mal comparado");
+            TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
+        }
+        //TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
     }
 
     public float convertirMetrosToKilometros(float metros) {
@@ -190,6 +208,7 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         idDesafio = Long.parseLong(intent.getStringExtra("Desafio"));
         valorDesafio = Integer.parseInt(intent.getStringExtra("valorDesafio"));
 
+        ciclistaCRUD = new CiclistaCRUD(this);
         serieCRUD = new SerieCRUD(this);
         desafioCRUD = new DesafioCRUD(this);
         repeticionesCRUD = new RepeticionesCRUD(this);
@@ -211,8 +230,6 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        new Mensaje(getBaseContext(), distanciaTotal + "");
     }
 
     private void inicializarToolbar() {
@@ -386,11 +403,12 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
         }
 
         holder.TextViewNombreRepeticion.setText(numeroRepeticion.get(position));
+        DecimalFormat df = new DecimalFormat("#.#");
 
         if (distanciaRepeticion.get(position) >= 1000) {
             holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(distanciaRepeticion.get(position))) + " Km" + " de ");
         } else {
-            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(distanciaRepeticion.get(position)) + " m" + " de ");
+            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(df.format(distanciaRepeticion.get(position))) + " m" + " de ");
         }
 
 
@@ -400,12 +418,13 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
             holder.TextViewValorRequeridoDistanciaRepeticion.setText(String.valueOf(distanciaRequerida.get(position)) + " m");
         }
 
+
         if (valorEvaluacion.get(position) >= 1000) {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(valorEvaluacion.get(position))) + " Km");
         } else if (valorEvaluacion.get(position) <= -1000) {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(valorEvaluacion.get(position))) + " Km");
         } else {
-            holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(valorEvaluacion.get(position)) + " m");
+            holder.TextViewValorEvaluacionDistanciaRepeticion.setText(String.valueOf(df.format(valorEvaluacion.get(position))) + " m");
         }
 
         if (valorEvaluacion.get(position) < 0) {

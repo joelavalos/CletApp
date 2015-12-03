@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.Helper;
@@ -192,6 +193,20 @@ public class RutinaCRUD {
         }
 
         return listRutinas;
+    }
+
+    public List<Rutina> buscarUltimaRutina() throws ParseException {
+        List<Rutina> ultimasRutinas = new ArrayList<>();
+        String[] whereArgs = {"T"};
+        Cursor cursor = mDatabase.query(Helper.TABLA_RUTINA, mAllColumns, Helper.RUTINA_ESTADO + " =?", whereArgs, null, null, null);
+
+        while (cursor.moveToNext()) {
+            Rutina rutina = cursorToRutina(cursor);
+            ultimasRutinas.add(rutina);
+        }
+        cursor.close();
+
+        return ultimasRutinas;
     }
 
     public Rutina cursorToRutina(Cursor cursor) throws ParseException {

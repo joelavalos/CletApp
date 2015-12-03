@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.example.joel.cletapp.ActivityProgresoDesafio;
 import com.example.joel.cletapp.ActivityProgresoRutina;
-import com.example.joel.cletapp.ActivityRutinaOpciones;
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
@@ -58,6 +57,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -568,8 +568,11 @@ public class MainFragment extends Fragment {
 
     private void crearRutinaFlash() {
 
+        int valorObjetivoPersonalizado = determinarValorObjetivo();
+        //new Mensaje(getActivity().getApplicationContext(), "Resultado: " + valorObjetivoPersonalizado);
+
         for (int i = 0; i < diasSelecionados.size(); i++) {
-            crearDesafios();
+            crearDesafios(valorObjetivoPersonalizado);
         }
 
         inicializarBaseDeDatos();
@@ -686,7 +689,7 @@ public class MainFragment extends Fragment {
         return returnData;
     }
 
-    private void crearDesafios() {
+    private void crearDesafios(int valorObjetivoPersonalizado) {
         Objetivo objetivo = null;
 
         try {
@@ -721,7 +724,7 @@ public class MainFragment extends Fragment {
         }
         nuevosDesafios.add(desafio.getDesafioId() + "-" + desafio.getDesafioNombre());
 
-        int valorObjetivo = determinarValorObjetivo();;
+        int valorObjetivo = valorObjetivoPersonalizado;
 
         DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(String.valueOf(valorObjetivo)));
         desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
@@ -731,10 +734,77 @@ public class MainFragment extends Fragment {
 
     }
 
+    /**
+     * Funciona que calcula el valor de los desafios.
+     * @return el valor del desafio.
+     */
     private int determinarValorObjetivo() {
-        //el codigo para deteminar el valor del objetivo basado en la rutina anterior
-        return 1800;
-        //el codigo para deteminar el valor del objetivo basado en la rutina anterior
+        List<Rutina> ultimasRutinas = new ArrayList<>();
+        List<Desafio> ultimosDesafios = new ArrayList<>();
+        List<DesafioObjetivo> valoresDesafios = new ArrayList<>();
+        List<DesafioRutina> todosLosDesafiosRutinas = new ArrayList<>();
+        List<Float> promediosFinales = new ArrayList<>();
+
+        try {
+            ultimasRutinas = rutinaCRUD.buscarUltimaRutina();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (!ultimasRutinas.isEmpty()) {
+            Rutina ultimaRutina = ultimasRutinas.get(ultimasRutinas.size() - 1);
+
+            try {
+                todosLosDesafiosRutinas = desafioRutinaCRUD.buscarDesafioRutinaPorIdRutinaOrderByFecha(ultimaRutina);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            DesafioObjetivo desafioObjetivoValor = null;
+            for (int i = 0; i < todosLosDesafiosRutinas.size(); i++) {
+                try {
+                    desafioObjetivoValor = desafioObjetivoCRUD.buscarDesafioObjetivoPorIdDesafio(todosLosDesafiosRutinas.get(i).getDesafio());
+                    valoresDesafios.add(desafioObjetivoValor);
+                    ultimosDesafios.add(todosLosDesafiosRutinas.get(i).getDesafio());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            for (int i = 0; i < ultimosDesafios.size(); i++) {
+                List<Repeticiones> todasLasRepeticiones = new ArrayList<>();
+
+                List<Repeticiones> todasLasUltimasRepeticionesDeLaSerie = new ArrayList<>();
+                List<Serie> todasLasUltimasSeries = new ArrayList<>();
+                try {
+                    Desafio actualUltimoDesafio = desafioCRUD.buscarDesafioPorId(ultimosDesafios.get(i).getDesafioId());
+                    todasLasUltimasSeries = serieCRUD.buscarSeriePorIdDesafio(actualUltimoDesafio);
+
+                    List<Float> diferenciasFinales = new ArrayList<>();
+                    for (int j = 0; j < todasLasUltimasSeries.size(); j++) {
+                        todasLasUltimasRepeticionesDeLaSerie = repeticionesCRUD.buscarRepeticionesPorIdSerie(todasLasUltimasSeries.get(j));
+
+                        for (int k = 0; k < todasLasUltimasRepeticionesDeLaSerie.size(); k++) {
+                            todasLasRepeticiones.add(todasLasUltimasRepeticionesDeLaSerie.get(k));
+                            diferenciasFinales.add(todasLasUltimasRepeticionesDeLaSerie.get(k).getValor());
+                            //new Mensaje(getActivity().getApplicationContext(), "Repeticion: " + todasLasUltimasRepeticionesDeLaSerie.get(k).getRepeticionId());
+                        }
+                    }
+
+                    Object maximoValor = Collections.max(diferenciasFinales);
+                    promediosFinales.add(Float.parseFloat(String.valueOf(maximoValor)));
+                    diferenciasFinales = new ArrayList<>();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            promediosFinales.add(Float.parseFloat("2000"));
+        }
+
+        Object nuevoValorDesafio = Collections.max(promediosFinales);
+        return (int)Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio)));
     }
 
     private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
@@ -1009,7 +1079,7 @@ public class MainFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
         int cronometroFinalDesafio = prefs.getInt("tiempoFinalCronometro", -1);
 
-        if (!(cronometroFinalDesafio == -1)){
+        if (!(cronometroFinalDesafio == -1)) {
             completarDesafio();
             prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
             prefs.edit().putInt("tiempoFinalCronometro", -1).commit();
@@ -1556,7 +1626,7 @@ public class MainFragment extends Fragment {
         rutaBaseDeDatos = data;
     }
 
-    public void guardarRuta(String data){
+    public void guardarRuta(String data) {
         new Mensaje(getActivity().getApplicationContext(), data);
         guardarCordenadasBaseDatos(data);
     }
@@ -1565,7 +1635,7 @@ public class MainFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("cordenadasFinales", Context.MODE_PRIVATE);
         String cordenadasFinales = prefs.getString("misCordenadasFinales", "nada");
 
-        if (!cordenadasFinales.equals("nada")){
+        if (!cordenadasFinales.equals("nada")) {
             RutaCRUD rutaCRUD = new RutaCRUD(getActivity().getApplicationContext());
             Ruta nuevaRuta = new Ruta();
             nuevaRuta.setRutaNombre(nombreRuta);

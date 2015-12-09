@@ -43,12 +43,12 @@ public class ActivityGlosario extends ActionBarActivity {
         if (newIntent.getStringExtra("EntradaGlosario").equals("Rutina")) {
             TextViewNombreEntrada.setText(newIntent.getStringExtra("EntradaGlosario"));
             TextViewDescripccionEntrada.setText(R.string.descRutina);
-            ImageViewFotoEntrada.setImageResource(R.drawable.glosario_rutina2);
+            ImageViewFotoEntrada.setImageResource(R.drawable.glosario_rutina);
 
         } else if (newIntent.getStringExtra("EntradaGlosario").equals("Desafio")) {
             TextViewNombreEntrada.setText(newIntent.getStringExtra("EntradaGlosario"));
             TextViewDescripccionEntrada.setText(R.string.descDesafio);
-            ImageViewFotoEntrada.setImageResource(R.drawable.glosario_rutina2);
+            ImageViewFotoEntrada.setImageResource(R.drawable.glosario_desafio);
         }
     }
 

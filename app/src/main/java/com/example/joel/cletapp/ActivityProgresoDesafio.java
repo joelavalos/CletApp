@@ -193,7 +193,7 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         if (peso == 0) {
             TextViewCaloriasValor.setText("Completar perfil");
         } else {
-            new Mensaje(getApplicationContext(), "Estoy mal comparado");
+            //new Mensaje(getApplicationContext(), "Estoy mal comparado");
             TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
         }
         //TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");

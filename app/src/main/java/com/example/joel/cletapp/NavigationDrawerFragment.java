@@ -91,7 +91,7 @@ public class NavigationDrawerFragment extends Fragment {
                 view.setBackgroundResource(R.color.colorSeleccionado);
                 v = view;
 
-                if (opcionSeleccionada.equals("Home")) {
+                if (opcionSeleccionada.equals("Entrenamiento")) {
                     mDrawerLayout.closeDrawer(containerView);
                     if (!(v2 == view)) {
                         cargarFragmento(getMainFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);

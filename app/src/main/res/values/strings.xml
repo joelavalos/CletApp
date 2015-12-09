@@ -9,7 +9,7 @@
     <string name="drawer_close">Close</string>
 
     <string-array name="opciones">
-        <item>Home</item>
+        <item>Entrenamiento</item>
         <item>Perfil</item>
         <item>Desafios</item>
         <item>Rutinas de entrenamiento</item>
@@ -41,8 +41,8 @@
     <string name="title_activity_activity_rutina">Rutinas</string>
     <string name="title_activity_activity_historial">Historial</string>
     <string name="title_activity_activity_glosario">Glosario</string>
-    <string name="title_activity_activity_desafios">Desafios</string>
-    <string name="title_activity_activity_rutinas">Rutinas</string>
+    <string name="title_activity_activity_desafios">Desafios pendientes</string>
+    <string name="title_activity_activity_rutinas">Rutinas pendientes</string>
     <string name="title_activity_activity_desafio_opciones">Desafio</string>
     <string name="title_activity_activity_rutina_opciones">Rutina</string>
     <string name="title_activity_heart_rate_monitor">HeartRateMonitor</string>
@@ -52,10 +52,10 @@
     <string name="local_service_started">localServiceStarted</string>
     <string name="local_service_label">Notificacion titulo</string>
     <string name="title_activity_activity_desafio_terminado">Resultados</string>
-    <string name="title_activity_activity_progreso_rutina">Progreso de mi rutina</string>
-    <string name="title_activity_activity_progreso_desafio">Progreso de mi desafio</string>
-    <string name="title_activity_activity_desafios_terminados">ActivityDesafiosTerminados</string>
-    <string name="title_activity_activity_rutinas_terminadas">ActivityRutinasTerminadas</string>
+    <string name="title_activity_activity_progreso_rutina">Rutina</string>
+    <string name="title_activity_activity_progreso_desafio">Resultados</string>
+    <string name="title_activity_activity_desafios_terminados">Desafios terminados</string>
+    <string name="title_activity_activity_rutinas_terminadas">Rutinas terminadas</string>
 
     <string name="descRutina">La rutina de entrenamiento es la estructura del trabajo que se realizara sobre la bicicleta. Para obtener resultados ideales se debe realizar una rutina cada 1 Microciclo (1 semana).
     Las rutinas pueden ser creadas de forma manual desde el menu Rutinas de entrenamiento o bien de forma automatica desde el menu Entrenamiento. Las rutinas evolucionaran de acuerdo a los resultados obtenidos

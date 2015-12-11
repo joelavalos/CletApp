@@ -8,4 +8,11 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="300"
+        android:title="@string/action_settings"
+        android:icon="@drawable/mdpi_ic_explore_white_24dp"
+        app:showAsAction="ifRoom" />
 </menu>

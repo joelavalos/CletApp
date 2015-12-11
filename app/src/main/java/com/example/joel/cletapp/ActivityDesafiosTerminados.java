@@ -171,12 +171,12 @@ public class ActivityDesafiosTerminados extends ActionBarActivity {
         ListViewDesafiosPendientes.setAdapter(adapterListaDesafios);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_activity_desafios_terminados, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

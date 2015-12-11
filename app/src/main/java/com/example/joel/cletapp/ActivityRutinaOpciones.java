@@ -66,8 +66,10 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
 
     private ListView ListViewDesafiosRutina;
     private String[] camposDesafios = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
-    private String[] valoresDesafios = {"", "", "", "", "", "", ""};
-    private String[] nombres = {"", "", "", "", "", "", ""};
+    //private String[] valoresDesafios = {"", "", "", "", "", "", ""};
+    private String[] valoresDesafios = {"Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar"};
+    //private String[] nombres = {"", "", "", "", "", "", ""};
+    private String[] nombres = {"Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar"};
     private String[] objetivos = {"", "", "", "", "", "", ""};
     private AdapterDesafio adapterDesafio;
 
@@ -190,8 +192,10 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
 
     private void reiniciarDatos() {
         for (int i = 0; i < valoresDesafios.length; i++) {
-            valoresDesafios[i] = "";
-            nombres[i] = "";
+            valoresDesafios[i] = "Descansar";
+            //valoresDesafios[i] = "";
+            nombres[i] = "Descansar";
+            //nombres[i] = "";
             objetivos[i] = "";
         }
         inicializarComponentes();
@@ -319,12 +323,12 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_activity_rutina_opciones, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

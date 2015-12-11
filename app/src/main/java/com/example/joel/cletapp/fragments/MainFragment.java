@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -83,7 +85,7 @@ public class MainFragment extends Fragment {
     private String fechaActual = "";
 
     private Button ButtonFrecuencioa;
-    private Button ButtonSeleccionarRuta;
+    //private ImageButton ButtonSeleccionarRuta;
     private ImageButton ButtonIniciarRutina;
     private ImageButton ButtonDetenerRutina;
     private ImageButton ButtonIniciarDesafio;
@@ -174,6 +176,20 @@ public class MainFragment extends Fragment {
     private int tiempoLimiteTotal = 1870;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem itemOculto = menu.findItem(R.id.action_search);
+        itemOculto.setVisible(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -204,7 +220,7 @@ public class MainFragment extends Fragment {
             lat = location.getLatitude();
             lng = location.getLongitude();
             LatLng latLngTest = new LatLng(lat, lng);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngTest, 20));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngTest, 16));
             googleMap.addMarker(new MarkerOptions().position(latLngTest).title("Start"));
         }
 
@@ -235,12 +251,12 @@ public class MainFragment extends Fragment {
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerRutina.setEnabled(false);
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
-            ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
+            //ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
 
             cargarRuta();
 
         } else {
-            ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
+            //ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
             intValorCronometro = 0;
             cronometroRepeticion = 0;
             cronoServiceValorActualDescansoRepeticion = 0;
@@ -393,7 +409,7 @@ public class MainFragment extends Fragment {
                     ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_pause_white_24dp);
                     ButtonDetenerDesafio.setVisibility(View.VISIBLE);
                     ButtonDetenerRutina.setEnabled(false);
-                    ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
+                    //ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
 
                     if (!rutaBaseDeDatos.equals("")) {
                         SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
@@ -444,7 +460,7 @@ public class MainFragment extends Fragment {
                 final MediaPlayer desafioTerminado = MediaPlayer.create(getActivity().getApplicationContext(), R.drawable.desafio_terminado);
                 desafioTerminado.setVolume(15.0f, 15.0f);
                 desafioTerminado.start();
-                ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
+                //ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
 
                 SharedPreferences prefs = getActivity().getSharedPreferences("rutaBaseDeDatos", Context.MODE_PRIVATE);
                 prefs.edit().putString("coordenadasBaseDeDatos", "nada").commit();
@@ -494,7 +510,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        ButtonSeleccionarRuta.setOnClickListener(new View.OnClickListener() {
+        /*ButtonSeleccionarRuta.setOnClickListener(new View.OnClickListener() {
             Bundle bundle = new Bundle();
 
             @Override
@@ -507,9 +523,20 @@ public class MainFragment extends Fragment {
                 dialogo.setArguments(bundle);
                 dialogo.show(getFragmentManager(), "rutaPicker");
             }
-        });
+        });*/
 
         return root;
+    }
+
+    public void caminoDeRuta(){
+        Bundle bundle = new Bundle();
+        bundle.putString("Accion", "SeleccionarRuta");
+        bundle.putString("Mensaje", "Descripccion");
+        bundle.putString("Titulo", "Seleccione ruta");
+
+        DialogoRutaSelector dialogo = new DialogoRutaSelector();
+        dialogo.setArguments(bundle);
+        dialogo.show(getFragmentManager(), "rutaPicker");
     }
 
     private void guardarRepeticionReinicio() {
@@ -1187,7 +1214,7 @@ public class MainFragment extends Fragment {
         diasSelecionados = new ArrayList<>();
         nuevosDesafios = new ArrayList<>();
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
-        ButtonSeleccionarRuta = (Button) root.findViewById(R.id.ButtonSeleccionarRuta);
+        //ButtonSeleccionarRuta = (ImageButton) root.findViewById(R.id.ButtonSeleccionarRuta);
         ButtonIniciarRutina = (ImageButton) root.findViewById(R.id.ButtonIniciarRutina);
         ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
         ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-        android:hint="Nombre de la rutina"
+        android:hint="Nombre"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
         android:singleLine="true"
@@ -24,7 +24,7 @@
         android:layout_below="@+id/EditTextNombreRutina"
         android:layout_marginBottom="24dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-        android:hint="Nota de la rutina"
+        android:hint="Nota"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
         android:singleLine="true"
@@ -46,7 +46,7 @@
     <ListView
         android:id="@+id/ListViewDesafiosRutina"
         android:layout_width="wrap_content"
-        android:layout_height="590dp"
+        android:layout_height="660dp"
         android:layout_below="@+id/GridViewDatosRutina"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"></ListView>
@@ -57,6 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ListViewDesafiosRutina"
         android:background="@drawable/boton"
-        android:text="Crear rutina"
+        android:text="Crear"
         android:textColor="@color/colorBlanco" />
 </RelativeLayout>

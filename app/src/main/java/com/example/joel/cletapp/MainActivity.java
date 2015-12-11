@@ -226,6 +226,9 @@ public class MainActivity extends ActionBarActivity implements Communicator {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem itemOculto = menu.findItem(R.id.action_settings);
+        itemOculto.setVisible(false);
         return true;
     }
 
@@ -235,10 +238,16 @@ public class MainActivity extends ActionBarActivity implements Communicator {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Mensaje nuevoMensaje = new Mensaje(this, "boton apretado");
+            return true;
+        }
+
+        if (id == R.id.action_search) {
+            FragmentManager manager = this.getSupportFragmentManager();
+            MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+            asd.caminoDeRuta();
             return true;
         }
 

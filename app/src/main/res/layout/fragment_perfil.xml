@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contenedorRutinas"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
@@ -8,19 +9,26 @@
     android:layout_marginTop="16dp"
     tools:context="com.example.joel.cletapp.fragments.PerfilFragment">
 
-    <ListView
-        android:id="@+id/ListViewDatosPerfil"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/ButtonGuardarPerfil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/boton"
-        android:text="Guardar"
-        android:textColor="#FFFFFF" />
-</RelativeLayout>
+        <ListView
+            android:id="@+id/ListViewDatosPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="390dp"></ListView>
+
+        <Button
+            android:id="@+id/ButtonGuardarPerfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ListViewDatosPerfil"
+            android:background="@drawable/boton"
+            android:text="Guardar"
+            android:textColor="#FFFFFF" />
+
+    </RelativeLayout>
+</ScrollView>

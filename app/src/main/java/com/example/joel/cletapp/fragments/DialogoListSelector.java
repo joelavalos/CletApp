@@ -48,7 +48,7 @@ public class DialogoListSelector extends DialogFragment {
                         valores[posicion] = sexo[whichButton];
                     }
                 })
-                .setPositiveButton("Escoger", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                         AdapterPerfil adapterPerfil = new AdapterPerfil(getActivity().getApplicationContext(), campos, valores);

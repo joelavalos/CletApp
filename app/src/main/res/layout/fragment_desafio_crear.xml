@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-        android:hint="Nombre del desafio"
+        android:hint="Nombre"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
         android:singleLine="true"
@@ -24,7 +24,7 @@
         android:layout_below="@+id/EditTextNombreDesafio"
         android:layout_marginBottom="24dp"
         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-        android:hint="Nota del desafio"
+        android:hint="Nota"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
         android:singleLine="true"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/boton"
-        android:text="Crear desafio"
+        android:text="Crear"
         android:textColor="@color/colorBlanco" />
 
 </RelativeLayout>

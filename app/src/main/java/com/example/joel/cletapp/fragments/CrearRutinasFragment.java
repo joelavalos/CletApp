@@ -52,8 +52,10 @@ public class CrearRutinasFragment extends Fragment {
 
     private ListView ListViewDesafiosRutina;
     private String[] camposDesafios = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
-    private String[] valoresDesafios = {"", "", "", "", "", "", ""};
-    private String[] nombres = {"", "", "", "", "", "", ""};
+    //private String[] valoresDesafios = {"", "", "", "", "", "", ""};
+    private String[] valoresDesafios = {"Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar"};
+    //private String[] nombres = {"", "", "", "", "", "", ""};
+    private String[] nombres = {"Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar"};
     private String[] objetivos = {"", "", "", "", "", "", ""};
     private AdapterDesafio adapterDesafio;
 
@@ -398,7 +400,7 @@ class AdapterDesafio extends ArrayAdapter<String> {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));
         }
         holder.objetivoCampo.setText(objetivo[position]);
-        holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
+        //holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
 
         return row;
     }

@@ -484,6 +484,11 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
     public void GuardarRuta(String data) {
 
     }
+
+    @Override
+    public void OcultarDetalle(String data) {
+
+    }
 }
 
 class AdapterCrearRutinaRow {

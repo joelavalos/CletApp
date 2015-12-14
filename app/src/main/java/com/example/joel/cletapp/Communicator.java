@@ -13,4 +13,5 @@ public interface Communicator {
     public void DiasSeleccionados(ArrayList<Integer> data);
     public void SeleccionarRuta(String data);
     public void GuardarRuta(String data);
+    public void OcultarDetalle(String data);
 }

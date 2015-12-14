@@ -11,6 +11,8 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,7 +91,7 @@ public class MainFragment extends Fragment {
     private ImageButton ButtonIniciarRutina;
     private ImageButton ButtonDetenerRutina;
     private ImageButton ButtonIniciarDesafio;
-    private ImageButton ButtonCrearRutinaFlash;
+    private Button ButtonCrearRutinaFlash;
     private ImageButton ButtonDetenerDesafio;
 
     private TextView textoCronometro;
@@ -171,6 +173,11 @@ public class MainFragment extends Fragment {
     private ArrayList<Integer> diasSelecionados;
     private List<String> nuevosDesafios;
     public int seriesTotal, repeticionesTotal = 0;
+
+    private DetalleFragment detalleFragment;
+    //private Button ButtonPrueba;
+    private boolean mostrado = false;
+    private Button ButtonDetalleRutina;
     //Fin de pruebas
 
     private int tiempoLimiteTotal = 1870;
@@ -294,6 +301,13 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+
+                /*
+                if (getDetalleFragment().isAdded()){
+                    ocultarFragmento(getDetalleFragment(), R.anim.activity_visible_salida_abajo, R.anim.activity_nuevo_entrada_arriba);
+                }
+                */
+
                 if (estadoElegirRutina == true) {
                     DialogoRutinaSelector dialogo = new DialogoRutinaSelector();
                     dialogo.setArguments(bundle);
@@ -316,6 +330,34 @@ public class MainFragment extends Fragment {
                 startActivity(newIntent);
             }
         });
+
+        ButtonDetalleRutina.setOnClickListener(new View.OnClickListener() {
+            Bundle bundle = new Bundle();
+            @Override
+            public void onClick(View v) {
+                bundle.putBoolean("estado", estadoElegirRutina);
+                DialogoDetalleRutina dialogoDetalleRutina = new DialogoDetalleRutina();
+                dialogoDetalleRutina.setArguments(bundle);
+                dialogoDetalleRutina.show(getFragmentManager(), "detalleRutina");
+            }
+        });
+
+        ButtonCrearRutinaFlash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogoMultiSelect dialogo = new DialogoMultiSelect();
+                dialogo.show(getFragmentManager(), "multiSelect");
+            }
+        });
+
+        /*
+        ButtonPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cargarFragmento(getDetalleFragment(), R.anim.activity_visible_salida_abajo, R.anim.activity_nuevo_entrada_arriba);
+            }
+        });
+        */
 
         ButtonIniciarRutina.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -446,14 +488,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        ButtonCrearRutinaFlash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogoMultiSelect dialogo = new DialogoMultiSelect();
-                dialogo.show(getFragmentManager(), "multiSelect");
-            }
-        });
-
         ButtonDetenerDesafio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -481,7 +515,8 @@ public class MainFragment extends Fragment {
                 cronoServiceSerie = 1;
                 cronoServiceRepeticion = 1;
                 //TextViewValorDesafioActual
-                TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+                //TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+                TextViewValorDesafioActual.setText(String.valueOf("0.0") + " Km");
                 actualizarSeriesRepeticionesDefault(0, 0);
             }
         });
@@ -500,6 +535,12 @@ public class MainFragment extends Fragment {
                 newIntent.putExtra("Nota", actualDesafio.getDesafioDescripcion());
                 newIntent.putExtra("Fecha", format.format(actualDesafio.getTerminoDesafio()));
                 startActivity(newIntent);*/
+
+                /*
+                if (getDetalleFragment().isAdded()){
+                    ocultarFragmento(getDetalleFragment(), R.anim.activity_visible_salida_abajo, R.anim.activity_nuevo_entrada_arriba);
+                }
+                */
 
                 String idDesafio = String.valueOf(actualDesafio.getDesafioId());
                 String valorDesafio = String.valueOf(Math.round(desafioObjetivo.getValor()));
@@ -528,7 +569,7 @@ public class MainFragment extends Fragment {
         return root;
     }
 
-    public void caminoDeRuta(){
+    public void caminoDeRuta() {
         Bundle bundle = new Bundle();
         bundle.putString("Accion", "SeleccionarRuta");
         bundle.putString("Mensaje", "Descripccion");
@@ -763,6 +804,7 @@ public class MainFragment extends Fragment {
 
     /**
      * Funciona que calcula el valor de los desafios.
+     *
      * @return el valor del desafio.
      */
     private int determinarValorObjetivo() {
@@ -831,7 +873,7 @@ public class MainFragment extends Fragment {
         }
 
         Object nuevoValorDesafio = Collections.max(promediosFinales);
-        return (int)Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio)));
+        return (int) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio)));
     }
 
     private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
@@ -1043,8 +1085,8 @@ public class MainFragment extends Fragment {
 
         try {
             desafioCRUD.actualizarDatosDesafio(actualDesafio);
-            TextViewEstadoActual.setText("Terminado");
-            TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
+            //TextViewEstadoActual.setText("Terminado");
+            //TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
             ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setEnabled(false);
@@ -1099,6 +1141,9 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mapView.onResume();
+        if (getDetalleFragment().isAdded()){
+            detalleFragment = null;
+        }
         //Cronometro.setUpdateListener(this);
         estado = true;
 
@@ -1158,9 +1203,9 @@ public class MainFragment extends Fragment {
     public void actualizarValorDesafio(float distancia) {
         DecimalFormat df = new DecimalFormat("#.#");
         if (distancia >= 1000) {
-            TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(distancia)) + " Km" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+            TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(distancia)) + " Km" /*+ " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km"*/);
         } else {
-            TextViewValorDesafioActual.setText(String.valueOf(df.format(distancia)) + " m" + " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km");
+            TextViewValorDesafioActual.setText(String.valueOf(df.format(distancia)) + " m" /*+ " / " + String.valueOf(convertirMetrosToKilometros(desafioObjetivo.getValor())) + " Km"*/);
         }
 
     }
@@ -1218,8 +1263,10 @@ public class MainFragment extends Fragment {
         ButtonIniciarRutina = (ImageButton) root.findViewById(R.id.ButtonIniciarRutina);
         ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
         ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);
-        ButtonCrearRutinaFlash = (ImageButton) root.findViewById(R.id.ButtonCrearRutinaFlash);
+        ButtonCrearRutinaFlash = (Button) root.findViewById(R.id.ButtonCrearRutinaFlash);
         ButtonDetenerDesafio = (ImageButton) root.findViewById(R.id.ButtonDetenerDesafio);
+        //ButtonPrueba = (Button) root.findViewById(R.id.ButtonPrueba);
+        ButtonDetalleRutina = (Button) root.findViewById(R.id.ButtonDetalleRutina);
 
         textoCronometro = (TextView) root.findViewById(R.id.cronometro);
         textoCronometro.setText("00:00:00");
@@ -1254,7 +1301,7 @@ public class MainFragment extends Fragment {
         //TextViewFechaDesafioActual = (TextView) root.findViewById(R.id.TextViewFechaDesafioActual);
 
         TextViewEstado = (TextView) root.findViewById(R.id.TextViewEstado);
-        TextViewEstadoActual = (TextView) root.findViewById(R.id.TextViewEstadoActual);
+        //TextViewEstadoActual = (TextView) root.findViewById(R.id.TextViewEstadoActual);
         TextViewEstadoTerminado = (TextView) root.findViewById(R.id.TextViewEstadoTerminado);
 
         TextViewElegirRutina = (TextView) root.findViewById(R.id.TextViewElegirRutina);
@@ -1307,7 +1354,7 @@ public class MainFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            cargarDesafio(String.valueOf(R.drawable.mdpi_ic_star_black_24dp));
+            cargarDesafio(String.valueOf(R.drawable.mdpi_ic_place_black_24dp));
 
             if (actual.after(listaRutinasIniciadas.get(0).getRutinaTermino())) {
                 new Mensaje(getActivity().getApplicationContext(), "Rutina terminada");
@@ -1494,7 +1541,7 @@ public class MainFragment extends Fragment {
 
     private void cambiarVisibilidadDesafioActual(int visible) {
         ImageViewImagenDesafioActual.setVisibility(visible);
-        TextViewNombreDesafioActual.setVisibility(visible);
+        //TextViewNombreDesafioActual.setVisibility(visible);
         //TextViewCategoriaDesafioActual.setVisibility(visible);
         TextViewValorDesafioActual.setVisibility(visible);
 
@@ -1510,14 +1557,16 @@ public class MainFragment extends Fragment {
         TextViewNombreDesafioActual.setText(desafioNombre);
         //TextViewCategoriaDesafioActual.setText(objetivoNombre);
         if (valorDesafio.equals("")) {
-            TextViewValorDesafioActual.setText(String.valueOf(valorDesafio));
+            //TextViewValorDesafioActual.setText(String.valueOf(valorDesafio));
+            TextViewValorDesafioActual.setText(String.valueOf("0.0 Km"));
         } else {
-            TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(Float.parseFloat(valorDesafio))) + " Km");
+            //TextViewValorDesafioActual.setText(String.valueOf(convertirMetrosToKilometros(Float.parseFloat(valorDesafio))) + " Km");
+            TextViewValorDesafioActual.setText(String.valueOf("0.0") + " Km");
         }
 
         //TextViewNotaDesafioActual.setText(desafioDescripcion);
         //TextViewFechaDesafioActual.setText(fecha);
-        TextViewEstadoActual.setText(estado);
+        //TextViewEstadoActual.setText(estado);
 
         if (series != 0) {
             TextViewSeries.setText("Series: 0/" + series);
@@ -1528,7 +1577,7 @@ public class MainFragment extends Fragment {
         }
 
         if (estado.equals("Terminado")) {
-            TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
+            //TextViewEstadoActual.setTextColor(getResources().getColor(R.color.colorVerde));
         }
     }
 
@@ -1602,14 +1651,15 @@ public class MainFragment extends Fragment {
             cambiarVisibilidadRutina(View.INVISIBLE);
             TextViewEstadoTerminado.setVisibility(View.INVISIBLE);
             TextViewElegirDesafioActual.setTextColor(getResources().getColor(R.color.colorGris25));
-            TextViewElegirDesafioActual.setText("Sin desafio actual");
+            //TextViewElegirDesafioActual.setText("Sin desafio actual");
+            TextViewElegirDesafioActual.setText("");
             TextViewElegirDesafioActual.setEnabled(false);
             TextViewElegirRutina.setText("Seleccionar rutina");
             TextViewElegirRutina.setEnabled(true);
             estadoElegirRutina = true;
             ButtonCrearRutinaFlash.setEnabled(true);
             ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
-            TextViewElegirDesafioActual.setText("Desafio actual");
+            TextViewElegirDesafioActual.setText("");
             ButtonDetenerRutina.setEnabled(false);
             ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             ButtonIniciarDesafio.setEnabled(false);
@@ -1673,4 +1723,37 @@ public class MainFragment extends Fragment {
         prefs = getActivity().getSharedPreferences("cordenadasFinales", Context.MODE_PRIVATE);
         prefs.edit().putString("misCordenadasFinales", "nada").commit();
     }
+
+    public DetalleFragment getDetalleFragment() {
+        if (detalleFragment == null) {
+            detalleFragment = new DetalleFragment();
+        }
+        return detalleFragment;
+    }
+
+    /*
+    public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {
+        if (!fragment.isAdded()){
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.setCustomAnimations(animacionSalida, animacioEntrada, animacionSalida, animacioEntrada);
+            transaction.add(R.id.contenedorDetalle, fragment, "otroTag");
+            transaction.commit();
+            mostrado = true;
+        }
+    }
+
+    public void ocultar(){
+        ocultarFragmento(getDetalleFragment(), R.anim.activity_visible_salida_abajo, R.anim.activity_nuevo_entrada_arriba);
+    }
+
+    public void ocultarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.setCustomAnimations(animacionSalida, animacioEntrada, animacionSalida, animacioEntrada);
+        transaction.remove(fragment);
+        transaction.commit();
+        mostrado = false;
+    }
+    */
 }

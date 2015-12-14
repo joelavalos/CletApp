@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
 import com.example.joel.cletapp.Communicator;
@@ -38,12 +39,19 @@ public class DialogoMultiSelect extends DialogFragment {
                             selectedItems.remove(Integer.valueOf(which));
                         }
                     }
-                }).setPositiveButton("Crear", new DialogInterface.OnClickListener() {
+                }).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 comm.DiasSeleccionados(selectedItems);
+
+                Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("detalleRutina");
+                if (prev != null) {
+                    DialogFragment df = (DialogFragment) prev;
+                    df.dismiss();
+                }
+
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

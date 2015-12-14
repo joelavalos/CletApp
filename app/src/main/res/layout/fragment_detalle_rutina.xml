@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/TituloDetalleRutina"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="Detalle rutina"
+            android:textColor="@color/colorBlanco"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/TextViewEstadoRutina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TituloDetalleRutina"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="Ups, no tiene ninguna"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/TextViewEstadoRutina2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewEstadoRutina"
+        android:gravity="center_horizontal"
+        android:text="rutina"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/TextViewEstadoRutina3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewEstadoRutina2"
+        android:layout_marginBottom="32dp"
+        android:gravity="center_horizontal"
+        android:text="seleccionada"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/ButtonRuttinaRapida"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TextViewEstadoRutina3"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/boton"
+        android:text="Rutina rapida"
+        android:textColor="@color/colorBlanco" />
+
+    <Button
+        android:id="@+id/ButtonRuttinaPersonalizada"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextViewEstadoRutina3"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/boton"
+        android:text="Seleccion personalizada"
+        android:textColor="@color/colorBlanco" />
+</RelativeLayout>

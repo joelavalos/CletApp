@@ -46,7 +46,7 @@ public class GlosarioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_glosario, container, false);
 
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Glosario");
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Ayuda");
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 
         LisViewGlosario = (ListView) root.findViewById(R.id.LisViewGlosario);

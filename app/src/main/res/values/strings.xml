@@ -13,7 +13,7 @@
         <item>Perfil</item>
         <item>Desafios</item>
         <item>Rutinas de entrenamiento</item>
-        <item>Glosario</item>
+        <item>Ayuda</item>
     </string-array>
 
     <string-array name="tabs">
@@ -40,7 +40,7 @@
     <string name="title_activity_activity_desafio">Desafios</string>
     <string name="title_activity_activity_rutina">Rutinas</string>
     <string name="title_activity_activity_historial">Historial</string>
-    <string name="title_activity_activity_glosario">Glosario</string>
+    <string name="title_activity_activity_glosario">Ayuda</string>
     <string name="title_activity_activity_desafios">Desafios pendientes</string>
     <string name="title_activity_activity_rutinas">Rutinas pendientes</string>
     <string name="title_activity_activity_desafio_opciones">Desafio</string>

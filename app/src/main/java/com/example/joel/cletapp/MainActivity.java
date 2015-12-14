@@ -309,6 +309,13 @@ public class MainActivity extends ActionBarActivity implements Communicator {
     }
 
     @Override
+    public void OcultarDetalle(String data) {
+        //FragmentManager manager = this.getSupportFragmentManager();
+        //MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+        //asd.ocultar();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         //guardarEstadoDesafioDetenido();

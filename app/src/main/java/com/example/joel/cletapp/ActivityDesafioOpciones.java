@@ -391,6 +391,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
     }
 
+    @Override
+    public void OcultarDetalle(String data) {
+
+    }
+
     private String validarCreacion() {
         String validar = "";
 

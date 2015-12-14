@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,6 +141,12 @@ public class DialogoRutinaSelector extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                         comm.Actualizar(Datos);
+
+                        Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("detalleRutina");
+                        if (prev != null) {
+                            DialogFragment df = (DialogFragment) prev;
+                            df.dismiss();
+                        }
                     }
                 })
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

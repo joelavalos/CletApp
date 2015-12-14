@@ -301,6 +301,11 @@ public class PerfilFragment extends Fragment implements Communicator {
     public void GuardarRuta(String data) {
 
     }
+
+    @Override
+    public void OcultarDetalle(String data) {
+
+    }
 }
 
 class AdapterPerfilRow {

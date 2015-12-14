@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/TituloDetalleRutina"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="Detalle rutina"
+            android:textColor="@color/colorBlanco"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/TextViewNombreRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TituloDetalleRutina"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Nombre de la rutina"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/TextViewNombreDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewNombreRutina"
+        android:layout_marginLeft="16dp"
+        android:text="Nombre desafio"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/ImageViewImagenRutina"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextViewNombreRutina"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_directions_bike_black_48dp" />
+
+    <TextView
+        android:id="@+id/TextViewTituloSerie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Serie:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/TextViewNumeroSerieActual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/TextViewTituloSerie"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/TextViewTituloSerie"
+        android:text="1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="36dp" />
+
+    <TextView
+        android:id="@+id/TextViewNumeroSerieTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextViewNumeroSerieActual"
+        android:layout_alignTop="@+id/TextViewTituloSerie"
+        android:layout_toRightOf="@+id/TextViewNumeroSerieActual"
+        android:gravity="bottom"
+        android:text="/2"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/TextViewTituloRepeticion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewNumeroSerieTotal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Repeticiones:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/TextViewNumeroRepeticionActual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/TextViewTituloRepeticion"
+        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/TextViewTituloRepeticion"
+        android:text="1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="36dp" />
+
+    <TextView
+        android:id="@+id/TextViewNumeroRepeticionTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextViewNumeroRepeticionActual"
+        android:layout_alignTop="@+id/TextViewTituloRepeticion"
+        android:layout_toRightOf="@+id/TextViewNumeroRepeticionActual"
+        android:gravity="bottom"
+        android:text="/3"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24dp" />
+
+</RelativeLayout>

@@ -2,12 +2,14 @@ package com.example.joel.cletapp.fragments;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.joel.cletapp.Communicator;
 import com.example.joel.cletapp.R;
@@ -18,10 +20,25 @@ import java.util.ArrayList;
  * Created by Joel on 14/12/2015.
  */
 public class DialogoDetalleRutina extends DialogFragment {
+    private View view;
     private Button ButtonRuttinaRapida;
     private Button ButtonRuttinaPersonalizada;
+    private TextView TextViewNombreRutina;
+    private TextView TextViewNombreDesafio;
+    private TextView TextViewNumeroSerieTotal;
+    private TextView TextViewNumeroRepeticionTotal;
+    private TextView TextViewNumeroSerieActual;
+    private TextView TextViewNumeroRepeticionActual;
+
     private boolean estado = false;
-    private View view;
+    private String nombreRutina = "";
+    private String nombreDesafio = "";
+    private String seriesDesafioTotal = "";
+    private String repeticionesDesafioTotal = "";
+    private String seriesDesafio = "";
+    private String repeticionesDesafio = "";
+
+
 
     private String[] diasSemana = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
     private ArrayList<Integer> selectedItems = new ArrayList();
@@ -57,8 +74,34 @@ public class DialogoDetalleRutina extends DialogFragment {
             });
         } else {
             view = inflater.inflate(R.layout.fragment_detalle_rutina2, null);
+            TextViewNombreRutina = (TextView) view.findViewById(R.id.TextViewNombreRutina);
+            TextViewNombreDesafio = (TextView) view.findViewById(R.id.TextViewNombreDesafio);
+            TextViewNumeroSerieTotal = (TextView) view.findViewById(R.id.TextViewNumeroSerieTotal);
+            TextViewNumeroRepeticionTotal = (TextView) view.findViewById(R.id.TextViewNumeroRepeticionTotal);
+            TextViewNumeroSerieActual = (TextView) view.findViewById(R.id.TextViewNumeroSerieActual);
+            TextViewNumeroRepeticionActual = (TextView) view.findViewById(R.id.TextViewNumeroRepeticionActual);
+
+            nombreRutina = getArguments().getString("nombreRutina");
+            nombreDesafio = getArguments().getString("nombreDesafio");
+            seriesDesafioTotal = getArguments().getString("seriesDesafioTotal");
+            repeticionesDesafioTotal = getArguments().getString("repeticionesDesafioTotal");
+            seriesDesafio = getArguments().getString("seriesDesafio");
+            repeticionesDesafio = getArguments().getString("repeticionesDesafio");
+
+            TextViewNombreRutina.setText(nombreRutina);
+            TextViewNombreDesafio.setText(nombreDesafio);
+            TextViewNumeroSerieTotal.setText("/"+seriesDesafioTotal);
+            TextViewNumeroRepeticionTotal.setText("/"+repeticionesDesafioTotal);
+            TextViewNumeroSerieActual.setText(seriesDesafio);
+            TextViewNumeroRepeticionActual.setText(repeticionesDesafio);
         }
         builder.setView(view);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
 
         return builder.create();
     }

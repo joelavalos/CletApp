@@ -19,7 +19,7 @@
             android:gravity="center"
             android:text="Detalle rutina"
             android:textColor="@color/colorBlanco"
-            android:textSize="30sp" />
+            android:textSize="28sp" />
     </RelativeLayout>
 
     <TextView
@@ -79,7 +79,7 @@
         android:layout_alignTop="@+id/TextViewTituloSerie"
         android:layout_toRightOf="@+id/TextViewNumeroSerieActual"
         android:gravity="bottom"
-        android:text="/2"
+        android:text="/5"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="24dp" />
 
@@ -114,7 +114,7 @@
         android:layout_alignTop="@+id/TextViewTituloRepeticion"
         android:layout_toRightOf="@+id/TextViewNumeroRepeticionActual"
         android:gravity="bottom"
-        android:text="/3"
+        android:text="/5"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="24dp" />
 

@@ -13,7 +13,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
-        android:text="Desafios pendientes"
+        android:text="@string/desafiosPendientes"
         android:textColor="#FFFFFF" />
 
     <Button
@@ -25,7 +25,7 @@
         android:layout_below="@+id/ButtonDesafiosPendientes"
         android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
-        android:text="Desafios terminados"
+        android:text="@string/desafiosTerminados"
         android:textColor="#FFFFFF" />
 
     <Button
@@ -37,7 +37,7 @@
         android:layout_below="@+id/ButtonDesafiosTerminados"
         android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
-        android:text="Desafios logrados"
+        android:text="@string/desafiosLogrados"
         android:textColor="#FFFFFF" />
 
     <Button
@@ -49,6 +49,6 @@
         android:layout_below="@+id/ButtonDesafiosLogrados"
         android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
-        android:text="Desafios no logrados"
+        android:text="@string/desafiosNoLogrados"
         android:textColor="#FFFFFF" />
 </RelativeLayout>

@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/separadorDesafios"
         android:background="@drawable/boton_sliding"
-        android:text="Crear desafio"
+        android:text="@string/crearDesafio"
         android:textColor="@color/colorBlanco" />
 
     <ImageView
@@ -40,7 +40,7 @@
         android:layout_alignLeft="@+id/separadorDesafios"
         android:layout_alignParentRight="true"
         android:background="@drawable/boton_sliding"
-        android:text="Mis desafios"
+        android:text="@string/misDesafios"
         android:textColor="@color/colorBlanco" />
 
     <ImageView

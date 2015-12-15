@@ -491,8 +491,9 @@
         android:background="@drawable/boton_play"
         android:elevation="9dp"
         android:src="@drawable/hdpi_ic_check_white_24dp"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
+    <!--
     <ImageButton
         android:id="@+id/ButtonDetenerRutina"
         android:layout_width="48dp"
@@ -505,6 +506,8 @@
         android:enabled="false"
         android:src="@drawable/hdpi_ic_clear_white_24dp"
         android:textColor="@color/colorBlanco" />
+
+    -->
 
     <!--
     <TextView
@@ -594,8 +597,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/boton"
         android:text="Detalle rutina"
         android:textColor="@color/colorBlanco" />

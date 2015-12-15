@@ -105,7 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
                         v2 = view;
                     }
 
-                } else if (opcionSeleccionada.equals("Desafios")) {
+                } else if (opcionSeleccionada.equals(getResources().getString(R.string.desafios))) {
                     mDrawerLayout.closeDrawer(containerView);
 
                     if (!(v2 == view)) {

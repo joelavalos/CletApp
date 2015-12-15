@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:minHeight="350dp">
 
     <RelativeLayout
         android:id="@+id/TituloDetalleRutina"
@@ -26,11 +27,28 @@
         android:id="@+id/TextViewNombreRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/TituloDetalleRutina"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="Nombre de la rutina"
+        android:layout_toLeftOf="@+id/TextViewCancelarRutina"
+        android:singleLine="true"
+        android:text="Nombre"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/TextViewCancelarRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewImagenRutina"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_toLeftOf="@+id/ImageViewImagenRutina"
+        android:gravity="bottom"
+        android:text="[Terminar]"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/TextViewNombreDesafio"
@@ -46,15 +64,26 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/TextViewNombreRutina"
+        android:layout_below="@+id/TituloDetalleRutina"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_directions_bike_black_48dp" />
+
+    <View
+        android:id="@+id/ViewSeparador"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorNegro" />
 
     <TextView
         android:id="@+id/TextViewTituloSerie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_below="@+id/ViewSeparador"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="Serie:"

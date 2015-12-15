@@ -87,7 +87,7 @@ public class MainFragment extends Fragment {
     private Button ButtonFrecuencioa;
     //private ImageButton ButtonSeleccionarRuta;
     private ImageButton ButtonIniciarRutina;
-    private ImageButton ButtonDetenerRutina;
+    //private ImageButton ButtonDetenerRutina;
     private ImageButton ButtonIniciarDesafio;
     //private Button ButtonCrearRutinaFlash;
     private ImageButton ButtonDetenerDesafio;
@@ -263,8 +263,8 @@ public class MainFragment extends Fragment {
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_pause_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
-            ButtonDetenerRutina.setEnabled(false);
-            ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+            //ButtonDetenerRutina.setEnabled(false);
+            //ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             //ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
 
             cargarRuta();
@@ -284,7 +284,7 @@ public class MainFragment extends Fragment {
             ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonDetenerDesafio.setVisibility(View.VISIBLE);
-            ButtonDetenerRutina.setVisibility(View.VISIBLE);
+            //ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
             intValorCronometro = cargarValorEstadoDesafioPause();
             cronoServiceValorActualDescansoRepeticion = cargarValorEstadoDesafioPauseDescanso();
@@ -384,6 +384,7 @@ public class MainFragment extends Fragment {
         });
         */
 
+
         ButtonIniciarRutina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -391,20 +392,14 @@ public class MainFragment extends Fragment {
             }
         });
 
+        /*
         ButtonDetenerRutina.setOnClickListener(new View.OnClickListener() {
-            Bundle bundle = new Bundle();
-
             @Override
             public void onClick(View v) {
-                bundle.putString("Accion", "DetenerRutina");
-                bundle.putString("Mensaje", "Detener la rutina forzara la evaluacion con el progreso actual");
-                bundle.putString("Titulo", "Detener rutina");
-
-                DialogoConfirmacion dialogo = new DialogoConfirmacion();
-                dialogo.setArguments(bundle);
-                dialogo.show(getFragmentManager(), "categoriaPicker");
+                detenerRutinaEnCurso();
             }
         });
+        */
 
         Cronometro.setUpdateListener(this, tiempoLimiteTotal);
         //cordenadasRuta = Cronometro.getCordenadas();
@@ -421,7 +416,7 @@ public class MainFragment extends Fragment {
                     ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_pause_white_24dp);
                     ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_pause_white_24dp);
                     ButtonDetenerDesafio.setVisibility(View.VISIBLE);
-                    ButtonDetenerRutina.setEnabled(false);
+                    //ButtonDetenerRutina.setEnabled(false);
                     //ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
 
                     if (!rutaBaseDeDatos.equals("")) {
@@ -473,7 +468,7 @@ public class MainFragment extends Fragment {
                 ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                 ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
                 ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
-                ButtonDetenerRutina.setEnabled(true);
+                //ButtonDetenerRutina.setEnabled(true);
                 pararCronometro();
                 guardarEstadoDesafioDetenido();
                 guardarEstadoDesafioNoPause();
@@ -540,14 +535,25 @@ public class MainFragment extends Fragment {
         return root;
     }
 
+    private void detenerRutinaEnCurso() {
+        Bundle bundle = new Bundle();
+        bundle.putString("Accion", "DetenerRutina");
+        bundle.putString("Mensaje", "Detener la rutina forzara la evaluacion con el progreso actual");
+        bundle.putString("Titulo", "Detener rutina");
+
+        DialogoConfirmacion dialogo = new DialogoConfirmacion();
+        dialogo.setArguments(bundle);
+        dialogo.show(getFragmentManager(), "categoriaPicker");
+    }
+
     private void iniciarRutina() {
         if (ButtonIniciarRutina.isEnabled()) {
 
             ButtonIniciarRutina.setEnabled(false);
             ButtonIniciarRutina.setVisibility(View.INVISIBLE);
 
-            ButtonDetenerRutina.setEnabled(true);
-            ButtonDetenerRutina.setVisibility(View.VISIBLE);
+            //ButtonDetenerRutina.setEnabled(true);
+            //ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
             //TextViewElegirRutina.setEnabled(false);
             estadoElegirRutina = false;
@@ -1118,8 +1124,8 @@ public class MainFragment extends Fragment {
             ButtonIniciarDesafio.setImageResource(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
             ButtonIniciarDesafio.setEnabled(false);
-            ButtonDetenerRutina.setEnabled(true);
-            ButtonDetenerRutina.setVisibility(View.VISIBLE);
+            //ButtonDetenerRutina.setEnabled(true);
+            //ButtonDetenerRutina.setVisibility(View.VISIBLE);
             ButtonDetenerDesafio.setVisibility(View.INVISIBLE);
             TextViewElegirDesafioActual.setEnabled(true);
             TextViewEstadoTerminado.setVisibility(View.VISIBLE);
@@ -1293,7 +1299,7 @@ public class MainFragment extends Fragment {
         ButtonFrecuencioa = (Button) root.findViewById(R.id.ButtonFrecuencioa);
         //ButtonSeleccionarRuta = (ImageButton) root.findViewById(R.id.ButtonSeleccionarRuta);
         ButtonIniciarRutina = (ImageButton) root.findViewById(R.id.ButtonIniciarRutina);
-        ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
+        //ButtonDetenerRutina = (ImageButton) root.findViewById(R.id.ButtonDetenerRutina);
         ButtonIniciarDesafio = (ImageButton) root.findViewById(R.id.ButtonIniciarDesafio);
         //ButtonCrearRutinaFlash = (Button) root.findViewById(R.id.ButtonCrearRutinaFlash);
         ButtonDetenerDesafio = (ImageButton) root.findViewById(R.id.ButtonDetenerDesafio);
@@ -1306,8 +1312,8 @@ public class MainFragment extends Fragment {
         ButtonIniciarDesafio.setEnabled(false);
         ButtonIniciarDesafio.setTag(R.drawable.xhdpi_ic_play_arrow_white_24dp);
 
-        ButtonDetenerRutina.setEnabled(false);
-        ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+        //ButtonDetenerRutina.setEnabled(false);
+        //ButtonDetenerRutina.setVisibility(View.INVISIBLE);
 
         ButtonIniciarRutina.setEnabled(false);
         ButtonIniciarRutina.setVisibility(View.INVISIBLE);
@@ -1367,8 +1373,8 @@ public class MainFragment extends Fragment {
 
             TextViewElegirDesafioActual.setText("");
 
-            ButtonDetenerRutina.setEnabled(true);
-            ButtonDetenerRutina.setVisibility(View.VISIBLE);
+            //ButtonDetenerRutina.setEnabled(true);
+            //ButtonDetenerRutina.setVisibility(View.VISIBLE);
 
             try {
                 listaDesafiosRutina = desafioRutinaCRUD.buscarDesafioRutinaPorIdRutinaOrderByFecha(actualRutina);
@@ -1641,8 +1647,8 @@ public class MainFragment extends Fragment {
         //ButtonCrearRutinaFlash.setEnabled(true);
         //ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
         TextViewElegirDesafioActual.setText("Desafio actual");
-        ButtonDetenerRutina.setEnabled(false);
-        ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+        //ButtonDetenerRutina.setEnabled(false);
+        //ButtonDetenerRutina.setVisibility(View.INVISIBLE);
         TextViewEstadoTerminado.setVisibility(View.INVISIBLE);
 
         try {
@@ -1693,8 +1699,8 @@ public class MainFragment extends Fragment {
             //ButtonCrearRutinaFlash.setEnabled(true);
             //ButtonCrearRutinaFlash.setVisibility(View.VISIBLE);
             TextViewElegirDesafioActual.setText("");
-            ButtonDetenerRutina.setEnabled(false);
-            ButtonDetenerRutina.setVisibility(View.INVISIBLE);
+            //ButtonDetenerRutina.setEnabled(false);
+            //ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             ButtonIniciarDesafio.setEnabled(false);
 
             try {

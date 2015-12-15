@@ -29,6 +29,7 @@ public class DialogoDetalleRutina extends DialogFragment {
     private TextView TextViewNumeroRepeticionTotal;
     private TextView TextViewNumeroSerieActual;
     private TextView TextViewNumeroRepeticionActual;
+    private TextView TextViewCancelarRutina;
 
     private boolean estado = false;
     private String nombreRutina = "";
@@ -74,6 +75,7 @@ public class DialogoDetalleRutina extends DialogFragment {
             });
         } else {
             view = inflater.inflate(R.layout.fragment_detalle_rutina2, null);
+            TextViewCancelarRutina = (TextView) view.findViewById(R.id.TextViewCancelarRutina);
             TextViewNombreRutina = (TextView) view.findViewById(R.id.TextViewNombreRutina);
             TextViewNombreDesafio = (TextView) view.findViewById(R.id.TextViewNombreDesafio);
             TextViewNumeroSerieTotal = (TextView) view.findViewById(R.id.TextViewNumeroSerieTotal);
@@ -94,6 +96,20 @@ public class DialogoDetalleRutina extends DialogFragment {
             TextViewNumeroRepeticionTotal.setText("/"+repeticionesDesafioTotal);
             TextViewNumeroSerieActual.setText(seriesDesafio);
             TextViewNumeroRepeticionActual.setText(repeticionesDesafio);
+
+            TextViewCancelarRutina.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Accion", "DetenerRutina");
+                    bundle.putString("Mensaje", "Detener la rutina forzara la evaluacion con el progreso actual");
+                    bundle.putString("Titulo", "Detener rutina");
+
+                    DialogoConfirmacion dialogo = new DialogoConfirmacion();
+                    dialogo.setArguments(bundle);
+                    dialogo.show(getFragmentManager(), "categoriaPicker");
+                }
+            });
         }
         builder.setView(view);
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {

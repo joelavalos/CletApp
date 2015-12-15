@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 
@@ -44,6 +45,11 @@ public class DialogoConfirmacion extends DialogFragment {
                             comm.TerminarRutina("Aceptar");
                         } else {
                             comm.Eliminar("Aceptar");
+                        }
+                        Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("detalleRutina");
+                        if (prev != null) {
+                            DialogFragment df = (DialogFragment) prev;
+                            df.dismiss();
                         }
                     }
                 })

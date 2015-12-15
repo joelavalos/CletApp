@@ -11,10 +11,12 @@
     <string-array name="opciones">
         <item>Entrenamiento</item>
         <item>Perfil</item>
-        <item>Desafios</item>
+        <item>Desafíos</item>
         <item>Rutinas de entrenamiento</item>
         <item>Ayuda</item>
     </string-array>
+
+    <string name="desafios">Desafíos</string>
 
     <string-array name="tabs">
         <item>Desafios</item>
@@ -63,4 +65,11 @@
 
     <string name="descDesafio">Consiste en la actividad realizada durante un tiempo requerido. Un desafio consiste en un numero de series compuestas por repeticiones que deben ser completadas dentro de un tiempo defindo.
     Un desafio se consdiera exitoso cuando se cumple con la distancia requerida en cada repeticion, caso contrario se considera fallido. Los resultados obtenidos en el desafio sirven para determinar la exigencia de las futuras rutinas de entrenamiento</string>
+    <string name="crearDesafio">Crear Desafío</string>
+    <string name="misDesafios">Mis Desafíos</string>
+    <string name="desafiosPendientes">Desafíos pendientes</string>
+    <string name="desafiosTerminados">Desafíos terminados</string>
+    <string name="desafiosLogrados">Desafíos logrados</string>
+    <string name="desafiosNoLogrados">Desafíos no logrados</string>
+    <string name="desafio">Desafío</string>
 </resources>

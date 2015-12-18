@@ -317,14 +317,14 @@ public class MainActivity extends ActionBarActivity implements Communicator {
     }
 
     @Override
-    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
+    public void pruebaDialogToDialog(String[] valoresDesafios, String[] nombres, String[] objetivos, String[] series, String[] repeticiones) {
         FragmentManager manager = this.getSupportFragmentManager();
         DialogoCrearRutina asd = (DialogoCrearRutina) manager.findFragmentByTag("crearRutina");
         //Fragment prev = this.getSupportFragmentManager().findFragmentByTag("rutinaPersonalizada");
         //if (prev != null) {
             //DialogFragment df = (DialogFragment) prev;
             //df.dismiss();
-            asd.actualizarAdapter(desafios, valores, nombres, objetivos);
+            asd.actualizarAdapter(valoresDesafios, nombres, objetivos, series, repeticiones);
         //}
     }
 

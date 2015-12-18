@@ -681,7 +681,6 @@ public class MainFragment extends Fragment {
     private void crearRutinaFlash() {
 
         int valorObjetivoPersonalizado = determinarValorObjetivo();
-        //new Mensaje(getActivity().getApplicationContext(), "Resultado: " + valorObjetivoPersonalizado);
 
         for (int i = 0; i < diasSelecionados.size(); i++) {
             crearDesafios(valorObjetivoPersonalizado);

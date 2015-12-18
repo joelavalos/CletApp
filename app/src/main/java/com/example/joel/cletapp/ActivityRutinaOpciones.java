@@ -490,7 +490,7 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
     }
 
     @Override
-    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
+    public void pruebaDialogToDialog(String[] valoresDesafios, String[] nombres, String[] objetivos, String[] repeticiones, String[] series) {
 
     }
 }

@@ -2,32 +2,38 @@ package com.example.joel.cletapp.fragments;
 
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
+import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.ObjetivoCRUD;
+import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.ResumenCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
+import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
+import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
+import com.example.joel.cletapp.ClasesDataBase.Objetivo;
+import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
 import com.example.joel.cletapp.ClasesDataBase.Resumen;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
+import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.Communicator;
+import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
 import java.text.ParseException;
@@ -63,6 +69,8 @@ public class DialogoCrearRutina extends DialogFragment {
     //private String[] nombres = {"", "", "", "", "", "", ""};
     private String[] nombres = {"Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar", "Descansar"};
     private String[] objetivos = {"", "", "", "", "", "", ""};
+    private String[] series = {"1", "1", "1", "1", "1", "1", "1"};
+    private String[] repeticiones = {"1", "1", "1", "1", "1", "1", "1"};
     private AdapterDesafio adapterDesafio;
 
     private GridView GridViewDatosRutina;
@@ -79,6 +87,11 @@ public class DialogoCrearRutina extends DialogFragment {
     private DesafioRutina newDesafioRutina;
     private List<Desafio> listaDesafios;
     private ArrayList<String> listaDesafios2;
+
+    private ObjetivoCRUD objetivoCRUD;
+    private DesafioObjetivoCRUD desafioObjetivoCRUD;
+    private SerieCRUD serieCRUD;
+    private RepeticionesCRUD repeticionesCRUD;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -115,34 +128,195 @@ public class DialogoCrearRutina extends DialogFragment {
         });
 
         ListViewDesafiosRutina.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Bundle bundle = new Bundle();
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putStringArray("camposDesafios", camposDesafios);
+
+
+                //bundle.putStringArray("camposDesafios", camposDesafios);
                 bundle.putStringArray("valoresDesafios", valoresDesafios);
                 bundle.putStringArray("nombres", nombres);
                 bundle.putStringArray("objetivos", objetivos);
-                bundle.putStringArrayList("desafios", listaDesafios2);
-                bundle.putInt("posicion", position);
+                bundle.putStringArray("series", series);
+                bundle.putStringArray("repeticiones", repeticiones);
+                //bundle.putStringArrayList("desafios", listaDesafios2);
+                //bundle.putInt("posicion", position);
 
-                //Borrar luego
-                //AdapterDesafio pepelota = (AdapterDesafio) ListViewDesafiosRutina.getAdapter();
-                //Mensaje asd = new Mensaje(getActivity().getApplicationContext(), pepelota.getData(position));
-
+                /*
                 DialogoDesafioSelector dialogo = new DialogoDesafioSelector();
                 dialogo.setArguments(bundle);
                 dialogo.show(getFragmentManager(), "categoriaPicker");
+
+                Log.v("asd", camposDesafios[position]);
+                Log.v("asd", valoresDesafios[position]);
+                Log.v("asd", nombres[position]);
+                Log.v("asd", objetivos[position]);
+                */
+
+                bundle.putInt("posicion", position);
+                DialogoDetalleDesafio dialogoDetalleDesafio = new DialogoDetalleDesafio();
+                dialogoDetalleDesafio.setArguments(bundle);
+                dialogoDetalleDesafio.show(getFragmentManager(), "detalleDesafio");
+
             }
         });
 
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //comm.pruebaDialogToDialog("Exito ql");
-
+                //Do nothing here because we override this button later to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
             }
         });
+
+
+        /*
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //comm.pruebaDialogToDialog("Exito ql");
+                if (!validarCreacion().equals("")) {
+                    Mensaje asd = new Mensaje(getActivity().getApplicationContext(), validarCreacion());
+                } else {
+                    Log.v("asd", "Tamos listos");
+                }
+            }
+        });
+        */
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        AlertDialog d = (AlertDialog) getDialog();
+        if (d != null) {
+            Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!validarCreacion().equals("")) {
+                        Mensaje asd = new Mensaje(getActivity().getApplicationContext(), validarCreacion());
+                    } else {
+
+                        listaDesafios.clear();
+                        for (int i = 0; i < nombres.length; i++) {
+
+                            if (nombres[i].equals("Descansar")) {
+
+                            } else {
+
+                                Objetivo objetivo = null;
+
+                                try {
+                                    objetivo = objetivoCRUD.buscarObjetivoPorNombre("Distancia");
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                try {
+                                    parsedInicio = format.parse(format.format(c.getTime()));
+                                    parsedFinal = format.parse(format.format(c.getTime()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Desafio desafio = new Desafio(0,
+                                        nombres[i],
+                                        "Sin nota",
+                                        new java.sql.Date(parsedInicio.getTime()),
+                                        new java.sql.Date(parsedFinal.getTime()),
+                                        'P',
+                                        0,
+                                        1,
+                                        1,
+                                        1870);
+
+                                desafio = desafioCRUD.insertarDesafio(desafio);
+
+                                DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(objetivos[i].split(" ")[0]));
+                                desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
+
+                                crearSeriesRepeticiones(desafio, Integer.parseInt(series[i]), Integer.parseInt(repeticiones[i]));
+
+                                listaDesafios.add(desafio);
+                                fechasDesafios.add(camposDesafios[i].split(" ")[0]);
+                            }
+                        }
+
+                        //Parte de la creacion de la rutina
+                        try {
+                            parsedInicio = format.parse(valores[0]);
+                            parsedFinal = format.parse(valores[1]);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        newResumen = new Resumen(0, "Rutina en curso", new java.sql.Date(parsedInicio.getTime()));
+                        newResumen = resumenCRUD.insertarResumen(newResumen);
+
+                        newRutina = new Rutina(0,
+                                EditTextNombreRutina.getText().toString(),
+                                EditTextNotaRutina.getText().toString(),
+                                new java.sql.Date(parsedInicio.getTime()),
+                                new java.sql.Date(parsedFinal.getTime()),
+                                'P',
+                                newResumen);
+                        newRutina = rutinaCRUD.insertarRutina(newRutina);
+
+                        for (int i = 0; i < listaDesafios.size(); i++) {
+
+                            try {
+                                parsedDesafio = format.parse(fechasDesafios.get(i));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            newDesafioRutina = new DesafioRutina(0, newRutina, listaDesafios.get(i), new java.sql.Date(parsedDesafio.getTime()));
+                            newDesafioRutina = desafioRutinaCRUD.insertarDesafioRutina(newDesafioRutina);
+                        }
+                        Mensaje asd = new Mensaje(getActivity().getApplicationContext(), "Rutina creada");
+                        String datos = getDatos();
+                        comm.Actualizar(datos);
+                        Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("detalleRutina");
+                        if (prev != null) {
+                            DialogFragment df = (DialogFragment) prev;
+                            df.dismiss();
+                        }
+                        dismiss();
+                    }
+                }
+            });
+        }
+    }
+
+    public String getDatos() {
+        String returnData = "";
+        returnData = String.valueOf(newRutina.getRutinaId());
+        returnData = returnData + "-" + R.drawable.ic_directions_bike_black_48dp;
+        returnData = returnData + "-" + newRutina.getRutinaNombre();
+        returnData = returnData + "-" + "Desafios";
+        returnData = returnData + "-" + Math.round(listaDesafios.size());
+        returnData = returnData + "-" + newRutina.getRutinaDescripcion();
+        returnData = returnData + "-" + "Desde: " + format.format(newRutina.getRutinaInicio()) + " hasta: " + format.format(newRutina.getRutinaTermino());
+        returnData = returnData + "-" + newRutina.getRutinaEstado();
+
+        return returnData;
+    }
+
+    private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
+        Log.v("asd", "series: " + series);
+        Log.v("asd", "repeticiones: " + repeticiones);
+        for (int h = 0; h < series; h++) {
+            Serie serie = new Serie(0, desafio);
+            serie = serieCRUD.insertarSerie(serie);
+
+            for (int j = 0; j < repeticiones; j++) {
+                Repeticiones addRepeticiones = new Repeticiones(0, serie, 0);
+                repeticionesCRUD.insertarRepeticion(addRepeticiones);
+            }
+        }
     }
 
     private void reiniciarDatos(View root) {
@@ -202,6 +376,10 @@ public class DialogoCrearRutina extends DialogFragment {
 
     private void inicializarBaseDeDatos() {
         resumenCRUD = new ResumenCRUD(getActivity().getApplicationContext());
+        desafioObjetivoCRUD = new DesafioObjetivoCRUD(getActivity().getApplicationContext());
+        serieCRUD = new SerieCRUD(getActivity().getApplicationContext());
+        repeticionesCRUD = new RepeticionesCRUD(getActivity().getApplicationContext());
+        objetivoCRUD = new ObjetivoCRUD(getActivity().getApplicationContext());
         rutinaCRUD = new RutinaCRUD(getActivity().getApplicationContext());
         desafioCRUD = new DesafioCRUD(getActivity().getApplicationContext());
         desafioRutinaCRUD = new DesafioRutinaCRUD(getActivity().getApplicationContext());
@@ -244,16 +422,22 @@ public class DialogoCrearRutina extends DialogFragment {
         }
     }
 
-    public void actualizarAdapter(String[] lista1, String[] lista2, String[] lista3, String[] lista4) {
-        //adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), lista1, lista2, lista3, lista4);
-        //list
+    public void actualizarAdapter(String[] valoresDesafiosLista, String[] nombresDesafiosLista, String[] objetivosDesafiosLista, String[] seriesDesafiosLista, String[] repeticionesDesafiosListas) {
+        valoresDesafios = valoresDesafiosLista;
+        nombres = nombresDesafiosLista;
+        objetivos = objetivosDesafiosLista;
+        series = seriesDesafiosLista;
+        repeticiones = repeticionesDesafiosListas;
+
+        adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres, objetivos);
+        ListViewDesafiosRutina.setAdapter(adapterDesafio);
     }
 
-    public GridView retornarGridview(){
+    public GridView retornarGridview() {
         return GridViewDatosRutina;
     }
 
-    public ListView retornarListView(){
+    public ListView retornarListView() {
         return ListViewDesafiosRutina;
     }
 }

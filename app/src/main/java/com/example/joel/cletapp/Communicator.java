@@ -14,5 +14,5 @@ public interface Communicator {
     public void SeleccionarRuta(String data);
     public void GuardarRuta(String data);
     public void OcultarDetalle(String data);
-    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos);
+    public void pruebaDialogToDialog(String[] valoresDesafios, String[] nombres, String[] objetivos, String[] repeticiones, String[] series);
 }

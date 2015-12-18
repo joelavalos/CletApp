@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,11 @@ public class DialogoValorObjetivo extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        DialogoDetalleDesafio asd = (DialogoDetalleDesafio) manager.findFragmentByTag("detalleDesafio");
 
         GridViewDatosDesafio = (GridView) getActivity().findViewById(R.id.GridViewDatosDesafio);
+        GridViewDatosDesafio = asd.retornarGridView();
 
         campos = getArguments().getStringArray("campos");
         valores = getArguments().getStringArray("valores");

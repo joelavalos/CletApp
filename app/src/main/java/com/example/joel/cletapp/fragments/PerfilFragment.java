@@ -306,7 +306,7 @@ public class PerfilFragment extends Fragment implements Communicator {
     }
 
     @Override
-    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
+    public void pruebaDialogToDialog(String[] valoresDesafios, String[] nombres, String[] objetivos, String[] repeticiones, String[] series) {
 
     }
 }

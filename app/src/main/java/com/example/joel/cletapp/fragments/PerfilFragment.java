@@ -17,11 +17,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.*;
 import com.example.joel.cletapp.CRUDDatabase.CiclistaCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Ciclista;
-import com.example.joel.cletapp.Communicator;
-import com.example.joel.cletapp.Mensaje;
-import com.example.joel.cletapp.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -304,6 +302,11 @@ public class PerfilFragment extends Fragment implements Communicator {
 
     @Override
     public void OcultarDetalle(String data) {
+
+    }
+
+    @Override
+    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
 
     }
 }

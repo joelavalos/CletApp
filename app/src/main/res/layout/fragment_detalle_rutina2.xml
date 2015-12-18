@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/TituloDetalleRutina"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary">
 
         <TextView
@@ -20,7 +20,8 @@
             android:gravity="center"
             android:text="Detalle rutina"
             android:textColor="@color/colorBlanco"
-            android:textSize="28sp" />
+            android:textStyle="bold"
+            android:textSize="@dimen/abc_text_size_title_material" />
     </RelativeLayout>
 
     <TextView
@@ -34,16 +35,16 @@
         android:layout_toLeftOf="@+id/TextViewCancelarRutina"
         android:singleLine="true"
         android:text="Nombre"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/TextViewCancelarRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/ImageViewImagenRutina"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
         android:layout_toLeftOf="@+id/ImageViewImagenRutina"
         android:gravity="bottom"
         android:text="[Terminar]"
@@ -57,7 +58,7 @@
         android:layout_below="@+id/TextViewNombreRutina"
         android:layout_marginLeft="16dp"
         android:text="Nombre desafio"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ImageView
         android:id="@+id/ImageViewImagenRutina"
@@ -76,7 +77,7 @@
         android:layout_below="@+id/TextViewNombreDesafio"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorNegro" />
 
     <TextView

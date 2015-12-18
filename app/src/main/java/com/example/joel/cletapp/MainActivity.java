@@ -32,6 +32,7 @@ import com.example.joel.cletapp.ClasesDataBase.Ruta;
 import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.fragments.Cronometro;
+import com.example.joel.cletapp.fragments.DialogoCrearRutina;
 import com.example.joel.cletapp.fragments.MainFragment;
 
 import java.text.ParseException;
@@ -313,6 +314,18 @@ public class MainActivity extends ActionBarActivity implements Communicator {
         //FragmentManager manager = this.getSupportFragmentManager();
         //MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
         //asd.ocultar();
+    }
+
+    @Override
+    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
+        FragmentManager manager = this.getSupportFragmentManager();
+        DialogoCrearRutina asd = (DialogoCrearRutina) manager.findFragmentByTag("crearRutina");
+        //Fragment prev = this.getSupportFragmentManager().findFragmentByTag("rutinaPersonalizada");
+        //if (prev != null) {
+            //DialogFragment df = (DialogFragment) prev;
+            //df.dismiss();
+            asd.actualizarAdapter(desafios, valores, nombres, objetivos);
+        //}
     }
 
     @Override

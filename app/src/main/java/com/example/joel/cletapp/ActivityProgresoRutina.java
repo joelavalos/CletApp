@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +48,7 @@ public class ActivityProgresoRutina extends ActionBarActivity {
     private ListView ListViewDesafiosRutina;
     private String[] camposDesafios = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
     private String[] estadoDesafio = {"P", "P", "P", "P", "P", "P", "P"};
+    private String[] exitoDesafio = {"", "", "", "", "", "", ""};
     private int[] series = {0, 0, 0, 0, 0, 0, 0};
     private int[] repeticiones = {0, 0, 0, 0, 0, 0, 0};
     private String[] valoresDesafios = {"valor", "", "", "", "", "", ""};
@@ -64,6 +66,10 @@ public class ActivityProgresoRutina extends ActionBarActivity {
     private SerieCRUD serieCRUD;
     private RepeticionesCRUD repeticionesCRUD;
 
+    private ImageView ImageViewResultado;
+    private TextView TextViewResultado;
+    private TextView TextViewResultadoDetalle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,13 +86,6 @@ public class ActivityProgresoRutina extends ActionBarActivity {
                 onBackPressed();
             }
         });
-
-        /*ImageView imageView = new ImageView(this);
-        imageView.setBackgroundColor(Color.WHITE);
-        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.ic_done_black_24px);
-        imageView.setImageDrawable(svg.createPictureDrawable());
-        setContentView(imageView);*/
-
 
         ListViewDesafiosRutina.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,6 +107,10 @@ public class ActivityProgresoRutina extends ActionBarActivity {
     }
 
     private void inicializarComponentes() {
+        ImageViewResultado = (ImageView) findViewById(R.id.ImageViewResultado);
+        TextViewResultado = (TextView) findViewById(R.id.TextViewResultado);
+        TextViewResultadoDetalle = (TextView) findViewById(R.id.TextViewResultadoDetalle);
+
         TextViewNombreRutina = (TextView) findViewById(R.id.TextViewNombreRutina);
         TextViewNombreRutina.setText(buscadoRutina.getRutinaNombre());
 
@@ -131,6 +134,7 @@ public class ActivityProgresoRutina extends ActionBarActivity {
                 if (format.format(listaDesafiosRutina.get(j).getFecha()).equals(camposDesafios[i].split("     ")[0])) {
                     nombres[i] = listaDesafiosRutina.get(j).getDesafio().getDesafioNombre();
                     estadoDesafio[i] = String.valueOf(listaDesafiosRutina.get(j).getDesafio().getEstadoDesafio());
+                    exitoDesafio[i] = String.valueOf(listaDesafiosRutina.get(j).getDesafio().getExitoDesafio());
                     idDesafios[i] = listaDesafiosRutina.get(j).getDesafio().getDesafioId();
 
                     List<Serie> seriesDesafio = new ArrayList<>();
@@ -166,6 +170,34 @@ public class ActivityProgresoRutina extends ActionBarActivity {
         }
         adapterDesafio = new AdapterDesafioProgreso(this, camposDesafios, valoresDesafios, nombres, objetivos, estadoDesafio, series, repeticiones, idDesafios);
         ListViewDesafiosRutina.setAdapter(adapterDesafio);
+
+        int exitos = 0;
+        int fallos = 0;
+        int total = 0;
+        for (int i = 0; i < exitoDesafio.length; i++){
+            if (exitoDesafio[i].equals("1")){
+                exitos++;
+            } else if (exitoDesafio[i].equals("0")){
+                fallos++;
+            }
+            Log.v("asd", exitoDesafio[i]);
+        }
+        total = exitos + fallos;
+
+        if (exitos > fallos){
+            ImageViewResultado.setImageResource(R.drawable.ic_mood_black_36px);
+            TextViewResultado.setText("Buen trabajo!");
+        }
+        if (exitos < fallos){
+            ImageViewResultado.setImageResource(R.drawable.ic_mood_bad_black_36px);
+            TextViewResultado.setText("Esfuerzate mas!");
+        }
+        if (exitos == fallos){
+            ImageViewResultado.setImageResource(R.drawable.ic_mood_semi_black_36px);
+            TextViewResultado.setText("Puedes mejorar!");
+        }
+        TextViewResultadoDetalle.setText("Completaste " + exitos + "/" + total + " exitosamente");
+
     }
 
     private void inicializarBaseDeDatos(Intent intent) {

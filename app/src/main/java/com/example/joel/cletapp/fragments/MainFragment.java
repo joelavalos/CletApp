@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,6 +83,7 @@ public class MainFragment extends Fragment {
     private boolean encontrado = false;
     private boolean nextDesafio = false;
     private String diff = "";
+    private String diffDias = "";
     private String fechaActual = "";
 
     private Button ButtonFrecuencioa;
@@ -266,8 +268,8 @@ public class MainFragment extends Fragment {
             //ButtonDetenerRutina.setEnabled(false);
             //ButtonDetenerRutina.setVisibility(View.INVISIBLE);
             //ButtonSeleccionarRuta.setVisibility(View.INVISIBLE);
-
             cargarRuta();
+
 
         } else {
             //ButtonSeleccionarRuta.setVisibility(View.VISIBLE);
@@ -344,20 +346,28 @@ public class MainFragment extends Fragment {
                 String repeticionesTotalString = "";
                 String seriesString = "";
                 String repeticionesString = "";
+                String diffString = "";
+
+                diffString = diffDias;
 
                 bundle.putBoolean("estado", estadoElegirRutina);
+                bundle.putString("diffString", diffString);
                 if (!estadoElegirRutina) {
                     nombreRutina = actualRutina.getRutinaNombre();
-                    nombreDesafio = actualDesafio.getDesafioNombre();
+                    if (!diffString.equals("")) {
+                        nombreDesafio = "vacio";
+                    } else {
+                        nombreDesafio = actualDesafio.getDesafioNombre();
+                    }
                     seriesTotalString = String.valueOf(seriesTotal);
                     repeticionesTotalString = String.valueOf(repeticionesTotal);
 
                     seriesString = String.valueOf(seriesActual);
-                    if (seriesActual == 0){
+                    if (seriesActual == 0) {
                         seriesString = String.valueOf(1);
                     }
                     repeticionesString = String.valueOf(repeticionesActual);
-                    if (repeticionesActual == 0){
+                    if (repeticionesActual == 0) {
                         repeticionesString = String.valueOf(1);
                     }
 
@@ -1113,7 +1123,14 @@ public class MainFragment extends Fragment {
 
     public void completarDesafio() {
         actualDesafio.setEstadoDesafio('T');
-        actualDesafio.setExitoDesafio(1);
+
+        List<Repeticiones> todasLasRepeticiones = new ArrayList<>();
+        todasLasRepeticiones = todasLasRepeticionesDelDesafio(pasarDesafioActual());
+
+        float distanciaTotalRequerida = desafioObjetivo.getValor()*todasLasRepeticiones.size();
+        float distanciaTotalRealizada = calcularDistanciaTotalRealizada(todasLasRepeticiones);
+        int exitoDesafio = calcularExito(distanciaTotalRealizada, distanciaTotalRequerida);
+        actualDesafio.setExitoDesafio(exitoDesafio);
         Date d = Calendar.getInstance().getTime();
         actualDesafio.setTerminoDesafio(new java.sql.Date(d.getTime()));
 
@@ -1140,6 +1157,46 @@ public class MainFragment extends Fragment {
 
         new Mensaje(getActivity().getApplicationContext(), "Desafio terminado");
         guardarEstadoDesafioDetenido();
+    }
+
+    private float calcularDistanciaTotalRealizada(List<Repeticiones> todasLasRepeticiones) {
+        float distanciaTotalRealizadaAcumulador = 0;
+        for (int i = 0; i < todasLasRepeticiones.size(); i++){
+            distanciaTotalRealizadaAcumulador = distanciaTotalRealizadaAcumulador + todasLasRepeticiones.get(i).getValor();
+        }
+        return distanciaTotalRealizadaAcumulador;
+    }
+
+    private int calcularExito(float distanciaTotalRealizada, float distanciaTotalRequerida) {
+        if (distanciaTotalRealizada >= distanciaTotalRequerida){
+            return 1;
+        } else{
+            return 0;
+        }
+    }
+
+    private List<Repeticiones> todasLasRepeticionesDelDesafio(Desafio desafio) {
+        List<Repeticiones> repeticionesDeUnaSerie = new ArrayList<>();
+        List<Repeticiones> retornarTodasLasRepeticiones = new ArrayList<>();
+        List<Serie> todasLasSeriesDelDesafio = new ArrayList<>();
+        try {
+            todasLasSeriesDelDesafio = serieCRUD.buscarSeriePorIdDesafio(desafio);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (int j = 0; j < todasLasSeriesDelDesafio.size(); j++) {
+            try {
+                repeticionesDeUnaSerie = repeticionesCRUD.buscarRepeticionesPorIdSerie(todasLasSeriesDelDesafio.get(j));
+                for (int i = 0; i < repeticionesDeUnaSerie.size(); i++) {
+                    retornarTodasLasRepeticiones.add(repeticionesDeUnaSerie.get(i));
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return retornarTodasLasRepeticiones;
     }
 
     @Override
@@ -1474,14 +1531,17 @@ public class MainFragment extends Fragment {
 
         if (encontrado == false && nextDesafio == false) {
             diff = "No quedan desafios";
+            diffDias = "No quedan desafios";
         }
 
         if (encontrado == false && nextDesafio == true) {
             try {
                 if (TimeUnit.DAYS.convert(format.parse(fechaDesafio).getTime() - format.parse(fechaActual).getTime(), TimeUnit.MILLISECONDS) == 1) {
                     diff = "Proximo desafio en: " + String.valueOf(TimeUnit.DAYS.convert(format.parse(fechaDesafio).getTime() - format.parse(fechaActual).getTime(), TimeUnit.MILLISECONDS)) + " dia";
+                    diffDias = String.valueOf(TimeUnit.DAYS.convert(format.parse(fechaDesafio).getTime() - format.parse(fechaActual).getTime(), TimeUnit.MILLISECONDS));
                 } else {
                     diff = "Proximo desafio en: " + String.valueOf(TimeUnit.DAYS.convert(format.parse(fechaDesafio).getTime() - format.parse(fechaActual).getTime(), TimeUnit.MILLISECONDS)) + " dias";
+                    diffDias = String.valueOf(TimeUnit.DAYS.convert(format.parse(fechaDesafio).getTime() - format.parse(fechaActual).getTime(), TimeUnit.MILLISECONDS));
                 }
 
             } catch (ParseException e) {
@@ -1658,8 +1718,11 @@ public class MainFragment extends Fragment {
         }
 
         for (int i = 0; i < listaDesafiosRutina.size(); i++) {
-            listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
-            listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(1);
+            //listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
+            if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T'){
+                listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
+                listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
+            }
 
             try {
                 desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
@@ -1710,8 +1773,11 @@ public class MainFragment extends Fragment {
             }
 
             for (int i = 0; i < listaDesafiosRutina.size(); i++) {
-                listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
-                listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
+                if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T'){
+                    new Mensaje(getActivity().getApplicationContext(), "Buena comparacion");
+                    listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
+                    listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
+                }
 
                 try {
                     desafioCRUD.actualizarDatosDesafio(listaDesafiosRutina.get(i).getDesafio());
@@ -1719,6 +1785,9 @@ public class MainFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
+
+            diff = "";
+            diffDias = "";
 
             String idRutina = String.valueOf(actualRutina.getRutinaId());
             Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoRutina.class);

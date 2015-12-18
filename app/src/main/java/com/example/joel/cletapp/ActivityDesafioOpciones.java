@@ -396,6 +396,11 @@ public class ActivityDesafioOpciones extends ActionBarActivity implements Commun
 
     }
 
+    @Override
+    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
+
+    }
+
     private String validarCreacion() {
         String validar = "";
 

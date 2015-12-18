@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -34,8 +35,13 @@ public class DialogoDatePickerRutinaFragment extends DialogFragment implements D
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        DialogoCrearRutina asd = (DialogoCrearRutina) manager.findFragmentByTag("crearRutina");
+
         GridViewDatosRutina = (GridView) getActivity().findViewById(R.id.GridViewDatosRutina);
+        GridViewDatosRutina = asd.retornarGridview();
         ListViewDesafiosRutina = (ListView) getActivity().findViewById(R.id.ListViewDesafiosRutina);
+        ListViewDesafiosRutina = asd.retornarListView();
         campos = getArguments().getStringArray("campos");
         valores = getArguments().getStringArray("valores");
         camposDesafios = getArguments().getStringArray("camposDesafios");

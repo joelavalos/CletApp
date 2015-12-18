@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.widget.ListView;
 
@@ -11,6 +12,7 @@ import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
+import com.example.joel.cletapp.Communicator;
 import com.example.joel.cletapp.Mensaje;
 import com.example.joel.cletapp.R;
 
@@ -41,10 +43,16 @@ public class DialogoDesafioSelector extends DialogFragment {
     private DesafioCRUD desafioCRUD;
     private Desafio desafio;
     private DesafioObjetivo desafioObjetivo;
+    private Communicator comm;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        comm = (Communicator) getActivity();
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        DialogoCrearRutina asd = (DialogoCrearRutina) manager.findFragmentByTag("crearRutina");
+
         ListViewDesafiosRutina = (ListView) getActivity().findViewById(R.id.ListViewDesafiosRutina);
+        ListViewDesafiosRutina = asd.retornarListView();
         camposDesafios = getArguments().getStringArray("camposDesafios");
         valoresDesafios = getArguments().getStringArray("valoresDesafios");
         nombres = getArguments().getStringArray("nombres");
@@ -118,6 +126,7 @@ public class DialogoDesafioSelector extends DialogFragment {
                                 }
                             }
                         }
+
 
                         adapterDesafio = new AdapterDesafio(getActivity().getApplicationContext(), camposDesafios, valoresDesafios, nombres, objetivos);
                         ListViewDesafiosRutina.setAdapter(adapterDesafio);

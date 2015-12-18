@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/TituloCrearRutina"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="Crear rutina"
+            android:textColor="@color/colorBlanco"
+            android:textSize="@dimen/abc_text_size_title_material"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="660dp"
+        android:layout_below="@+id/TituloCrearRutina"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/EditTextNombreRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="Nombre"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/EditTextNotaRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/EditTextNombreRutina"
+                android:layout_marginBottom="24dp"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="Nota"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <GridView
+                android:id="@+id/GridViewDatosRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/EditTextNotaRutina"
+                android:layout_marginBottom="24dp"
+                android:numColumns="2"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:verticalSpacing="24dp" />
+
+            <ListView
+                android:id="@+id/ListViewDesafiosRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="660dp"
+                android:layout_below="@+id/GridViewDatosRutina"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"></ListView>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

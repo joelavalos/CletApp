@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minHeight="350dp">
+
+    <RelativeLayout
+        android:id="@+id/TituloDetalleRutina"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="Detalle rutina"
+            android:textColor="@color/colorBlanco"
+            android:textSize="@dimen/abc_text_size_title_material"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/TextViewNombreRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/TituloDetalleRutina"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/TextViewCancelarRutina"
+        android:singleLine="true"
+        android:text="Nombre"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/TextViewCancelarRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ImageViewImagenRutina"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@+id/ImageViewImagenRutina"
+        android:gravity="bottom"
+        android:text="[Terminar]"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/TextViewNombreDesafio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewNombreRutina"
+        android:layout_marginLeft="16dp"
+        android:text="Nombre desafio"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageView
+        android:id="@+id/ImageViewImagenRutina"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TituloDetalleRutina"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_directions_bike_black_48dp" />
+
+    <View
+        android:id="@+id/ViewSeparador"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/TextViewNombreDesafio"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorNegro" />
+
+    <TextView
+        android:id="@+id/TextViewCabezera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ViewSeparador"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/cabezeraProximoDesafio"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextViewDias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewCabezera"
+        android:gravity="center_horizontal"
+        android:text="X"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextViewDiasString"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewDias"
+        android:layout_marginBottom="32dp"
+        android:gravity="center_horizontal"
+        android:text="@string/diasString"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+</RelativeLayout>

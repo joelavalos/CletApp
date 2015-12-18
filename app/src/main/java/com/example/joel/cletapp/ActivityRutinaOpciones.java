@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -487,6 +486,11 @@ public class ActivityRutinaOpciones extends ActionBarActivity implements Communi
 
     @Override
     public void OcultarDetalle(String data) {
+
+    }
+
+    @Override
+    public void pruebaDialogToDialog(String[] desafios, String[] valores, String[] nombres, String[] objetivos) {
 
     }
 }

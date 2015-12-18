@@ -8,88 +8,132 @@
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <TextView
-        android:id="@+id/TextViewCampoNombreRutina"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/app_bar"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:singleLine="true"
-        android:text="Nombre: "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorNegro" />
-
-    <TextView
-        android:id="@+id/TextViewNombreRutina"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/TextViewCampoNombreRutina"
-        android:layout_toRightOf="@+id/TextViewCampoNombreRutina"
-        android:singleLine="true"
-        android:text="Nombre de la rutina"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_below="@+id/app_bar">
 
-    <TextView
-        android:id="@+id/TextViewCampoFechaInicio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextViewCampoNombreRutina"
-        android:layout_alignRight="@+id/TextViewCampoNombreRutina"
-        android:layout_below="@+id/TextViewCampoNombreRutina"
-        android:layout_marginTop="16dp"
-        android:singleLine="true"
-        android:text="Inicio: "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorNegro" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants">
 
-    <TextView
-        android:id="@+id/TextViewFechaInicio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/TextViewCampoFechaInicio"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_toRightOf="@+id/TextViewCampoFechaInicio"
-        android:singleLine="true"
-        android:text="Inicio: "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/TextViewCampoNombreRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:text="Nombre: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorNegro"
+                android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/TextViewCampoFechaFin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextViewCampoNombreRutina"
-        android:layout_alignRight="@+id/TextViewCampoNombreRutina"
-        android:layout_below="@+id/TextViewCampoFechaInicio"
-        android:layout_marginTop="16dp"
-        android:singleLine="true"
-        android:text="Fin: "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorNegro" />
+            <TextView
+                android:id="@+id/TextViewNombreRutina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/TextViewCampoNombreRutina"
+                android:layout_toRightOf="@+id/TextViewCampoNombreRutina"
+                android:singleLine="true"
+                android:text="Nombre de la rutina"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/TextViewFechaFin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/TextViewCampoFechaFin"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_toRightOf="@+id/TextViewCampoFechaFin"
-        android:singleLine="true"
-        android:text="Fin: "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageView
+                android:id="@+id/ImageViewResultado"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_mood_black_36px" />
 
-    <ListView
-        android:id="@+id/ListViewDesafiosRutina"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TextViewFechaFin"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:paddingRight="16dp">
+            <TextView
+                android:id="@+id/TextViewResultado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ImageViewResultado"
+                android:gravity="center_horizontal"
+                android:text="Buen trabajo!"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
 
-    </ListView>
+            <TextView
+                android:id="@+id/TextViewResultadoDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TextViewResultado"
+                android:gravity="center_horizontal"
+                android:text="Completaste 3/6 exitosamente"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
+            <TextView
+                android:id="@+id/TextViewCampoFechaInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/TextViewCampoNombreRutina"
+                android:layout_alignRight="@+id/TextViewCampoNombreRutina"
+                android:layout_below="@+id/TextViewCampoNombreRutina"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:text="Inicio: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorNegro"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/TextViewFechaInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/TextViewCampoFechaInicio"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/TextViewCampoFechaInicio"
+                android:singleLine="true"
+                android:text="Inicio: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/TextViewCampoFechaFin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/TextViewCampoNombreRutina"
+                android:layout_alignRight="@+id/TextViewCampoNombreRutina"
+                android:layout_below="@+id/TextViewCampoFechaInicio"
+                android:layout_marginTop="16dp"
+                android:singleLine="true"
+                android:text="Fin: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorNegro"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/TextViewFechaFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/TextViewCampoFechaFin"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/TextViewCampoFechaFin"
+                android:singleLine="true"
+                android:text="Fin: "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="invisible" />
+
+            <ListView
+                android:id="@+id/ListViewDesafiosRutina"
+                android:layout_width="wrap_content"
+                android:layout_height="660dp"
+                android:layout_below="@+id/TextViewResultadoDetalle"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:paddingRight="16dp"></ListView>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
+
+
+

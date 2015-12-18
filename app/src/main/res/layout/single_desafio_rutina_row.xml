@@ -17,19 +17,19 @@
         android:id="@+id/ImageViewImagenDesafioRutina"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@+id/TextViewNombreDesafioRutina" />
+        android:layout_below="@+id/TextViewNombreDesafioRutina"
+        android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/TextViewValorDesafioRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/ImageViewImagenDesafioRutina"
-        android:layout_alignTop="@+id/ImageViewImagenDesafioRutina"
         android:layout_alignBottom="@+id/ImageViewImagenDesafioRutina"
+        android:layout_alignTop="@+id/ImageViewImagenDesafioRutina"
         android:layout_marginLeft="8dp"
-        android:text="Desafio"
+        android:layout_toRightOf="@+id/ImageViewImagenDesafioRutina"
         android:gravity="center"
+        android:text="Desafio"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorNegro" />
 
@@ -49,10 +49,10 @@
         android:id="@+id/TextViewObjetivoDesafioRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TextViewValorDesafioRutina"
         android:layout_alignLeft="@+id/TextViewNombreObjetivoDesafioRutina"
         android:layout_alignRight="@+id/TextViewNombreObjetivoDesafioRutina"
         android:layout_alignTop="@+id/TextViewValorDesafioRutina"
-        android:layout_alignBottom="@+id/TextViewValorDesafioRutina"
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="100 m"

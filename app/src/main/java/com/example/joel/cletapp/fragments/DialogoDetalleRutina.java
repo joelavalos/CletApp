@@ -30,6 +30,9 @@ public class DialogoDetalleRutina extends DialogFragment {
     private TextView TextViewNumeroSerieActual;
     private TextView TextViewNumeroRepeticionActual;
     private TextView TextViewCancelarRutina;
+    private TextView TextViewCabezera;
+    private TextView TextViewDias;
+    private TextView TextViewDiasString;
 
     private boolean estado = false;
     private String nombreRutina = "";
@@ -38,7 +41,7 @@ public class DialogoDetalleRutina extends DialogFragment {
     private String repeticionesDesafioTotal = "";
     private String seriesDesafio = "";
     private String repeticionesDesafio = "";
-
+    private String diffDesafio = "";
 
 
     private String[] diasSemana = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
@@ -52,50 +55,95 @@ public class DialogoDetalleRutina extends DialogFragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         estado = getArguments().getBoolean("estado");
+        diffDesafio = getArguments().getString("diffString");
 
-        if (estado == true) {
-            view = inflater.inflate(R.layout.fragment_detalle_rutina, null);
-            ButtonRuttinaRapida = (Button) view.findViewById(R.id.ButtonRuttinaRapida);
-            ButtonRuttinaPersonalizada = (Button) view.findViewById(R.id.ButtonRuttinaPersonalizada);
+        if (diffDesafio.equals("")) {
+            if (estado == true) {
+                view = inflater.inflate(R.layout.fragment_detalle_rutina, null);
+                ButtonRuttinaRapida = (Button) view.findViewById(R.id.ButtonRuttinaRapida);
+                ButtonRuttinaPersonalizada = (Button) view.findViewById(R.id.ButtonRuttinaPersonalizada);
 
-            ButtonRuttinaRapida.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogoMultiSelect dialogo = new DialogoMultiSelect();
-                    dialogo.show(getFragmentManager(), "rutinaRapida");
-                }
-            });
+                ButtonRuttinaRapida.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogoMultiSelect dialogo = new DialogoMultiSelect();
+                        dialogo.show(getFragmentManager(), "rutinaRapida");
+                    }
+                });
 
-            ButtonRuttinaPersonalizada.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogoRutinaSelector dialogo = new DialogoRutinaSelector();
-                    dialogo.show(getFragmentManager(), "rutinaPersonalizada");
-                }
-            });
+                ButtonRuttinaPersonalizada.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*DialogoRutinaSelector dialogo = new DialogoRutinaSelector();
+                        dialogo.show(getFragmentManager(), "rutinaPersonalizada");*/
+
+                        DialogoCrearRutina dialogo = new DialogoCrearRutina();
+                        dialogo.show(getFragmentManager(), "crearRutina");
+                    }
+                });
+
+            } else {
+                view = inflater.inflate(R.layout.fragment_detalle_rutina2, null);
+                TextViewCancelarRutina = (TextView) view.findViewById(R.id.TextViewCancelarRutina);
+                TextViewNombreRutina = (TextView) view.findViewById(R.id.TextViewNombreRutina);
+                TextViewNombreDesafio = (TextView) view.findViewById(R.id.TextViewNombreDesafio);
+                TextViewNumeroSerieTotal = (TextView) view.findViewById(R.id.TextViewNumeroSerieTotal);
+                TextViewNumeroRepeticionTotal = (TextView) view.findViewById(R.id.TextViewNumeroRepeticionTotal);
+                TextViewNumeroSerieActual = (TextView) view.findViewById(R.id.TextViewNumeroSerieActual);
+                TextViewNumeroRepeticionActual = (TextView) view.findViewById(R.id.TextViewNumeroRepeticionActual);
+
+                nombreRutina = getArguments().getString("nombreRutina");
+                nombreDesafio = getArguments().getString("nombreDesafio");
+                seriesDesafioTotal = getArguments().getString("seriesDesafioTotal");
+                repeticionesDesafioTotal = getArguments().getString("repeticionesDesafioTotal");
+                seriesDesafio = getArguments().getString("seriesDesafio");
+                repeticionesDesafio = getArguments().getString("repeticionesDesafio");
+
+                TextViewNombreRutina.setText(nombreRutina);
+                TextViewNombreDesafio.setText(nombreDesafio);
+                TextViewNumeroSerieTotal.setText("/" + seriesDesafioTotal);
+                TextViewNumeroRepeticionTotal.setText("/" + repeticionesDesafioTotal);
+                TextViewNumeroSerieActual.setText(seriesDesafio);
+                TextViewNumeroRepeticionActual.setText(repeticionesDesafio);
+
+                TextViewCancelarRutina.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Accion", "DetenerRutina");
+                        bundle.putString("Mensaje", "Detener la rutina forzara la evaluacion con el progreso actual");
+                        bundle.putString("Titulo", "Detener rutina");
+
+                        DialogoConfirmacion dialogo = new DialogoConfirmacion();
+                        dialogo.setArguments(bundle);
+                        dialogo.show(getFragmentManager(), "categoriaPicker");
+                    }
+                });
+            }
         } else {
-            view = inflater.inflate(R.layout.fragment_detalle_rutina2, null);
-            TextViewCancelarRutina = (TextView) view.findViewById(R.id.TextViewCancelarRutina);
-            TextViewNombreRutina = (TextView) view.findViewById(R.id.TextViewNombreRutina);
-            TextViewNombreDesafio = (TextView) view.findViewById(R.id.TextViewNombreDesafio);
-            TextViewNumeroSerieTotal = (TextView) view.findViewById(R.id.TextViewNumeroSerieTotal);
-            TextViewNumeroRepeticionTotal = (TextView) view.findViewById(R.id.TextViewNumeroRepeticionTotal);
-            TextViewNumeroSerieActual = (TextView) view.findViewById(R.id.TextViewNumeroSerieActual);
-            TextViewNumeroRepeticionActual = (TextView) view.findViewById(R.id.TextViewNumeroRepeticionActual);
+            view = inflater.inflate(R.layout.fragment_detalle_rutina3, null);
 
             nombreRutina = getArguments().getString("nombreRutina");
-            nombreDesafio = getArguments().getString("nombreDesafio");
-            seriesDesafioTotal = getArguments().getString("seriesDesafioTotal");
-            repeticionesDesafioTotal = getArguments().getString("repeticionesDesafioTotal");
-            seriesDesafio = getArguments().getString("seriesDesafio");
-            repeticionesDesafio = getArguments().getString("repeticionesDesafio");
 
+            TextViewCancelarRutina = (TextView) view.findViewById(R.id.TextViewCancelarRutina);
+            TextViewCabezera = (TextView) view.findViewById(R.id.TextViewCabezera);
+            TextViewDias = (TextView) view.findViewById(R.id.TextViewDias);
+            TextViewDiasString = (TextView) view.findViewById(R.id.TextViewDiasString);
+            TextViewNombreDesafio = (TextView) view.findViewById(R.id.TextViewNombreDesafio);
+            TextViewNombreRutina = (TextView) view.findViewById(R.id.TextViewNombreRutina);
+
+            TextViewNombreDesafio.setText("");
             TextViewNombreRutina.setText(nombreRutina);
-            TextViewNombreDesafio.setText(nombreDesafio);
-            TextViewNumeroSerieTotal.setText("/"+seriesDesafioTotal);
-            TextViewNumeroRepeticionTotal.setText("/"+repeticionesDesafioTotal);
-            TextViewNumeroSerieActual.setText(seriesDesafio);
-            TextViewNumeroRepeticionActual.setText(repeticionesDesafio);
+
+            if (diffDesafio.equals("No quedan desafios")) {
+                TextViewCabezera.setText("No quedan desafios");
+                TextViewDias.setText("Descansa!");
+            } else {
+                TextViewDias.setText(diffDesafio);
+                if (diffDesafio.equals("1")) {
+                    TextViewDiasString.setText(getResources().getString(R.string.diaString));
+                }
+            }
 
             TextViewCancelarRutina.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,6 +159,7 @@ public class DialogoDetalleRutina extends DialogFragment {
                 }
             });
         }
+
         builder.setView(view);
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
@@ -120,5 +169,9 @@ public class DialogoDetalleRutina extends DialogFragment {
         });
 
         return builder.create();
+    }
+
+    public void cambiarTextoPrueba(String data){
+        ButtonRuttinaPersonalizada.setText(data);
     }
 }

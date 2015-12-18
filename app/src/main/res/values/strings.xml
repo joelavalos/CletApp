@@ -72,4 +72,7 @@
     <string name="desafiosLogrados">Desafíos logrados</string>
     <string name="desafiosNoLogrados">Desafíos no logrados</string>
     <string name="desafio">Desafío</string>
+    <string name="cabezeraProximoDesafio">Próximo desafío en</string>
+    <string name="diasString">días</string>
+    <string name="diaString">día</string>
 </resources>

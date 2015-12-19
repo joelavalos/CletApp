@@ -11,23 +11,23 @@
         android:paddingTop="8dp"
         android:text="Fecha y dia"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"
         android:textColor="@color/accentColor" />
 
     <ImageView
         android:id="@+id/ImageViewImagenDesafioRutina"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_below="@+id/TextViewNombreDesafioRutina"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_star_black_24dp" />
+        android:src="@drawable/ic_star_black_24dp"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/TextViewValorDesafioRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ImageViewImagenDesafioRutina"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/ImageViewImagenDesafioRutina"
+        android:layout_below="@+id/TextViewNombreDesafioRutina"
         android:text="Desafio"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorNegro" />
@@ -64,11 +64,10 @@
 
     <ImageView
         android:id="@+id/ImageViewImagenEstadoDesafio"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_alignBottom="@+id/TextViewObjetivoDesafioRutina"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/TextViewValorDesafioRutina"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/pending" />
+        android:layout_marginRight="16dp" />
 </RelativeLayout>

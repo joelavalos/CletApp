@@ -1773,7 +1773,6 @@ public class MainFragment extends Fragment {
 
             for (int i = 0; i < listaDesafiosRutina.size(); i++) {
                 if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T'){
-                    new Mensaje(getActivity().getApplicationContext(), "Buena comparacion");
                     listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
                     listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
                 }

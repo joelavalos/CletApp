@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -137,6 +137,7 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
 
         adapterDesafioRepeticion = new AdapterDesafioRepeticion(this, nombreRepeticiones, distanciaObtenida, distanciaRequerida, evaluacionRepeticiones);
         ListViewRepeticionesSeries.setAdapter(adapterDesafioRepeticion);
+        setListViewHeightBasedOnChildren(ListViewRepeticionesSeries);
     }
 
     private void inicializarComponentes() {
@@ -173,6 +174,8 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         adapterDesafioSerie = new AdapterDesafioSerie(this, nombresSeries, idSeries);
         ListViewSeriesDesafios.setAdapter(adapterDesafioSerie);
 
+        setListViewHeightBasedOnChildren(ListViewSeriesDesafios);
+
 
         if (distanciaTotal >= 1000) {
             TextViewDistanciaValor.setText(convertirMetrosToKilometros(distanciaTotal) + " Km");
@@ -197,6 +200,35 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
             TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
         }
         //TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
+    }
+
+    public static void setListViewHeightBasedOnChildren(final ListView listView) {
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                ListAdapter listAdapter = listView.getAdapter();
+                if (listAdapter == null) {
+                    return;
+                }
+                int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
+                int listWidth = listView.getMeasuredWidth();
+                for (int i = 0; i < listAdapter.getCount(); i++) {
+                    View listItem = listAdapter.getView(i, null, listView);
+                    listItem.measure(
+                            View.MeasureSpec.makeMeasureSpec(listWidth, View.MeasureSpec.EXACTLY),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+
+                    totalHeight += listItem.getMeasuredHeight();
+                    //Log.d("listItemHeight" + listItem.getMeasuredHeight(), "___________");
+                }
+                ViewGroup.LayoutParams params = listView.getLayoutParams();
+                params.height = (int) ((totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1))));
+                listView.setLayoutParams(params);
+                listView.requestLayout();
+
+            }
+        });
     }
 
     public float convertirMetrosToKilometros(float metros) {

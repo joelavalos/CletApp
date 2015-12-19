@@ -126,35 +126,16 @@ public class DialogoDetalleDesafio extends DialogFragment {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Do nothing here because we override this button later to change the close behaviour.
-                //However, we still need this because on older versions of Android unless we
-                //pass a handler the button doesn't get instantiated
+
             }
         });
 
-        /*
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //comm.pruebaDialogToDialog("Exito ql");
-                nombres[posicion] = EditTextNombreDesafio.getText().toString();
-                valoresDesafios[posicion] = "0" + "-" + EditTextNombreDesafio.getText().toString();
-                objetivos[posicion] = valores[1];
-                series[posicion] = valores[2];
-                repeticiones[posicion] = valores[3];
-
-                comm.pruebaDialogToDialog(valoresDesafios, nombres, objetivos, series, repeticiones);
-
-
-                Log.v("asd", nombres[posicion]);
-                Log.v("asd", valoresDesafios[posicion]);
-                Log.v("asd", objetivos[posicion]);
-                Log.v("asd", valores[2]);
-                Log.v("asd", valores[3]);
 
             }
         });
-        */
 
         return builder.create();
     }

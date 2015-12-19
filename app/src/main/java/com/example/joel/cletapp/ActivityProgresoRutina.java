@@ -17,11 +17,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioRutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RutinaCRUD;
 import com.example.joel.cletapp.CRUDDatabase.SerieCRUD;
+import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.DesafioRutina;
 import com.example.joel.cletapp.ClasesDataBase.Repeticiones;
@@ -65,6 +67,7 @@ public class ActivityProgresoRutina extends ActionBarActivity {
     private DesafioObjetivoCRUD desafioObjetivoCRUD;
     private SerieCRUD serieCRUD;
     private RepeticionesCRUD repeticionesCRUD;
+    private DesafioCRUD desafioCRUD;
 
     private ImageView ImageViewResultado;
     private TextView TextViewResultado;
@@ -204,6 +207,7 @@ public class ActivityProgresoRutina extends ActionBarActivity {
         idRutina = Long.parseLong(intent.getStringExtra("idRutina"));
 
         rutinaCRUD = new RutinaCRUD(this);
+        desafioCRUD = new DesafioCRUD(this);
         serieCRUD = new SerieCRUD(this);
         repeticionesCRUD = new RepeticionesCRUD(this);
 
@@ -364,9 +368,21 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
         //holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
 
         if (estadoDesafio[position].equals("T")) {
-            holder.imagenEstado.setImageResource(R.drawable.tick);
+            Desafio temporalDesafio = null;
+            DesafioCRUD desafioCRUD;
+            desafioCRUD = new DesafioCRUD(getContext());
+            try {
+                temporalDesafio = desafioCRUD.buscarDesafioPorId(idDesafios[position]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (temporalDesafio.getExitoDesafio() == 1){
+                holder.imagenEstado.setImageResource(R.drawable.ic_done_black_24px);
+            } else{
+                holder.imagenEstado.setImageResource(R.drawable.ic_close_black_24px);
+            }
         } else {
-            holder.imagenEstado.setImageResource(R.drawable.pending);
+            //holder.imagenEstado.setImageResource(R.drawable.pending);
         }
 
 

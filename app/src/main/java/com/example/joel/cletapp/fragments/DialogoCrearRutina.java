@@ -105,6 +105,7 @@ public class DialogoCrearRutina extends DialogFragment {
         inicializarBaseDeDatos();
         inicializarComponentes(view);
 
+        /*
         GridViewDatosRutina.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,33 +127,18 @@ public class DialogoCrearRutina extends DialogFragment {
                 }
             }
         });
+        */
 
         ListViewDesafiosRutina.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             Bundle bundle = new Bundle();
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                //bundle.putStringArray("camposDesafios", camposDesafios);
                 bundle.putStringArray("valoresDesafios", valoresDesafios);
                 bundle.putStringArray("nombres", nombres);
                 bundle.putStringArray("objetivos", objetivos);
                 bundle.putStringArray("series", series);
                 bundle.putStringArray("repeticiones", repeticiones);
-                //bundle.putStringArrayList("desafios", listaDesafios2);
-                //bundle.putInt("posicion", position);
-
-                /*
-                DialogoDesafioSelector dialogo = new DialogoDesafioSelector();
-                dialogo.setArguments(bundle);
-                dialogo.show(getFragmentManager(), "categoriaPicker");
-
-                Log.v("asd", camposDesafios[position]);
-                Log.v("asd", valoresDesafios[position]);
-                Log.v("asd", nombres[position]);
-                Log.v("asd", objetivos[position]);
-                */
 
                 bundle.putInt("posicion", position);
                 DialogoDetalleDesafio dialogoDetalleDesafio = new DialogoDetalleDesafio();
@@ -165,26 +151,17 @@ public class DialogoCrearRutina extends DialogFragment {
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Do nothing here because we override this button later to change the close behaviour.
-                //However, we still need this because on older versions of Android unless we
-                //pass a handler the button doesn't get instantiated
+
             }
         });
 
-
-        /*
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //comm.pruebaDialogToDialog("Exito ql");
-                if (!validarCreacion().equals("")) {
-                    Mensaje asd = new Mensaje(getActivity().getApplicationContext(), validarCreacion());
-                } else {
-                    Log.v("asd", "Tamos listos");
-                }
+
             }
         });
-        */
+
         return builder.create();
     }
 

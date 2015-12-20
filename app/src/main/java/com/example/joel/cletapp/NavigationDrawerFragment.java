@@ -24,6 +24,8 @@ import com.example.joel.cletapp.fragments.DesafioFragment;
 import com.example.joel.cletapp.fragments.GlosarioFragment;
 import com.example.joel.cletapp.fragments.HistorialFragment;
 import com.example.joel.cletapp.fragments.MainFragment;
+import com.example.joel.cletapp.fragments.MisDesafiosFragment;
+import com.example.joel.cletapp.fragments.MisRutinasFragment;
 import com.example.joel.cletapp.fragments.PerfilFragment;
 import com.example.joel.cletapp.fragments.RutinaFragment;
 
@@ -48,6 +50,8 @@ public class NavigationDrawerFragment extends Fragment {
     private MainFragment mainFragment;
     private DesafioFragment desafioFragment;
     private PerfilFragment perfilFragment;
+    private MisDesafiosFragment misDesafiosFragment;
+    private MisRutinasFragment misRutinasFragment;
     View v, v2;
 
     String[] opciones;
@@ -109,14 +113,16 @@ public class NavigationDrawerFragment extends Fragment {
                     mDrawerLayout.closeDrawer(containerView);
 
                     if (!(v2 == view)) {
-                        cargarFragmento(getDesafioFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
+                        cargarFragmento(getMisDesafiosFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
+                        //cargarFragmento(getDesafioFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
                         v2 = view;
                     }
                 } else if (opcionSeleccionada.equals("Rutinas de entrenamiento")) {
                     mDrawerLayout.closeDrawer(containerView);
 
                     if (!(v2 == view)) {
-                        cargarFragmento(getRutinaFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
+                        //cargarFragmento(getRutinaFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
+                        cargarFragmento(getMisRutinasFragment(), R.anim.activity_visible_salida_izquierda, R.anim.activity_nuevo_entrada_derecha);
                         v2 = view;
                     }
                 } else if (opcionSeleccionada.equals("Ayuda")) {
@@ -254,5 +260,19 @@ public class NavigationDrawerFragment extends Fragment {
             perfilFragment = new PerfilFragment();
         }
         return perfilFragment;
+    }
+
+    public MisDesafiosFragment getMisDesafiosFragment() {
+        if (misDesafiosFragment == null) {
+            misDesafiosFragment = new MisDesafiosFragment();
+        }
+        return misDesafiosFragment;
+    }
+
+    public MisRutinasFragment getMisRutinasFragment() {
+        if (misRutinasFragment == null) {
+            misRutinasFragment = new MisRutinasFragment();
+        }
+        return misRutinasFragment;
     }
 }

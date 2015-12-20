@@ -3,8 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     tools:context="com.example.joel.cletapp.fragments.MisDesafiosFragment">
 
+    <!--
     <Button
         android:id="@+id/ButtonDesafiosPendientes"
         android:layout_width="wrap_content"
@@ -15,6 +19,7 @@
         android:background="@drawable/boton"
         android:text="@string/desafiosPendientes"
         android:textColor="#FFFFFF" />
+    -->
 
     <Button
         android:id="@+id/ButtonDesafiosTerminados"
@@ -22,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/ButtonDesafiosPendientes"
         android:layout_marginBottom="4dp"
         android:background="@drawable/boton"
         android:text="@string/desafiosTerminados"

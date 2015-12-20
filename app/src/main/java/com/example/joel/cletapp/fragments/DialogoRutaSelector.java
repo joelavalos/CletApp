@@ -53,6 +53,11 @@ public class DialogoRutaSelector extends DialogFragment {
                         // FIRE ZE MISSILES!
                         comm.SeleccionarRuta(nombreRutaSelccionada);
                     }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
                 });
         // Create the AlertDialog object and return it
         return builder.create();

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import com.example.joel.cletapp.R;
  * Created by Joel on 04/08/2015.
  */
 public class MisRutinasFragment extends Fragment {
-    private Button ButtonRutinasPendientes;
+    //private Button ButtonRutinasPendientes;
     private Button ButtonRutinasFinalizadas;
 
     @Override
@@ -39,9 +40,12 @@ public class MisRutinasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_rutinas_mis_rutinas, container, false);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Rutinas");
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 
         inicializarComponentes(root);
 
+        /*
         ButtonRutinasPendientes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +54,7 @@ public class MisRutinasFragment extends Fragment {
                 startActivity(newIntent);
             }
         });
+        */
 
         ButtonRutinasFinalizadas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +69,7 @@ public class MisRutinasFragment extends Fragment {
     }
 
     private void inicializarComponentes(View root) {
-        ButtonRutinasPendientes = (Button) root.findViewById(R.id.ButtonRutinasPendientes);
+        //ButtonRutinasPendientes = (Button) root.findViewById(R.id.ButtonRutinasPendientes);
         ButtonRutinasFinalizadas = (Button) root.findViewById(R.id.ButtonRutinasFinalizadas);
     }
 }

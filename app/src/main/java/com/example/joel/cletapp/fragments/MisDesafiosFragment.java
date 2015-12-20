@@ -4,6 +4,7 @@ package com.example.joel.cletapp.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import com.example.joel.cletapp.R;
  */
 public class MisDesafiosFragment extends Fragment {
 
-    private Button ButtonDesafiosPendientes;
+    //private Button ButtonDesafiosPendientes;
     private Button ButtonDesafiosTerminados;
     private Button ButtonDesafiosLogrados;
     private Button ButtonDesafiosFallados;
@@ -43,9 +44,12 @@ public class MisDesafiosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_desafios_mis_desafios, container, false);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Desafios");
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(null);
 
         inicializarComponentes(root);
 
+        /*
         ButtonDesafiosPendientes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +58,7 @@ public class MisDesafiosFragment extends Fragment {
                 startActivity(newIntent);
             }
         });
+        */
 
         ButtonDesafiosTerminados.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +91,7 @@ public class MisDesafiosFragment extends Fragment {
     }
 
     private void inicializarComponentes(View root) {
-        ButtonDesafiosPendientes = (Button) root.findViewById(R.id.ButtonDesafiosPendientes);
+        //ButtonDesafiosPendientes = (Button) root.findViewById(R.id.ButtonDesafiosPendientes);
         ButtonDesafiosTerminados = (Button) root.findViewById(R.id.ButtonDesafiosTerminados);
         ButtonDesafiosLogrados = (Button) root.findViewById(R.id.ButtonDesafiosLogrados);
         ButtonDesafiosFallados = (Button) root.findViewById(R.id.ButtonDesafiosFallados);

@@ -221,7 +221,7 @@ public class MainFragment extends Fragment {
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        params.setMargins(0, 0, 20, 20);
+        params.setMargins(0, 0, 20, 100);
         btnMyLocation.setLayoutParams(params);
 
         Criteria criteria = new Criteria();
@@ -996,7 +996,7 @@ public class MainFragment extends Fragment {
         optionsSeleccionada = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
 
         if (stringCoordenadas.equals("")) {
-            new Mensaje(getActivity().getApplicationContext(), "Seleccione una ruta");
+            //new Mensaje(getActivity().getApplicationContext(), "Seleccione una ruta");
         } else {
             String cordenadas[] = stringCoordenadas.split("X");
             //new Mensaje(getActivity().getApplicationContext(), "porte: " + cordenadas.length);

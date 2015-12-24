@@ -15,4 +15,11 @@
         android:title="@string/action_settings"
         android:icon="@drawable/mdpi_ic_explore_white_24dp"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_view"
+        android:orderInCategory="200"
+        android:title="@string/action_settings"
+        android:icon="@drawable/mdpi_ic_apps_white_24dp"
+        app:showAsAction="ifRoom" />
 </menu>

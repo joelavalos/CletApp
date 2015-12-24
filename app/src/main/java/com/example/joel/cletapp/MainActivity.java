@@ -252,6 +252,13 @@ public class MainActivity extends ActionBarActivity implements Communicator {
             return true;
         }
 
+        if (id == R.id.action_view) {
+            FragmentManager manager = this.getSupportFragmentManager();
+            MainFragment asd = (MainFragment) manager.findFragmentByTag("TagPrincipal");
+            asd.estadoRutinaActual();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,33 +173,39 @@ public class ActivityProgresoRutina extends ActionBarActivity {
         adapterDesafio = new AdapterDesafioProgreso(this, camposDesafios, valoresDesafios, nombres, objetivos, estadoDesafio, series, repeticiones, idDesafios);
         ListViewDesafiosRutina.setAdapter(adapterDesafio);
 
-        int exitos = 0;
-        int fallos = 0;
-        int total = 0;
-        for (int i = 0; i < exitoDesafio.length; i++){
-            if (exitoDesafio[i].equals("1")){
-                exitos++;
-            } else if (exitoDesafio[i].equals("0")){
-                fallos++;
+
+        if (buscadoRutina.getRutinaEstado() != 'T') {
+            ImageViewResultado.setImageResource(R.drawable.ic_info_outline_black_24px);
+            TextViewResultado.setText("En curso");
+            TextViewResultadoDetalle.setText("");
+        } else {
+            int exitos = 0;
+            int fallos = 0;
+            int total = 0;
+            for (int i = 0; i < exitoDesafio.length; i++) {
+                if (exitoDesafio[i].equals("1")) {
+                    exitos++;
+                } else if (exitoDesafio[i].equals("0")) {
+                    fallos++;
+                }
+                Log.v("asd", exitoDesafio[i]);
             }
-            Log.v("asd", exitoDesafio[i]);
-        }
-        total = exitos + fallos;
+            total = exitos + fallos;
 
-        if (exitos > fallos){
-            ImageViewResultado.setImageResource(R.drawable.ic_mood_black_36px);
-            TextViewResultado.setText("Buen trabajo!");
+            if (exitos > fallos) {
+                ImageViewResultado.setImageResource(R.drawable.ic_mood_black_36px);
+                TextViewResultado.setText("Buen trabajo!");
+            }
+            if (exitos < fallos) {
+                ImageViewResultado.setImageResource(R.drawable.ic_mood_bad_black_36px);
+                TextViewResultado.setText("Esfuerzate mas!");
+            }
+            if (exitos == fallos) {
+                ImageViewResultado.setImageResource(R.drawable.ic_mood_semi_black_36px);
+                TextViewResultado.setText("Puedes mejorar!");
+            }
+            TextViewResultadoDetalle.setText("Completaste " + exitos + "/" + total + " exitosamente");
         }
-        if (exitos < fallos){
-            ImageViewResultado.setImageResource(R.drawable.ic_mood_bad_black_36px);
-            TextViewResultado.setText("Esfuerzate mas!");
-        }
-        if (exitos == fallos){
-            ImageViewResultado.setImageResource(R.drawable.ic_mood_semi_black_36px);
-            TextViewResultado.setText("Puedes mejorar!");
-        }
-        TextViewResultadoDetalle.setText("Completaste " + exitos + "/" + total + " exitosamente");
-
     }
 
     private void inicializarBaseDeDatos(Intent intent) {
@@ -376,9 +381,9 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (temporalDesafio.getExitoDesafio() == 1){
+            if (temporalDesafio.getExitoDesafio() == 1) {
                 holder.imagenEstado.setImageResource(R.drawable.ic_done_black_24px);
-            } else{
+            } else {
                 holder.imagenEstado.setImageResource(R.drawable.ic_close_black_24px);
             }
         } else {

@@ -56,6 +56,9 @@ public class PerfilFragment extends Fragment implements Communicator {
 
         MenuItem itemOculto = menu.findItem(R.id.action_search);
         itemOculto.setVisible(false);
+
+        itemOculto = menu.findItem(R.id.action_view);
+        itemOculto.setVisible(false);
     }
 
     @Override

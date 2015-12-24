@@ -40,6 +40,9 @@ public class GlosarioFragment extends Fragment {
 
         MenuItem itemOculto = menu.findItem(R.id.action_search);
         itemOculto.setVisible(false);
+
+        itemOculto = menu.findItem(R.id.action_view);
+        itemOculto.setVisible(false);
     }
 
     @Override

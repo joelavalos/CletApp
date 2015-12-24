@@ -12,7 +12,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -202,6 +201,9 @@ public class MainFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
 
         MenuItem itemOculto = menu.findItem(R.id.action_search);
+        itemOculto.setVisible(true);
+
+        itemOculto = menu.findItem(R.id.action_view);
         itemOculto.setVisible(true);
     }
 
@@ -1126,7 +1128,7 @@ public class MainFragment extends Fragment {
         List<Repeticiones> todasLasRepeticiones = new ArrayList<>();
         todasLasRepeticiones = todasLasRepeticionesDelDesafio(pasarDesafioActual());
 
-        float distanciaTotalRequerida = desafioObjetivo.getValor()*todasLasRepeticiones.size();
+        float distanciaTotalRequerida = desafioObjetivo.getValor() * todasLasRepeticiones.size();
         float distanciaTotalRealizada = calcularDistanciaTotalRealizada(todasLasRepeticiones);
         int exitoDesafio = calcularExito(distanciaTotalRealizada, distanciaTotalRequerida);
         actualDesafio.setExitoDesafio(exitoDesafio);
@@ -1160,16 +1162,16 @@ public class MainFragment extends Fragment {
 
     private float calcularDistanciaTotalRealizada(List<Repeticiones> todasLasRepeticiones) {
         float distanciaTotalRealizadaAcumulador = 0;
-        for (int i = 0; i < todasLasRepeticiones.size(); i++){
+        for (int i = 0; i < todasLasRepeticiones.size(); i++) {
             distanciaTotalRealizadaAcumulador = distanciaTotalRealizadaAcumulador + todasLasRepeticiones.get(i).getValor();
         }
         return distanciaTotalRealizadaAcumulador;
     }
 
     private int calcularExito(float distanciaTotalRealizada, float distanciaTotalRequerida) {
-        if (distanciaTotalRealizada >= distanciaTotalRequerida){
+        if (distanciaTotalRealizada >= distanciaTotalRequerida) {
             return 1;
-        } else{
+        } else {
             return 0;
         }
     }
@@ -1718,7 +1720,7 @@ public class MainFragment extends Fragment {
 
         for (int i = 0; i < listaDesafiosRutina.size(); i++) {
             //listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
-            if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T'){
+            if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T') {
                 listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
                 listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
             }
@@ -1772,7 +1774,7 @@ public class MainFragment extends Fragment {
             }
 
             for (int i = 0; i < listaDesafiosRutina.size(); i++) {
-                if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T'){
+                if (listaDesafiosRutina.get(i).getDesafio().getEstadoDesafio() != 'T') {
                     listaDesafiosRutina.get(i).getDesafio().setEstadoDesafio('T');
                     listaDesafiosRutina.get(i).getDesafio().setExitoDesafio(0);
                 }
@@ -1836,6 +1838,19 @@ public class MainFragment extends Fragment {
             detalleFragment = new DetalleFragment();
         }
         return detalleFragment;
+    }
+
+    public void estadoRutinaActual() {
+        //Mostrar el progreso actual de la rutina
+        if (ButtonIniciarDesafio.isEnabled()) {
+            String idRutina = String.valueOf(actualRutina.getRutinaId());
+            Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoRutina.class);
+            newIntent.putExtra("idRutina", idRutina);
+            startActivity(newIntent);
+        } else {
+            new Mensaje(getActivity().getApplicationContext(), getResources().getString(R.string.sinRutinaActiva));
+        }
+
     }
 
     /*

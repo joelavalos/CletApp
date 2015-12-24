@@ -77,4 +77,5 @@
     <string name="diaString">día</string>
     <string name="calorias_quemadas">Calorías quemadas</string>
     <string name="duracion">Duración</string>
+    <string name="sinRutinaActiva">Sin rutína activa</string>
 </resources>

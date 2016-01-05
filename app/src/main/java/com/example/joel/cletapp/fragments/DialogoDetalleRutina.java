@@ -138,6 +138,7 @@ public class DialogoDetalleRutina extends DialogFragment {
             if (diffDesafio.equals("No quedan desafios")) {
                 TextViewCabezera.setText("No quedan desafios");
                 TextViewDias.setText("Descansa!");
+                TextViewDiasString.setText("");
             } else {
                 TextViewDias.setText(diffDesafio);
                 if (diffDesafio.equals("1")) {

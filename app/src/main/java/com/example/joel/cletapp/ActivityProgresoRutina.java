@@ -2,6 +2,7 @@ package com.example.joel.cletapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -306,6 +308,7 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
     int[] series;
     int[] repeticiones;
     Long[] idDesafios;
+    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     public AdapterDesafioProgreso(Context c, String[] listaCampos, String[] listaValores, String[] listaNombres, String[] listaObjetivos, String[] listaEstadoDesafio, int[] listaSeries, int[] listaRepeticiones, Long[] listaIdDesafios) {
         super(c, R.layout.single_desafio_rutina_row, R.id.TextViewNombreDesafioRutina, listaCampos);
@@ -351,6 +354,14 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
         }
 
         holder.nombreCampo.setText(campos[position]);
+
+        Calendar cInicial = Calendar.getInstance();
+        Date actual = cInicial.getTime();
+        String fechaActual = format.format(actual);
+
+        if (campos[position].split("     ")[0].equals(fechaActual)){
+            holder.nombreCampo.setTextColor(context.getResources().getColor(R.color.colorVerde));
+        }
         holder.valorCampo.setText(soloNombre[position]);
         if (soloNombre[position].equals("Descansar")) {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));

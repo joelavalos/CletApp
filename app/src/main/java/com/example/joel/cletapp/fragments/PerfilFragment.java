@@ -217,8 +217,6 @@ public class PerfilFragment extends Fragment implements Communicator {
             valores[5] = letraToSexo(ciclista.getCiclistaSexo());
 
         } else {
-            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "Si hay datos");
-
             valores[0] = ciclista.getCiclistaNombre();
             valores[1] = ciclista.getCiclistaApellido();
             valores[2] = format.format(ciclista.getCiclistaFechaNacimiento());

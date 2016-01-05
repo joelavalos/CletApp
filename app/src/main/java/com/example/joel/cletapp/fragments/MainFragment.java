@@ -1842,7 +1842,7 @@ public class MainFragment extends Fragment {
 
     public void estadoRutinaActual() {
         //Mostrar el progreso actual de la rutina
-        if (ButtonIniciarDesafio.isEnabled()) {
+        if (estadoElegirRutina == false) {
             String idRutina = String.valueOf(actualRutina.getRutinaId());
             Intent newIntent = new Intent(getActivity().getApplicationContext(), ActivityProgresoRutina.class);
             newIntent.putExtra("idRutina", idRutina);
@@ -1850,7 +1850,6 @@ public class MainFragment extends Fragment {
         } else {
             new Mensaje(getActivity().getApplicationContext(), getResources().getString(R.string.sinRutinaActiva));
         }
-
     }
 
     /*

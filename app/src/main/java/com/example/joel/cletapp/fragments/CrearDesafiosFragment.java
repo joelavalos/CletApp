@@ -295,6 +295,7 @@ class AdapterCrearDesafio extends ArrayAdapter<String> {
         }
 
         holder.nombreCampo.setText(campos[position]);
+        holder.nombreCampo.setSingleLine();
         holder.valorCampo.setText(valores[position]);
 
         return row;

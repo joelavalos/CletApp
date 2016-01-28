@@ -23,6 +23,7 @@ import com.example.joel.cletapp.ClasesDataBase.Desafio;
 import com.example.joel.cletapp.ClasesDataBase.DesafioObjetivo;
 import com.example.joel.cletapp.ClasesDataBase.Objetivo;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -239,6 +240,12 @@ class AdapterListaDesafiosTerminado extends ArrayAdapter<String> {
         idDesafios = IDs;
     }
 
+    DecimalFormat df = new DecimalFormat("#.#");
+    public float convertirMetrosToKilometros(float metros) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        return Float.parseFloat(df.format(metros / 1000));
+    }
+
     @Override
     public String getItem(int position) {
         return idDesafios.get(position);
@@ -266,7 +273,18 @@ class AdapterListaDesafiosTerminado extends ArrayAdapter<String> {
         holder.ImageViewImagenDesafio.setImageResource(R.drawable.ic_grade_black_48dp);
         holder.TextViewNombreDesafio.setText(nombreDesafio.get(position));
         holder.TextViewCategoriaDesafio.setText(categoriaDesafio.get(position));
-        holder.TextViewValorDesafio.setText(valorDesafio.get(position));
+
+        float distancia = Float.parseFloat(valorDesafio.get(position).split(" ")[0]);
+        if (distancia >= 1000) {
+            holder.TextViewValorDesafio.setText(String.valueOf(convertirMetrosToKilometros(distancia)) + " Km");
+        } else if (distancia <= -1000) {
+            holder.TextViewValorDesafio.setText(String.valueOf(convertirMetrosToKilometros(distancia)) + " Km");
+        } else {
+            holder.TextViewValorDesafio.setText(String.valueOf(df.format(distancia)) + " m");
+        }
+
+        //holder.TextViewValorDesafio.setText(valorDesafio.get(position));
+
         holder.TextViewNotaDesafio.setText(notaDesafio.get(position));
         holder.TextViewFechaDesafio.setText(fechaDesafio.get(position));
         holder.TextViewEstado.setText(estadoDesafio.get(position));

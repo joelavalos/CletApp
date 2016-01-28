@@ -213,7 +213,7 @@ public class DialogoCrearRutina extends DialogFragment {
 
                                 desafio = desafioCRUD.insertarDesafio(desafio);
 
-                                DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(objetivos[i].split(" ")[0]));
+                                DesafioObjetivo desafioObjetivo = new DesafioObjetivo(0, desafio, objetivo, Float.parseFloat(objetivos[i].split(" ")[0])*1000);
                                 desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
 
                                 crearSeriesRepeticiones(desafio, Integer.parseInt(series[i]), Integer.parseInt(repeticiones[i]));

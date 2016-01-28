@@ -244,7 +244,7 @@ public class MainFragment extends Fragment {
 
         options = new PolylineOptions().width(10).color(Color.BLUE).geodesic(true);
 
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("CletApp");
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.ic_directions_bike_white_18dp);
 
         inicializarBaseDeDatos();

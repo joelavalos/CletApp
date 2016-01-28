@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.example.joel.cletapp.Communicator;
 import com.example.joel.cletapp.R;
 
 /**
@@ -48,8 +49,8 @@ public class DialogoValorObjetivo extends DialogFragment {
 
         titulo = "Ingrese distancia";
         EditTextValorCampo.setHint("Distancia");
-        TextViewUnidad.setText("m");
-        unidad = " m";
+        TextViewUnidad.setText("Km");
+        unidad = " Km";
 
         builder.setTitle(titulo)
                 .setView(viewDialogo)

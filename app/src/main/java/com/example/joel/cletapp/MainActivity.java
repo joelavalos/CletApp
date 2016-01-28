@@ -33,6 +33,7 @@ import com.example.joel.cletapp.ClasesDataBase.Rutina;
 import com.example.joel.cletapp.ClasesDataBase.Serie;
 import com.example.joel.cletapp.fragments.Cronometro;
 import com.example.joel.cletapp.fragments.DialogoCrearRutina;
+import com.example.joel.cletapp.fragments.DialogoDetalleDesafio;
 import com.example.joel.cletapp.fragments.MainFragment;
 
 import java.text.ParseException;
@@ -110,11 +111,11 @@ public class MainActivity extends ActionBarActivity implements Communicator {
             Date parsedFinal = null;
             String[] nombres = {"Desafio prueba 1", "Desafio prueba 2", "Desafio prueba 3", "Desafio prueba 4", "Desafio prueba 5"};
             String[] notas = {"Nota 1", "Nota prueba 2", "Sin nota", "Quiero bajar de peso", "Ja Ja Ja"};
-            float[] valores = {125, 145, 160, 170, 200};
+            float[] valores = {10000, 25000, 30000, 46000, 60000};
             char[] estado = {'T', 'P', 'P', 'T', 'T'};
             int[] exito = {1, 0, 0, 0, 1};
-            int[] series = {1, 2, 3, 4, 5};
-            int[] repeticiones = {5, 4, 3, 2, 1};
+            int[] series = {2, 2, 3, 4, 5};
+            int[] repeticiones = {3, 4, 3, 2, 1};
 
             try {
                 parsedInicio = format.parse("01/01/2015");
@@ -134,7 +135,7 @@ public class MainActivity extends ActionBarActivity implements Communicator {
                         exito[i],
                         series[i],
                         repeticiones[i],
-                        0);
+                        5400);
 
                 desafio = desafioCRUD.insertarDesafio(desafio);
 
@@ -147,6 +148,17 @@ public class MainActivity extends ActionBarActivity implements Communicator {
 
                     for (int j = 0; j < repeticiones[i]; j++) {
                         Repeticiones addRepeticiones = new Repeticiones(0, serie, 0);
+                        if (j == 0 && h == 0){
+                            addRepeticiones.setValor(13000);
+                        }
+
+                        if (j == 1 && h == 0){
+                            addRepeticiones.setValor(14580);
+                        }
+
+                        if (j == 2 && h == 0){
+                            addRepeticiones.setValor(25900);
+                        }
                         repeticionesCRUD.insertarRepeticion(addRepeticiones);
                     }
                 }
@@ -201,15 +213,15 @@ public class MainActivity extends ActionBarActivity implements Communicator {
 
         if (rutaCRUD.buscarTodasLasRutas().isEmpty()){
             Ruta nuevaRuta = new Ruta();
-            nuevaRuta.setRutaNombre("Ruta casa");
+            nuevaRuta.setRutaNombre("Ruta larga");
             nuevaRuta.setRutaCordenadas("-33.54179451052759=-70.55631310000001X-33.54192417381435=-70.55499613537368X-33.53943371046656=-70.55632114662704");
             rutaCRUD.insertarRuta(nuevaRuta);
             nuevaRuta = new Ruta();
-            nuevaRuta.setRutaNombre("Ruta viaje");
+            nuevaRuta.setRutaNombre("Ruta media");
             nuevaRuta.setRutaCordenadas("-29.60880770194574=133.24786600000004X-39.313839609651154=-71.05658075000002X46.433078443460715=2.20882574999996");
             rutaCRUD.insertarRuta(nuevaRuta);
             nuevaRuta = new Ruta();
-            nuevaRuta.setRutaNombre("Ruta trabajo");
+            nuevaRuta.setRutaNombre("Ruta corta");
             nuevaRuta.setRutaCordenadas("37.945467316675405=104.13611175000005X-16.395887034238665=-63.5493965");
             rutaCRUD.insertarRuta(nuevaRuta);
         }

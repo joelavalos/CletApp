@@ -69,6 +69,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/EditTextNotaDesafio"
+                android:layout_marginBottom="24dp"
                 android:numColumns="2"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"

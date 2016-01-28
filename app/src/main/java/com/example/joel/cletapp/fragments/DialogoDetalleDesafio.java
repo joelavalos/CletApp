@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.DesafioObjetivoCRUD;
@@ -40,8 +41,8 @@ public class DialogoDetalleDesafio extends DialogFragment {
 
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-    private String[] campos = {"Categoria", "Valor", "Series", "Repeticiones"};
-    private String[] valores = {"", "0 m", "1", "1"};
+    private String[] campos = {"Categoria", "Distancia repeticion", "Series", "Repeticiones"};
+    private String[] valores = {"", "0 Km", "1", "1"};
     private AdapterCrearDesafio adapterCrearDesafio;
     private ArrayList<String> categorias;
 
@@ -213,7 +214,7 @@ public class DialogoDetalleDesafio extends DialogFragment {
         //valores[0] = format.format(c.getTime());
         //valores[1] = format.format(c.getTime());
         valores[0] = "";
-        valores[1] = "0 m";
+        valores[1] = "0 Km";
         valores[2] = "1";
         valores[3] = "1";
         adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
@@ -250,7 +251,7 @@ public class DialogoDetalleDesafio extends DialogFragment {
         if (valores[1].equals(". m")) {
             validar = "Valor incorrecto";
         } else {
-            if (valores[1].equals("0 m")) {
+            if (valores[1].equals("0 Km")) {
                 validar = "Ingrese distancia";
             }
         }

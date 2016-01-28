@@ -200,7 +200,6 @@ public class PerfilFragment extends Fragment implements Communicator {
         }
 
         if (ciclista.getCiclistRut().equals("null")) {
-            Mensaje qwe = new Mensaje(getActivity().getApplicationContext(), "No hay datos");
             addCiclista("0", "", "", "01/01/1990", "0", "0", "Indefinido");
 
             try {

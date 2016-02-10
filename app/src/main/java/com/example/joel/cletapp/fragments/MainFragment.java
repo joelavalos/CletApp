@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -188,7 +189,7 @@ public class MainFragment extends Fragment {
     private Button ButtonDetalleRutina;
     //Fin de pruebas
 
-    private int tiempoLimiteTotal = 1870;
+    private int tiempoLimiteTotal = 5400 /*1870*/;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -681,7 +682,6 @@ public class MainFragment extends Fragment {
     }
 
     private void crearRutinaFlash() {
-
         int valorObjetivoPersonalizado = determinarValorObjetivo();
 
         for (int i = 0; i < diasSelecionados.size(); i++) {
@@ -704,8 +704,8 @@ public class MainFragment extends Fragment {
         newResumen = resumenCRUD.insertarResumen(newResumen);
 
         newRutina = new Rutina(0,
-                "AutoRutina",
-                "Nota Rutina",
+                "Rutina rapida",
+                "Rutina rapida",
                 new java.sql.Date(parsedInicio.getTime()),
                 new java.sql.Date(parsedFinal.getTime()),
                 'P',
@@ -804,6 +804,56 @@ public class MainFragment extends Fragment {
 
     private void crearDesafios(int valorObjetivoPersonalizado) {
         Objetivo objetivo = null;
+        int seriesDesafioRapido = 0;
+        int repeticionesDesafioRapido = 0;
+
+
+        //Calculo de la cantidad de series y repeticiones
+        if (valorObjetivoPersonalizado != 0){
+            seriesDesafioRapido = 3;
+            repeticionesDesafioRapido = 4;
+        }
+
+        if (valorObjetivoPersonalizado < 17){
+            seriesDesafioRapido = 3;
+            repeticionesDesafioRapido = 3;
+        }
+
+        if (valorObjetivoPersonalizado <= 15){
+            seriesDesafioRapido = 3;
+            repeticionesDesafioRapido = 2;
+        }
+
+        if (valorObjetivoPersonalizado < 14){
+            seriesDesafioRapido = 2;
+            repeticionesDesafioRapido = 4;
+        }
+
+        if (valorObjetivoPersonalizado < 12){
+            seriesDesafioRapido = 2;
+            repeticionesDesafioRapido = 3;
+        }
+
+        if (valorObjetivoPersonalizado <= 10){
+            seriesDesafioRapido = 2;
+            repeticionesDesafioRapido = 2;
+        }
+
+        if (valorObjetivoPersonalizado < 9){
+            seriesDesafioRapido = 1;
+            repeticionesDesafioRapido = 4;
+        }
+
+        if (valorObjetivoPersonalizado < 7){
+            seriesDesafioRapido = 1;
+            repeticionesDesafioRapido = 3;
+        }
+
+        if (valorObjetivoPersonalizado <= 5){
+            seriesDesafioRapido = 1;
+            repeticionesDesafioRapido = 2;
+        }
+
 
         try {
             objetivo = objetivoCRUD.buscarObjetivoPorNombre("Distancia");
@@ -819,8 +869,8 @@ public class MainFragment extends Fragment {
         }
 
         Desafio desafio = new Desafio(0,
-                "Desafio Autogenerado",
-                "Nota Autogenerada",
+                "Desafio rapido",
+                "Desafio rapido",
                 new java.sql.Date(parsedInicio.getTime()),
                 new java.sql.Date(parsedFinal.getTime()),
                 'P',
@@ -843,7 +893,8 @@ public class MainFragment extends Fragment {
         desafioObjetivoCRUD.insertarDesafioObjetivo(desafioObjetivo);
 
         //Se crean las series y repeticiones para el desafio, primer argunmento el desafio, segundo las series y tercero las repeticiones
-        crearSeriesRepeticiones(desafio, 2, 3);
+        //crearSeriesRepeticiones(desafio, 2, 3);
+        crearSeriesRepeticiones(desafio, seriesDesafioRapido, repeticionesDesafioRapido);
 
     }
 
@@ -918,7 +969,12 @@ public class MainFragment extends Fragment {
         }
 
         Object nuevoValorDesafio = Collections.max(promediosFinales);
-        return (int) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio)));
+        double valorFinalDouble = (float) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio))) + (float) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio)))*0.2;
+
+        Long valorFinalRedondeado = Math.round(valorFinalDouble);
+        int valorFinal = Integer.valueOf(valorFinalRedondeado.intValue());
+        //Retorna el valor maximo con un aumento del 20%
+        return valorFinal;
     }
 
     private void crearSeriesRepeticiones(Desafio desafio, int series, int repeticiones) {
@@ -1813,7 +1869,7 @@ public class MainFragment extends Fragment {
     }
 
     public void guardarRuta(String data) {
-        new Mensaje(getActivity().getApplicationContext(), data);
+        //new Mensaje(getActivity().getApplicationContext(), data);
         guardarCordenadasBaseDatos(data);
     }
 

@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.joel.cletapp.CRUDDatabase.DesafioCRUD;
 import com.example.joel.cletapp.CRUDDatabase.RepeticionesCRUD;
@@ -47,8 +48,8 @@ public class Cronometro extends Service implements LocationListener {
     private int cronometro = 0;
     private int cronometroRepeticion = 0;
 
-    private int cronometroDescansoSerie = 20;
-    private int cronometroDescansoRepeticion = 10;
+    private int cronometroDescansoSerie = 540;
+    private int cronometroDescansoRepeticion = 240;
     private int cronometroValorActualDescansoSerie = 0;
     private int cronometroValorActualDescansoRepeticion = 0;
     private int valorMaxcronometroValorActualDescansoRepeticion = 0;
@@ -251,7 +252,8 @@ public class Cronometro extends Service implements LocationListener {
                 e.printStackTrace();
             }
         }
-        tiempoLimiteRepeticiones = tiempoLimite / repeticionesActualesTotal.size();
+        //tiempoLimiteRepeticiones = tiempoLimite / repeticionesActualesTotal.size();
+        tiempoLimiteRepeticiones = 600;
         int asd = cronometroDescansoRepeticion * (repeticionesActualesTotal.size() - 1);
         int asdA = cronometroDescansoSerie * (2 - 1);
         int xcv = asd * asdA;
@@ -274,6 +276,81 @@ public class Cronometro extends Service implements LocationListener {
         cronometroValorActualDescansoRepeticion = UPDATE_LISTENER.cronoServiceValorActualDescansoRepeticion;
 
         final MediaPlayer repeticionTerminada = MediaPlayer.create(getBaseContext(), R.drawable.repeticion_terminada);
+
+        Log.v("PRUEBA", "Tiempo limite : " + tiempoLimiteTotal+"");
+        //Log.v("PRUEBA", "Series : " + series);
+        //Log.v("PRUEBA", "Repeticiones : " + repeticiones);
+
+        if ((series == 1) && (repeticiones == 2)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 0;
+            cronometroDescansoRepeticion = 600;
+            tiempoLimiteRepeticiones = 2400;
+        }
+
+        if ((series == 1) && (repeticiones == 3)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 0;
+            cronometroDescansoRepeticion = 900;
+            tiempoLimiteRepeticiones = 1200;
+        }
+
+        if ((series == 1) && (repeticiones == 4)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 0;
+            cronometroDescansoRepeticion = 600;
+            tiempoLimiteRepeticiones = 900;
+        }
+
+        if ((series == 2) && (repeticiones == 2)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 840;
+            cronometroDescansoRepeticion = 480;
+            tiempoLimiteRepeticiones = 900;
+        }
+
+        //Bueno
+        if ((series == 2) && (repeticiones == 3)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 600;
+            cronometroDescansoRepeticion = 300;
+            tiempoLimiteRepeticiones = 600;
+        }
+
+        if ((series == 2) && (repeticiones == 4)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 600;
+            cronometroDescansoRepeticion = 240;
+            tiempoLimiteRepeticiones = 420;
+        }
+
+        if ((series == 2) && (repeticiones == 5)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 480;
+            cronometroDescansoRepeticion = 240;
+            tiempoLimiteRepeticiones = 300;
+        }
+
+        if ((series == 3) && (repeticiones == 2)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 540;
+            cronometroDescansoRepeticion = 240;
+            tiempoLimiteRepeticiones = 600;
+        }
+
+        if ((series == 3) && (repeticiones == 3)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 360;
+            cronometroDescansoRepeticion = 240;
+            tiempoLimiteRepeticiones = 360;
+        }
+
+        if ((series == 3) && (repeticiones == 4)){
+            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            cronometroDescansoSerie = 360;
+            cronometroDescansoRepeticion = 120;
+            tiempoLimiteRepeticiones = 300;
+        }
 
         temporizador.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -345,7 +422,7 @@ public class Cronometro extends Service implements LocationListener {
 
                                     pendienteSerieTerminada = true;
                                     inicioSerie = true;
-                                    cronometroValorActualDescansoRepeticion = cronometroDescansoRepeticion + cronometroDescansoSerie;
+                                    cronometroValorActualDescansoRepeticion = /*cronometroDescansoRepeticion +*/ cronometroDescansoSerie;
                                     valorMaxcronometroValorActualDescansoRepeticion = cronometroValorActualDescansoRepeticion;
                                 }
                                 if ((repActual > repeticiones) && (serieActual == series)) {
@@ -373,7 +450,7 @@ public class Cronometro extends Service implements LocationListener {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    if (temporizador != null){
+                    if (temporizador != null) {
                         temporizador.cancel();
                     }
                 }

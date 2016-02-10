@@ -227,8 +227,8 @@ public class DialogoDetalleDesafio extends DialogFragment {
         if (valores[2].equals(".")) {
             validar = "Valor incorrecto";
         } else {
-            if (Integer.valueOf(valores[2]) > 5) {
-                validar = "Maximo 5 series";
+            if (Integer.valueOf(valores[2]) > 3) {
+                validar = "Maximo 3 series";
             }
 
             if (Integer.valueOf(valores[2]) < 1) {
@@ -239,12 +239,12 @@ public class DialogoDetalleDesafio extends DialogFragment {
         if (valores[3].equals(".")) {
             validar = "Valor incorrecto";
         } else {
-            if (Integer.valueOf(valores[3]) > 5) {
-                validar = "Maximo 5 repeticiones";
+            if (Integer.valueOf(valores[3]) > 4) {
+                validar = "Maximo 4 repeticiones";
             }
 
-            if (Integer.valueOf(valores[3]) < 1) {
-                validar = "Minimo 1 repeticion";
+            if (Integer.valueOf(valores[3]) < 2) {
+                validar = "Minimo 2 repeticion";
             }
         }
 

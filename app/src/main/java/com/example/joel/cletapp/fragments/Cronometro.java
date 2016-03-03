@@ -59,6 +59,8 @@ public class Cronometro extends Service implements LocationListener {
     private int repeticiones = 0;
     private int serieActual = 1;
     private int repActual = 1;
+    private float velocidad = 0;
+    private float velocidadTemporal = 0;
 
     private Handler handler;
     private Vibrator alertaTermino;
@@ -120,7 +122,7 @@ public class Cronometro extends Service implements LocationListener {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //Arreglado
         notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         resultIntent = new Intent(getBaseContext(), MainActivity.class);
         resultPendingIntent = PendingIntent.getActivity(getBaseContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -142,7 +144,7 @@ public class Cronometro extends Service implements LocationListener {
         gpsActivo = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if (gpsActivo) {
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000 * 1/*1 minuto*/, 1/*Metros*/, this);
+            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000 * 1/*1 minuto*/, 5/*Metros*/, this);
             location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
 
             if (location != null) {
@@ -175,7 +177,6 @@ public class Cronometro extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Arreglado
         iniciarBaseDeDatos();
         iniciarCronometro();
         handler = new Handler() {
@@ -196,6 +197,17 @@ public class Cronometro extends Service implements LocationListener {
                     }
 
                     if (cronometro >= tiempoLimiteTotal) {
+
+                        /*
+                        desafioActual.setVelocidad(velocidad);
+                        desafioActual.setCronometro(cronometro);
+                        try {
+                            desafioCRUD.actualizarDatosDesafio(desafioActual);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        */
+
                         crearNotificacion();
                         UPDATE_LISTENER.completarDesafio();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -235,7 +247,17 @@ public class Cronometro extends Service implements LocationListener {
         repeticionesActuales = new ArrayList<>();
         repeticionesActualesTotal = new ArrayList<>();
 
+        Log.v("PRUEBA", "Service: LLego hasta aca parte 1");
+        //desafioActual = new Desafio();
+        if (UPDATE_LISTENER == null){
+            Log.v("PRUEBA", "Soy null");
+        } else{
+            Log.v("PRUEBA", "No soy null, se feliz");
+        }
         desafioActual = UPDATE_LISTENER.pasarDesafioActual();
+        //Log.v("PRUEBA", "Service: " + desafioActual.getDesafioNombre());
+        Log.v("PRUEBA", "Service: LLego hasta aca parte 2");
+
         try {
             seriesActuales = serieCRUD.buscarSeriePorIdDesafio(desafioActual);
         } catch (ParseException e) {
@@ -277,33 +299,33 @@ public class Cronometro extends Service implements LocationListener {
 
         final MediaPlayer repeticionTerminada = MediaPlayer.create(getBaseContext(), R.drawable.repeticion_terminada);
 
-        Log.v("PRUEBA", "Tiempo limite : " + tiempoLimiteTotal+"");
+        //Log.v("PRUEBA", "Tiempo limite : " + tiempoLimiteTotal+"");
         //Log.v("PRUEBA", "Series : " + series);
         //Log.v("PRUEBA", "Repeticiones : " + repeticiones);
 
         if ((series == 1) && (repeticiones == 2)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 0;
             cronometroDescansoRepeticion = 600;
             tiempoLimiteRepeticiones = 2400;
         }
 
         if ((series == 1) && (repeticiones == 3)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 0;
             cronometroDescansoRepeticion = 900;
             tiempoLimiteRepeticiones = 1200;
         }
 
         if ((series == 1) && (repeticiones == 4)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 0;
             cronometroDescansoRepeticion = 600;
             tiempoLimiteRepeticiones = 900;
         }
 
         if ((series == 2) && (repeticiones == 2)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 840;
             cronometroDescansoRepeticion = 480;
             tiempoLimiteRepeticiones = 900;
@@ -311,42 +333,42 @@ public class Cronometro extends Service implements LocationListener {
 
         //Bueno
         if ((series == 2) && (repeticiones == 3)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 600;
             cronometroDescansoRepeticion = 300;
             tiempoLimiteRepeticiones = 600;
         }
 
         if ((series == 2) && (repeticiones == 4)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 600;
             cronometroDescansoRepeticion = 240;
             tiempoLimiteRepeticiones = 420;
         }
 
         if ((series == 2) && (repeticiones == 5)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 480;
             cronometroDescansoRepeticion = 240;
             tiempoLimiteRepeticiones = 300;
         }
 
         if ((series == 3) && (repeticiones == 2)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 540;
             cronometroDescansoRepeticion = 240;
             tiempoLimiteRepeticiones = 600;
         }
 
         if ((series == 3) && (repeticiones == 3)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 360;
             cronometroDescansoRepeticion = 240;
             tiempoLimiteRepeticiones = 360;
         }
 
         if ((series == 3) && (repeticiones == 4)){
-            Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
+            //Log.v("PRUEBA", "Series y repeticiones : " + series + " " + repeticiones);
             cronometroDescansoSerie = 360;
             cronometroDescansoRepeticion = 120;
             tiempoLimiteRepeticiones = 300;
@@ -442,14 +464,19 @@ public class Cronometro extends Service implements LocationListener {
                 if (cronometro >= tiempoLimiteTotal) {
                     SharedPreferences prefs = getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
                     prefs.edit().putInt("tiempoFinalCronometro", cronometro).commit();
+                    prefs.edit().putFloat("tiempoFinalVelocidad", velocidad).commit();
                     //guardarCordenadasBaseDatos();
                     guardarCordenadasFinales(cordenadas);
+
+                    /*
                     desafioActual.setCronometro(cronometro);
+                    desafioActual.setVelocidad(velocidad);
                     try {
                         desafioCRUD.actualizarDatosDesafio(desafioActual);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    */
                     if (temporizador != null) {
                         temporizador.cancel();
                     }
@@ -459,6 +486,17 @@ public class Cronometro extends Service implements LocationListener {
                     handler.sendEmptyMessage(0);
                 } else {
                     if (cronometro >= tiempoLimiteTotal) {
+
+                        /*
+                        desafioActual.setVelocidad(velocidad);
+                        desafioActual.setCronometro(cronometro);
+                        try {
+                            desafioCRUD.actualizarDatosDesafio(desafioActual);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        */
+
                         crearNotificacion();
                         alertaTermino = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         alertaTermino.vibrate(1000);
@@ -471,6 +509,13 @@ public class Cronometro extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        velocidadTemporal = location.getSpeed();
+
+        if (velocidadTemporal > velocidad){
+            velocidad = velocidadTemporal;
+        }
+
+        //Log.v("PRUEBA", "Velocidad cada 5 metros: " + velocidad + " m/s");
         if (cronometroValorActualDescansoRepeticion > 0) {
             //nada esta en descanso
         } else {
@@ -535,6 +580,9 @@ public class Cronometro extends Service implements LocationListener {
         }
         SharedPreferences prefs = getSharedPreferences("cordenadasFinales", Context.MODE_PRIVATE);
         prefs.edit().putString("misCordenadasFinales", guardar).commit();
+
+        SharedPreferences prefs2 = getSharedPreferences("cordenadas", Context.MODE_PRIVATE);
+        prefs2.edit().putString("misCordenadas", "nada").commit();
     }
 
     private String generarStringCoordenadas(List<LatLng> guardarCordenadas){

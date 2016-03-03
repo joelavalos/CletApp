@@ -9,10 +9,10 @@
         layout="@layout/app_bar" />
 
     <ScrollView
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/app_bar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:layout_marginTop="16dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:text="Nombre: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorNegro"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/TextViewNombreDesafio"
@@ -40,7 +40,7 @@
                 android:singleLine="true"
                 android:text="Nombre del desafio"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
 
             <ImageView
@@ -141,6 +141,40 @@
                 android:layout_below="@+id/TextViewCalorias"
                 android:layout_marginTop="4dp"
                 android:text="0 Kcal"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorNegro" />
+
+            <ImageView
+                android:id="@+id/ImageViewCircularVelocidad"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignBottom="@+id/TextViewCaloriasValor"
+                android:layout_alignTop="@+id/TextViewCalorias"
+                android:layout_below="@+id/ImageViewCircularDuracion"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@+id/SpaceEspacio1"
+                android:src="@drawable/ic_vel_bike_black_24px" />
+
+            <TextView
+                android:id="@+id/TextViewVelocidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TextViewDuracionValor"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@+id/ImageViewCircularVelocidad"
+                android:text="@string/velocidad_maxima"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/TextViewVelocidadValor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/TextViewVelocidad"
+                android:layout_below="@+id/TextViewVelocidad"
+                android:layout_marginTop="4dp"
+                android:text="500 m/s"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorNegro" />
 

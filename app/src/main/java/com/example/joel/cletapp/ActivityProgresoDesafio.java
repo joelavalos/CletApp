@@ -64,6 +64,7 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
     private TextView TextViewDistanciaValor;
     private TextView TextViewDuracionValor;
     private TextView TextViewCaloriasValor;
+    private TextView TextViewVelocidadValor;
 
     private List<Serie> todasLasSeries;
     private List<Repeticiones> todasLasRepeticiones;
@@ -126,7 +127,8 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
             listaRepeticiones = repeticionesCRUD.buscarRepeticionesPorIdSerie(serieSeleccionada);
 
             for (int j = 0; j < listaRepeticiones.size(); j++) {
-                nombreRepeticiones.add("Repeticion " + (j + 1));
+                //nombreRepeticiones.add("Repeticion " + (j + 1));
+                nombreRepeticiones.add(getResources().getString(R.string.nombreRepeticion) + " " + (j + 1));
                 distanciaObtenida.add(listaRepeticiones.get(j).getValor());
                 distanciaRequerida.add(valorDesafio);
                 evaluacionRepeticiones.add(listaRepeticiones.get(j).getValor() - valorDesafio);
@@ -145,6 +147,7 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         TextViewDistanciaValor = (TextView) findViewById(R.id.TextViewDistanciaValor);
         TextViewDuracionValor = (TextView) findViewById(R.id.TextViewDuracionValor);
         TextViewCaloriasValor = (TextView) findViewById(R.id.TextViewCaloriasValor);
+        TextViewVelocidadValor = (TextView) findViewById(R.id.TextViewVelocidadValor);
         ListViewSeriesDesafios = (ListView) findViewById(R.id.ListViewSeriesDesafios);
         ListViewRepeticionesSeries = (ListView) findViewById(R.id.ListViewRepeticionesSeries);
 
@@ -194,11 +197,12 @@ public class ActivityProgresoDesafio extends ActionBarActivity {
         peso = ciclista.getCiclistaPeso();
 
         if (peso == 0) {
-            TextViewCaloriasValor.setText("Completar perfil");
+            TextViewCaloriasValor.setText("Editar perfil");
         } else {
             //new Mensaje(getApplicationContext(), "Estoy mal comparado");
             TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
         }
+        TextViewVelocidadValor.setText(df.format(desafioActual.getVelocidad()) + " m/s");
         //TextViewCaloriasValor.setText(String.valueOf(df.format(constanteIntensidadMedia * constante2 * peso * minutos)) + " Kcal");
     }
 
@@ -438,9 +442,9 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
         DecimalFormat df = new DecimalFormat("#.#");
 
         if (distanciaRepeticion.get(position) >= 1000) {
-            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(distanciaRepeticion.get(position))) + " Km" + " de ");
+            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(convertirMetrosToKilometros(distanciaRepeticion.get(position))) + " Km");
         } else {
-            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(df.format(distanciaRepeticion.get(position))) + " m" + " de ");
+            holder.TextViewValorDistanciaRepeticion.setText(String.valueOf(df.format(distanciaRepeticion.get(position))) + " m");
         }
 
 
@@ -463,6 +467,7 @@ class AdapterDesafioRepeticion extends ArrayAdapter<String> {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorRojo));
         } else if (valorEvaluacion.get(position) > 0) {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorVerde));
+            holder.TextViewValorEvaluacionDistanciaRepeticion.setText("+" + String.valueOf(convertirMetrosToKilometros(valorEvaluacion.get(position))) + " Km");
         } else {
             holder.TextViewValorEvaluacionDistanciaRepeticion.setTextColor(getContext().getResources().getColor(R.color.colorNegro));
         }

@@ -209,7 +209,7 @@ public class DialogoCrearRutina extends DialogFragment {
                                         0,
                                         1,
                                         1,
-                                        1870);
+                                        0);
 
                                 desafio = desafioCRUD.insertarDesafio(desafio);
 

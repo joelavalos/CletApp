@@ -38,7 +38,7 @@ public class DialogoCategoriaSelector extends DialogFragment {
         posicion = getArguments().getInt("posicion");
         categorias = getArguments().getStringArrayList("categorias");
 
-        if (valores[posicion].equals("Distancia")) {
+        if (valores[posicion].equals("Resistencia")) {
             categoriaSeleccion = 0;
         } else {
             categoriaSeleccion = -1;

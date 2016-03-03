@@ -41,7 +41,7 @@ public class CrearDesafiosFragment extends Fragment {
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private String[] campos = {"Categoria", "Valor", "Series", "Repeticiones"};
-    private String[] valores = {"", "0 m", "1", "1"};
+    private String[] valores = {"", "0 m", "1", "2"};
     private AdapterCrearDesafio adapterCrearDesafio;
     private ArrayList<String> categorias;
 
@@ -199,7 +199,7 @@ public class CrearDesafiosFragment extends Fragment {
         valores[0] = "";
         valores[1] = "0 m";
         valores[2] = "1";
-        valores[3] = "1";
+        valores[3] = "2";
         adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
     }

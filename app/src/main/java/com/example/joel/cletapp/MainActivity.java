@@ -94,10 +94,11 @@ public class MainActivity extends ActionBarActivity implements Communicator {
         listObjetivo = objetivoCRUD.buscarTodosLosObjetivos();
 
         if (listObjetivo.isEmpty()) {
-            Objetivo objetivo = new Objetivo(0, "Distancia", "Distancia recorrida");
+            Objetivo objetivo = new Objetivo(0, "Resistencia", "Distancia recorrida");
             objetivoCRUD.insertarObjetivo(objetivo);
         }
 
+        /*
         Objetivo objetivo = null;
         try {
             objetivo = objetivoCRUD.buscarObjetivoPorNombre("Distancia");
@@ -225,6 +226,7 @@ public class MainActivity extends ActionBarActivity implements Communicator {
             nuevaRuta.setRutaCordenadas("37.945467316675405=104.13611175000005X-16.395887034238665=-63.5493965");
             rutaCRUD.insertarRuta(nuevaRuta);
         }
+        */
     }
 
     public void cargarFragmento(Fragment fragment, int animacionSalida, int animacioEntrada) {

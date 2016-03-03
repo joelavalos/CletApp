@@ -78,6 +78,7 @@ public class MainFragment extends Fragment {
     private PolylineOptions optionsSeleccionada;
     private Polyline line;
     private Polyline lineSeleccionada;
+    private boolean rutinaPrimeraVez = false;
 
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private boolean encontrado = false;
@@ -190,6 +191,8 @@ public class MainFragment extends Fragment {
     //Fin de pruebas
 
     private int tiempoLimiteTotal = 5400 /*1870*/;
+    private float velocidad = 0;
+    private int cronometroFinalDesafioValor = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -252,6 +255,8 @@ public class MainFragment extends Fragment {
         inicializarComponentes(root);
 
         Intent newIntent = getActivity().getIntent();
+
+        /* Probando quitar este codigo
         if (newIntent.getStringExtra("cronometroFinal") == null) {
             //Si el desafio sigue en curso
         } else {
@@ -261,6 +266,7 @@ public class MainFragment extends Fragment {
             guardarEstadoDesafioDetenido();
             completarDesafio();
         }
+        */
 
         if (cargarEstadoDesafio().equals("iniciado")) {
             ButtonIniciarDesafio.setEnabled(true);
@@ -330,6 +336,16 @@ public class MainFragment extends Fragment {
         });
         */
 
+        /*
+        textoCronometro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Desafio probando = pasarDesafioActual();
+                Log.v("PRUEBA", probando.getDesafioNombre());
+            }
+        });
+        */
+
         ButtonFrecuencioa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -350,6 +366,7 @@ public class MainFragment extends Fragment {
                 String seriesString = "";
                 String repeticionesString = "";
                 String diffString = "";
+                String estadoDesafioString = "";
 
                 diffString = diffDias;
 
@@ -359,8 +376,10 @@ public class MainFragment extends Fragment {
                     nombreRutina = actualRutina.getRutinaNombre();
                     if (!diffString.equals("")) {
                         nombreDesafio = "vacio";
+                        estadoDesafioString = String.valueOf('I');
                     } else {
                         nombreDesafio = actualDesafio.getDesafioNombre();
+                        estadoDesafioString = String.valueOf(actualDesafio.getEstadoDesafio());
                     }
                     seriesTotalString = String.valueOf(seriesTotal);
                     repeticionesTotalString = String.valueOf(repeticionesTotal);
@@ -380,6 +399,7 @@ public class MainFragment extends Fragment {
                     bundle.putString("repeticionesDesafioTotal", repeticionesTotalString);
                     bundle.putString("seriesDesafio", seriesString);
                     bundle.putString("repeticionesDesafio", repeticionesString);
+                    bundle.putString("estadoDesafio", estadoDesafioString);
                 }
                 DialogoDetalleRutina dialogoDetalleRutina = new DialogoDetalleRutina();
                 dialogoDetalleRutina.setArguments(bundle);
@@ -664,7 +684,7 @@ public class MainFragment extends Fragment {
 
     private void guardarDistanciaTotalService(float distance) {
         SharedPreferences prefs = getActivity().getSharedPreferences("distanciaTotal", Context.MODE_PRIVATE);
-        prefs.edit().putFloat("distanciaTotalService", distance).commit();
+        prefs.edit().putFloat("distanciaTotalService", 0/*distance*/).commit();
     }
 
     private int cargarValorCronometroSerie() {
@@ -677,7 +697,10 @@ public class MainFragment extends Fragment {
         return prefs.getInt("repeticionActual", 1);
     }
 
+    /*Derrepente es null*/
     public Desafio pasarDesafioActual() {
+        //cargarDesafio(String.valueOf(R.drawable.mdpi_ic_place_black_24dp));
+        Log.v("PRUEBA", "Main fragment: Desafio encontrado");
         return actualDesafio;
     }
 
@@ -807,53 +830,54 @@ public class MainFragment extends Fragment {
         int seriesDesafioRapido = 0;
         int repeticionesDesafioRapido = 0;
 
+        float kilometros = convertirMetrosToKilometros((float) valorObjetivoPersonalizado);
+        int kiloemtrosInt = (int) kilometros;
 
         //Calculo de la cantidad de series y repeticiones
-        if (valorObjetivoPersonalizado != 0){
+        if (kiloemtrosInt != 0) {
             seriesDesafioRapido = 3;
             repeticionesDesafioRapido = 4;
         }
 
-        if (valorObjetivoPersonalizado < 17){
+        if (kiloemtrosInt < 17) {
             seriesDesafioRapido = 3;
             repeticionesDesafioRapido = 3;
         }
 
-        if (valorObjetivoPersonalizado <= 15){
+        if (kiloemtrosInt <= 15) {
             seriesDesafioRapido = 3;
             repeticionesDesafioRapido = 2;
         }
 
-        if (valorObjetivoPersonalizado < 14){
+        if (kiloemtrosInt < 14) {
             seriesDesafioRapido = 2;
             repeticionesDesafioRapido = 4;
         }
 
-        if (valorObjetivoPersonalizado < 12){
+        if (kiloemtrosInt < 12) {
             seriesDesafioRapido = 2;
             repeticionesDesafioRapido = 3;
         }
 
-        if (valorObjetivoPersonalizado <= 10){
+        if (kiloemtrosInt <= 10) {
             seriesDesafioRapido = 2;
             repeticionesDesafioRapido = 2;
         }
 
-        if (valorObjetivoPersonalizado < 9){
+        if (kiloemtrosInt < 9) {
             seriesDesafioRapido = 1;
             repeticionesDesafioRapido = 4;
         }
 
-        if (valorObjetivoPersonalizado < 7){
+        if (kiloemtrosInt < 7) {
             seriesDesafioRapido = 1;
             repeticionesDesafioRapido = 3;
         }
 
-        if (valorObjetivoPersonalizado <= 5){
+        if (kiloemtrosInt <= 5) {
             seriesDesafioRapido = 1;
             repeticionesDesafioRapido = 2;
         }
-
 
         try {
             objetivo = objetivoCRUD.buscarObjetivoPorNombre("Distancia");
@@ -875,8 +899,8 @@ public class MainFragment extends Fragment {
                 new java.sql.Date(parsedFinal.getTime()),
                 'P',
                 0,
-                2,
-                3,
+                1,
+                1,
                 0);
         desafio = desafioCRUD.insertarDesafio(desafio);
         desafio.setDesafioNombre("Desafio " + desafio.getDesafioId());
@@ -965,11 +989,11 @@ public class MainFragment extends Fragment {
             }
 
         } else {
-            promediosFinales.add(Float.parseFloat("2000"));
+            promediosFinales.add(Float.parseFloat("0"));
         }
 
         Object nuevoValorDesafio = Collections.max(promediosFinales);
-        double valorFinalDouble = (float) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio))) + (float) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio)))*0.2;
+        double valorFinalDouble = (float) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio))) + (float) Math.round(Float.parseFloat(String.valueOf(nuevoValorDesafio))) * 0.2;
 
         Long valorFinalRedondeado = Math.round(valorFinalDouble);
         int valorFinal = Integer.valueOf(valorFinalRedondeado.intValue());
@@ -1182,7 +1206,9 @@ public class MainFragment extends Fragment {
         actualDesafio.setEstadoDesafio('T');
 
         List<Repeticiones> todasLasRepeticiones = new ArrayList<>();
+        Log.v("PRUEBA", "LLego hasta aca parte 1");
         todasLasRepeticiones = todasLasRepeticionesDelDesafio(pasarDesafioActual());
+        Log.v("PRUEBA", "LLego hasta aca parte 2");
 
         float distanciaTotalRequerida = desafioObjetivo.getValor() * todasLasRepeticiones.size();
         float distanciaTotalRealizada = calcularDistanciaTotalRealizada(todasLasRepeticiones);
@@ -1190,6 +1216,8 @@ public class MainFragment extends Fragment {
         actualDesafio.setExitoDesafio(exitoDesafio);
         Date d = Calendar.getInstance().getTime();
         actualDesafio.setTerminoDesafio(new java.sql.Date(d.getTime()));
+        actualDesafio.setVelocidad(velocidad);
+        actualDesafio.setCronometro(cronometroFinalDesafioValor);
 
         try {
             desafioCRUD.actualizarDatosDesafio(actualDesafio);
@@ -1265,6 +1293,7 @@ public class MainFragment extends Fragment {
     }
 
     private void iniciarCronometro() {
+        Cronometro.setUpdateListener(this, tiempoLimiteTotal);
         Intent service = new Intent(getActivity().getBaseContext(), Cronometro.class);
         getActivity().startService(service);
         //new Mensaje(getActivity().getApplicationContext(), "No dramas al iniciar");
@@ -1298,11 +1327,14 @@ public class MainFragment extends Fragment {
         //Esta parte es nueva
         SharedPreferences prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
         int cronometroFinalDesafio = prefs.getInt("tiempoFinalCronometro", -1);
+        velocidad = prefs.getFloat("tiempoFinalVelocidad", (float) 0);
 
         if (!(cronometroFinalDesafio == -1)) {
+            cronometroFinalDesafioValor = cronometroFinalDesafio;
             completarDesafio();
             prefs = getActivity().getSharedPreferences("tiempoFinalTerminado", Context.MODE_PRIVATE);
             prefs.edit().putInt("tiempoFinalCronometro", -1).commit();
+            prefs.edit().putFloat("tiempoFinalVelocidad", (float) 0).commit();
 
             DialogoNombreRuta dialogo = new DialogoNombreRuta();
             dialogo.show(getFragmentManager(), "nombreRutaPicker");
@@ -1548,6 +1580,7 @@ public class MainFragment extends Fragment {
             //cargarDesafio(data.split("-")[1]);
             cargarDesafio(String.valueOf(R.drawable.mdpi_ic_place_black_24dp));
             iniciarRutina();
+            Cronometro.setUpdateListener(this, tiempoLimiteTotal);
         }
     }
 
@@ -1858,6 +1891,7 @@ public class MainFragment extends Fragment {
         if (!diasSelecionados.isEmpty()) {
             crearRutinaFlash();
             iniciarRutina();
+            Cronometro.setUpdateListener(this, tiempoLimiteTotal);
         } else {
             new Mensaje(getActivity().getApplicationContext(), "Selecciones al menos 1 dia");
         }

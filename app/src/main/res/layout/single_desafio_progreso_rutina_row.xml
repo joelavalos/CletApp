@@ -33,11 +33,21 @@
         android:textColor="@color/colorNegro" />
 
     <TextView
+        android:id="@+id/TextViewCategoriaDesafioRutina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewValorDesafioRutina"
+        android:text="Tipo: Resistencia"
+        android:textColor="@color/colorGris2"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold"/>
+
+    <TextView
         android:id="@+id/TextViewNombreObjetivoDesafioRutina"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/TextViewValorDesafioRutina"
-        android:layout_below="@+id/TextViewValorDesafioRutina"
+        android:layout_below="@+id/TextViewCategoriaDesafioRutina"
         android:text="100 Series"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorGris2" />

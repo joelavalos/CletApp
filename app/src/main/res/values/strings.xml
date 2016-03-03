@@ -75,7 +75,9 @@
     <string name="cabezeraProximoDesafio">Próximo desafío en</string>
     <string name="diasString">días</string>
     <string name="diaString">día</string>
-    <string name="calorias_quemadas">Calorías quemadas</string>
+    <string name="calorias_quemadas">Cal quemadas</string>
+    <string name="velocidad_maxima">Vel máxima</string>
     <string name="duracion">Duración</string>
     <string name="sinRutinaActiva">Sin rutína activa</string>
+    <string name="nombreRepeticion">Repetición</string>
 </resources>

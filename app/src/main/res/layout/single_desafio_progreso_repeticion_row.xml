@@ -16,8 +16,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextViewNombreRepeticion"
-        android:text="Distancia: "
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Recorrido: "
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/colorNegro" />
+
+    <TextView
+        android:id="@+id/TextViewCampoDistanciaRequerida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewCampoDistanciaRepeticion"
+        android:text="Requerido: "
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorNegro"
         android:layout_marginBottom="16dp"/>
 
@@ -28,17 +37,17 @@
         android:layout_below="@+id/TextViewNombreRepeticion"
         android:layout_toRightOf="@+id/TextViewCampoDistanciaRepeticion"
         android:text="150 m de "
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorGris2" />
 
     <TextView
         android:id="@+id/TextViewValorRequeridoDistanciaRepeticion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextViewNombreRepeticion"
-        android:layout_toRightOf="@+id/TextViewValorDistanciaRepeticion"
+        android:layout_alignTop="@+id/TextViewCampoDistanciaRequerida"
+        android:layout_toRightOf="@+id/TextViewCampoDistanciaRequerida"
         android:text="1800 m"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/colorGris2" />
 
     <TextView

@@ -39,7 +39,8 @@ public class DesafioCRUD {
             Helper.DESAFIO_EXITO,
             Helper.DESAFIO_SERIES,
             Helper.DESAFIO_REPETICIONES,
-            Helper.DESAFIO_CRONOMETRO};
+            Helper.DESAFIO_CRONOMETRO,
+            Helper.DESAFIO_VELOCIDAD};
 
     public DesafioCRUD(Context context) {
         this.mContext = context;
@@ -75,6 +76,7 @@ public class DesafioCRUD {
         contentValues.put(Helper.DESAFIO_SERIES, desafio.getSeries());
         contentValues.put(Helper.DESAFIO_REPETICIONES, desafio.getRepeticiones());
         contentValues.put(Helper.DESAFIO_CRONOMETRO, desafio.getCronometro());
+        contentValues.put(Helper.DESAFIO_VELOCIDAD, desafio.getVelocidad());
 
         long id = mDatabase.insert(mDbHelper.TABLA_DESAFIO, null, contentValues);
 
@@ -127,6 +129,7 @@ public class DesafioCRUD {
         newValues.put(Helper.DESAFIO_SERIES, desafio.getSeries());
         newValues.put(Helper.DESAFIO_REPETICIONES, desafio.getRepeticiones());
         newValues.put(Helper.DESAFIO_CRONOMETRO, desafio.getCronometro());
+        newValues.put(Helper.DESAFIO_VELOCIDAD, desafio.getVelocidad());
 
         String[] whereArgs = {String.valueOf(desafio.getDesafioId())};
 
@@ -262,6 +265,7 @@ public class DesafioCRUD {
         desafio.setSeries(cursor.getInt(7));
         desafio.setRepeticiones(cursor.getInt(8));
         desafio.setCronometro(cursor.getInt(9));
+        desafio.setVelocidad(cursor.getFloat(10));
         //desafio.setExitoDesafio(Boolean.parseBoolean(String.valueOf(cursor.getString(6))));
         return desafio;
     }

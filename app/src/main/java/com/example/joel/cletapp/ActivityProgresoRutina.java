@@ -367,16 +367,15 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
         Date actual = cInicial.getTime();
         String fechaActual = format.format(actual);
 
-        if (campos[position].split("     ")[0].equals(fechaActual)){
-            holder.nombreCampo.setTextColor(context.getResources().getColor(R.color.colorVerde));
-        }
         holder.valorCampo.setText(soloNombre[position]);
         if (soloNombre[position].equals("Descansar")) {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));
             holder.imagenCampo.setImageResource(R.drawable.hdpi_ic_beach_access_black_24dp);
+            holder.nombreCampo.setTextColor(context.getResources().getColor(R.color.colorRojo));
         } else {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorNegro));
             holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
+            holder.nombreCampo.setTextColor(context.getResources().getColor(R.color.colorVerde));
         }
         //row.setBackgroundResource(R.color.colorVerde);
         if (series[position] == 0) {
@@ -398,6 +397,10 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
             }
 
             //holder.objetivoCampo.setText(objetivo[position]);
+        }
+
+        if (campos[position].split("     ")[0].equals(fechaActual) && !estadoDesafio[position].equals("T")){
+            holder.nombreCampo.setTextColor(context.getResources().getColor(R.color.colorAzul));
         }
 
         //holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);

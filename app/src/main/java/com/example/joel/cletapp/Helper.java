@@ -43,6 +43,7 @@ public class Helper extends SQLiteOpenHelper {
     public static final String DESAFIO_SERIES = "SERIES";
     public static final String DESAFIO_REPETICIONES = "REPETICIONES";
     public static final String DESAFIO_CRONOMETRO = "CRONOMETRO";
+    public static final String DESAFIO_VELOCIDAD = "VELOCIDAD";
     public static final String CREATE_TABLE_DESAFIO = "CREATE TABLE " + TABLA_DESAFIO + " ("
             + DESAFIO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DESAFIO_NOMBRE + " VARCHAR(40) NOT NULL, "
@@ -53,7 +54,8 @@ public class Helper extends SQLiteOpenHelper {
             + DESAFIO_EXITO + " INTEGER NOT NULL, "
             + DESAFIO_SERIES + " INTEGER NOT NULL, "
             + DESAFIO_REPETICIONES + " INTEGER NOT NULL, "
-            + DESAFIO_CRONOMETRO + " INTEGER);";
+            + DESAFIO_CRONOMETRO + " INTEGER, "
+            + DESAFIO_VELOCIDAD + " INTEGER);";
     public static final String DROP_TABLE_DESAFIO = "DROP TABLE IF EXISTS " + TABLA_DESAFIO + ";";
 
     //Tabla objetivo

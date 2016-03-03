@@ -17,6 +17,7 @@ public class Desafio implements Serializable {
     private int series;
     private int repeticiones;
     private int cronometro;
+    private float velocidad;
 
     public Desafio() {
         this.desafioId = -1;
@@ -33,6 +34,7 @@ public class Desafio implements Serializable {
         this.series = series;
         this.repeticiones = repeticiones;
         this.cronometro = cronometro;
+        this.velocidad = 0;
     }
 
     public long getDesafioId() {
@@ -113,5 +115,13 @@ public class Desafio implements Serializable {
 
     public void setCronometro(int cronometro) {
         this.cronometro = cronometro;
+    }
+
+    public float getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(float velocidad) {
+        this.velocidad = velocidad;
     }
 }

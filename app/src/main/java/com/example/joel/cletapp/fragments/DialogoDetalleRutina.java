@@ -106,6 +106,11 @@ public class DialogoDetalleRutina extends DialogFragment {
                 TextViewNumeroSerieActual.setText(seriesDesafio);
                 TextViewNumeroRepeticionActual.setText(repeticionesDesafio);
 
+                if (getArguments().getString("estadoDesafio").equals("T")){
+                    TextViewNumeroSerieActual.setText(seriesDesafioTotal);
+                    TextViewNumeroRepeticionActual.setText(repeticionesDesafioTotal);
+                }
+
                 TextViewCancelarRutina.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

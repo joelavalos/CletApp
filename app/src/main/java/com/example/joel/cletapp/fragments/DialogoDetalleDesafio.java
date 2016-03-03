@@ -42,7 +42,7 @@ public class DialogoDetalleDesafio extends DialogFragment {
     private Calendar c = Calendar.getInstance();
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     private String[] campos = {"Categoria", "Distancia repeticion", "Series", "Repeticiones"};
-    private String[] valores = {"", "0 Km", "1", "1"};
+    private String[] valores = {"", "0 Km", "1", "2"};
     private AdapterCrearDesafio adapterCrearDesafio;
     private ArrayList<String> categorias;
 
@@ -216,7 +216,7 @@ public class DialogoDetalleDesafio extends DialogFragment {
         valores[0] = "";
         valores[1] = "0 Km";
         valores[2] = "1";
-        valores[3] = "1";
+        valores[3] = "2";
         adapterCrearDesafio = new AdapterCrearDesafio(getActivity().getApplicationContext(), campos, valores);
         GridViewDatosDesafio.setAdapter(adapterCrearDesafio);
     }

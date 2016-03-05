@@ -286,6 +286,7 @@ class AdapterDesafioHistorialProgresoRow {
     TextView TextViewRepeticionesDesafioRutina;
     ImageView imagenCampo;
     ImageView imagenEstado;
+    TextView TextViewCategoriaDesafioRutina;
 
     public AdapterDesafioHistorialProgresoRow(View view) {
         this.nombreCampo = (TextView) view.findViewById(R.id.TextViewNombreDesafioRutina);
@@ -295,6 +296,7 @@ class AdapterDesafioHistorialProgresoRow {
         this.TextViewRepeticionesDesafioRutina = (TextView) view.findViewById(R.id.TextViewRepeticionesDesafioRutina);
         this.imagenCampo = (ImageView) view.findViewById(R.id.ImageViewImagenDesafioRutina);
         this.imagenEstado = (ImageView) view.findViewById(R.id.ImageViewImagenEstadoDesafio);
+        this.TextViewCategoriaDesafioRutina = (TextView) view.findViewById(R.id.TextViewCategoriaDesafioRutina);
     }
 }
 
@@ -372,6 +374,7 @@ class AdapterDesafioProgreso extends ArrayAdapter<String> {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorGris2));
             holder.imagenCampo.setImageResource(R.drawable.hdpi_ic_beach_access_black_24dp);
             holder.nombreCampo.setTextColor(context.getResources().getColor(R.color.colorRojo));
+            holder.TextViewCategoriaDesafioRutina.setText("");
         } else {
             holder.valorCampo.setTextColor(context.getResources().getColor(R.color.colorNegro));
             holder.imagenCampo.setImageResource(R.drawable.ic_star_black_24dp);
